@@ -256,7 +256,6 @@
       display: none !important;
     }
 
-    /* Results Card */
     .result-box {
       background: linear-gradient(145deg, #0f172a, #1e3a8a);
       color: #ffffff;
@@ -860,10 +859,32 @@
       document.getElementById("summary-subtitle").innerText =
         `Voto habitual declarado: ${declared}. En el test ciego coincidiste principalmente con frases de ${topAuthor} y propuestas de orientación ${topSpace}.`;
 
-      shareSummaryText = `Hice el Test Ciego Elecciones 2027 (sin nombres ni camisetas):
-• Frases: mayor coincidencia con ${topAuthor}
-• Propuestas: mayor coincidencia con ${topSpace}
-¿Votás ideas o camisetas?`;
+      shareSummaryText = `Hice el Test Ciego Elecciones 2027 (sin nombres ni camisetas):\n• Frases: mayor coincidencia con ${topAuthor}\n• Propuestas: mayor coincidencia con ${topSpace}\n¿Votás ideas o camisetas?`;
+
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
+      const diffEl = document.querySelector('input[name="cierre1"]:checked');
+      const payload = {
+        fecha: new Date().toLocaleString("es-AR"),
+        votoHabitual: declared,
+        dificultad: diffEl ? diffEl.value : "No especificado",
+        edad: document.getElementById("edad").value,
+        provincia: document.getElementById("provincia").value,
+        topReferenteA: topAuthor,
+        topEspacioB: topSpace,
+        detalleA: revelations.map(r => `${r.topic}: ${r.author}`).join(" | "),
+        detalleB: dataVarB.map((item, idx) => {
+          const c = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
+          const o = item.options[c ? parseInt(c.value) : 0];
+          return `${item.topic}: ${o.space}`;
+        }).join(" | ")
+      };
+
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("Error enviando datos:", err));
 
       document.getElementById("tab-4").classList.remove("hidden");
       goToStep(4);
