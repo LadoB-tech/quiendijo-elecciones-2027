@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Encuesta Elecciones 2027: Frases y Propuestas</title>
+  <title>Encuesta Elecciones 2027: ¿Quién dijo qué? y Propuestas</title>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -15,6 +15,7 @@
       --muted: #64748b;
       --border: #e2e8f0;
       --success: #10b981;
+      --danger: #dc2626;
     }
 
     * {
@@ -171,17 +172,82 @@
       color: var(--text);
     }
 
+    .match-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .match-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      transition: all 0.15s ease;
+    }
+
+    .match-row.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .match-quote {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      flex: 1;
+      font-size: 0.95rem;
+      color: #1e293b;
+    }
+
+    .match-select-wrap {
+      width: 225px;
+      flex-shrink: 0;
+    }
+
+    .match-select {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: #f8fafc;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .match-row.selected .match-select {
+      border-color: var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+    }
+
+    @media (max-width: 680px) {
+      .match-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .match-select-wrap {
+        width: 100%;
+      }
+    }
+
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.65rem;
     }
 
     .option-label {
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1rem;
       border: 1.5px solid var(--border);
       border-radius: 8px;
       cursor: pointer;
@@ -218,7 +284,13 @@
       color: #1e293b;
     }
 
-    select, input[type="password"] {
+    .opt-text strong {
+      color: #0f172a;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .std-select, input[type="password"] {
       width: 100%;
       padding: 0.75rem;
       border: 1.5px solid var(--border);
@@ -347,7 +419,7 @@
 
     .revelation-item {
       border-bottom: 1px solid var(--border);
-      padding: 0.85rem 0;
+      padding: 0.95rem 0;
       font-size: 0.92rem;
     }
 
@@ -355,10 +427,21 @@
       border-bottom: none;
     }
 
-    .tag {
+    .badge-ok {
       display: inline-block;
-      background: #dbeafe;
-      color: #1e40af;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      margin-left: 0.35rem;
+    }
+
+    .badge-err {
+      display: inline-block;
+      background: #fee2e2;
+      color: #991b1b;
       font-weight: 700;
       font-size: 0.78rem;
       padding: 0.15rem 0.55rem;
@@ -452,7 +535,6 @@
       border-top: 1px solid var(--border);
     }
 
-    /* Print / PDF Styles */
     @media print {
       .nav-steps, .no-print, footer, header p {
         display: none !important;
@@ -476,12 +558,12 @@
 <body>
 
   <header>
-    <h1>Encuesta Elecciones 2027: Frases y Propuestas</h1>
-    <p>Test ciego de opinión pública. Elegí las frases y propuestas que más te representan sin saber de quién son y descubrí con qué espacio coincidís realmente.</p>
+    <h1>Encuesta Elecciones 2027: ¿Quién dijo qué? y Propuestas</h1>
+    <p>Test ciego de opinión pública. Adiviná qué dirigente dijo cada frase y luego votá las propuestas sin etiquetas partidarias.</p>
   </header>
 
   <nav class="nav-steps">
-    <button type="button" class="step-badge active" id="tab-1" onclick="goToStep(1)">1. Variante A: Frases</button>
+    <button type="button" class="step-badge active" id="tab-1" onclick="goToStep(1)">1. Variante A: ¿Quién lo dijo?</button>
     <button type="button" class="step-badge" id="tab-2" onclick="goToStep(2)">2. Variante B: Propuestas</button>
     <button type="button" class="step-badge" id="tab-3" onclick="goToStep(3)">3. Cierre y Perfil</button>
     <button type="button" class="step-badge hidden" id="tab-4" onclick="goToStep(4)">4. Tus Resultados</button>
@@ -489,24 +571,24 @@
   </nav>
 
   <main class="container">
-    <!-- PASO 1: VARIANTE A -->
+    <!-- PASO 1: VARIANTE A (ASIGNAR DIRIGENTE A CADA FRASE) -->
     <section id="step-1">
       <div class="section-intro">
-        <h2>Variante A — ¿Con qué frase coincidís más?</h2>
-        <p>En cada tema vas a encontrar 5 expresiones de distintos referentes políticos argentinos sin su nombre. Elegí la que más te represente.</p>
+        <h2>Variante A — ¿Quién dijo cada frase?</h2>
+        <p>En cada tema tenés 5 frases reales de distintos referentes políticos. En el desplegable de cada frase, elegí qué dirigente creés que la dijo (<strong>Javier Milei, Mauricio Macri, Patricia Bullrich, Cristina Fernández de Kirchner o Axel Kicillof</strong>).</p>
       </div>
       <div id="container-var-a"></div>
-      <div id="err-1" class="alert-msg hidden">Por favor, respondé las 10 preguntas de la Variante A antes de continuar.</div>
+      <div id="err-1" class="alert-msg hidden">Por favor, asigná un dirigente a todas las frases antes de continuar.</div>
       <div class="btn-row">
         <button type="button" class="btn btn-primary" onclick="nextFromStep1()">Continuar a Variante B →</button>
       </div>
     </section>
 
-    <!-- PASO 2: VARIANTE B -->
+    <!-- PASO 2: VARIANTE B (PROPUESTAS EN LENGUAJE CLARO Y CON EJEMPLOS) -->
     <section id="step-2" class="hidden">
       <div class="section-intro">
         <h2>Variante B — ¿Qué propuesta te convence más?</h2>
-        <p>Ahora votá la idea sin etiquetas partidarias. Elegí la medida de política pública que consideres más adecuada para cada área.</p>
+        <p>Ahora votá la idea sin etiquetas partidarias. Elegí la propuesta concreta que te parezca mejor para resolver cada tema en la vida diaria.</p>
       </div>
       <div id="container-var-b"></div>
       <div id="err-2" class="alert-msg hidden">Por favor, respondé las 10 preguntas de la Variante B antes de continuar.</div>
@@ -529,8 +611,8 @@
           <span class="q-title">¿Qué parte de la encuesta te resultó más difícil de responder?</span>
         </div>
         <div class="options-list" id="cierre-q1">
-          <label class="option-label"><input type="radio" name="cierre1" value="Variante A"><span class="opt-text">La Variante A (elegir entre frases políticas sin ver quién las dijo).</span></label>
-          <label class="option-label"><input type="radio" name="cierre1" value="Variante B"><span class="opt-text">La Variante B (elegir propuestas técnicas sin etiquetas partidarias).</span></label>
+          <label class="option-label"><input type="radio" name="cierre1" value="Variante A"><span class="opt-text">La Variante A (identificar qué dirigente dijo cada frase).</span></label>
+          <label class="option-label"><input type="radio" name="cierre1" value="Variante B"><span class="opt-text">La Variante B (elegir propuestas sin etiquetas partidarias).</span></label>
           <label class="option-label"><input type="radio" name="cierre1" value="Ambas"><span class="opt-text">Ambas me resultaron igual de difíciles.</span></label>
           <label class="option-label"><input type="radio" name="cierre1" value="Ninguna"><span class="opt-text">Ninguna, pude responder todo con facilidad.</span></label>
         </div>
@@ -558,7 +640,7 @@
         </div>
         <div style="margin-bottom: 1rem;">
           <label style="font-weight: 600; font-size: 0.9rem;">Rango de edad</label>
-          <select id="edad">
+          <select id="edad" class="std-select">
             <option value="No especificado">Prefiero no decir</option>
             <option value="Menor de 18">Menor de 18 años</option>
             <option value="18 a 29">18 a 29 años</option>
@@ -568,7 +650,7 @@
         </div>
         <div>
           <label style="font-weight: 600; font-size: 0.9rem;">Provincia de residencia</label>
-          <select id="provincia">
+          <select id="provincia" class="std-select">
             <option value="No especificada">Prefiero no decir</option>
             <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
             <option value="Buenos Aires">Buenos Aires</option>
@@ -607,16 +689,16 @@
     <!-- PASO 4: RESULTADOS INDIVIDUALES -->
     <section id="step-4" class="hidden">
       <div class="result-box">
-        <h2>Tu Mapa de Coincidencias (Test Ciego)</h2>
+        <h2>Tus Resultados del Test Ciego</h2>
         <p style="color: #cbd5e1; font-size: 0.95rem;" id="summary-subtitle"></p>
 
         <div class="result-grid">
           <div class="result-panel">
-            <h3>Variante A: Frases por Referente</h3>
+            <h3>Variante A: Aciertos por Dirigente</h3>
             <div id="res-bars-a"></div>
           </div>
           <div class="result-panel">
-            <h3>Variante B: Propuestas por Espacio</h3>
+            <h3>Variante B: Afinidad por Espacio</h3>
             <div id="res-bars-b"></div>
           </div>
         </div>
@@ -629,14 +711,18 @@
       </div>
 
       <div class="section-card">
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Detalle de tus elecciones en la Variante A (Quién dijo qué)</h3>
+        <h3 style="margin-bottom: 1rem; color: var(--primary);">Detalle de tus elecciones en Variante B (Propuestas por Espacio)</h3>
+        <div id="revelation-list-b"></div>
+      </div>
+
+      <div class="section-card">
+        <h3 style="margin-bottom: 1rem; color: var(--primary);">Corrección de la Variante A: Qué elegiste vs. Quién la dijo realmente</h3>
         <div id="revelation-list"></div>
       </div>
     </section>
 
-    <!-- SECCIÓN #ORGANIZACION (PANEL DE RESULTADOS CON CLAVE Y PDF) -->
+    <!-- SECCIÓN #ORGANIZACION -->
     <section id="step-org" class="hidden">
-      <!-- Login -->
       <div id="org-login-card" class="section-card" style="max-width: 440px; margin: 2rem auto;">
         <h2 style="color: var(--primary); margin-bottom: 0.5rem;">Acceso Organización</h2>
         <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem;">Ingresá la clave de administrador para ver los resultados consolidados y descargar el informe en PDF.</p>
@@ -649,7 +735,6 @@
         </div>
       </div>
 
-      <!-- Dashboard -->
       <div id="org-dashboard" class="hidden">
         <div class="section-intro" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div>
@@ -669,8 +754,8 @@
             <div class="kpi-lbl">Encuestas Completadas</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-val" id="kpi-top-a" style="font-size: 1.25rem;">-</div>
-            <div class="kpi-lbl">Referente Líder (Var. A)</div>
+            <div class="kpi-val" id="kpi-avg-a" style="font-size: 1.35rem;">-</div>
+            <div class="kpi-lbl">Promedio Aciertos (Var. A)</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-val" id="kpi-top-b" style="font-size: 1.25rem;">-</div>
@@ -680,7 +765,7 @@
 
         <div class="result-grid" style="margin-bottom: 1.5rem;">
           <div class="section-card" style="margin-bottom: 0;">
-            <h3 style="color: var(--primary); margin-bottom: 1rem;">Ranking Variante A (Frases Ciegas)</h3>
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">Nivel de Aciertos en Variante A</h3>
             <div id="admin-chart-a"></div>
           </div>
           <div class="section-card" style="margin-bottom: 0;">
@@ -699,7 +784,7 @@
                   <th>Voto Declarado</th>
                   <th>Edad</th>
                   <th>Provincia</th>
-                  <th>Mayor Coincidencia A</th>
+                  <th>Puntaje Aciertos (Var. A)</th>
                   <th>Mayor Coincidencia B</th>
                 </tr>
               </thead>
@@ -719,8 +804,15 @@
 
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
-    const ADMIN_PASSWORD = "AKfycb"; // Se puede cambiar abajo por la clave que quieras
     const CLAVE_ADMIN = "2027";
+
+    const dirigentesList = [
+      "Javier Milei",
+      "Mauricio Macri",
+      "Patricia Bullrich",
+      "Cristina Fernández de Kirchner",
+      "Axel Kicillof"
+    ];
 
     const dataVarA = [
       {
@@ -829,109 +921,368 @@
       {
         topic: "Universidades",
         options: [
-          { letter: "A", text: "Implementar un sistema de financiamiento por alumno (vouchers) para fomentar la competencia y eficiencia entre instituciones.", space: "Libertaria" },
-          { letter: "B", text: "Mantener la gratuidad para residentes y establecer aranceles para extranjeros no residentes, optimizando gastos administrativos.", space: "Centroderecha / PRO" },
-          { letter: "C", text: "Mantener la gratuidad universitaria y actualizar el presupuesto automáticamente por inflación con auditorías externas de gestión.", space: "Peronismo / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Sistema de becas o vales por alumno (vouchers):",
+            text: "En lugar de darle el presupuesto directo a la universidad, el Estado le entrega el dinero o vale a cada estudiante para que elija dónde estudiar (pública o privada), fomentando que las facultades compitan por mejorar su nivel.",
+            space: "Libertaria"
+          },
+          {
+            letter: "B",
+            title: "Gratuidad para argentinos y arancel para extranjeros no residentes:",
+            text: "Mantener la universidad pública gratuita para ciudadanos y residentes del país, pero cobrar una cuota a estudiantes extranjeros que vienen solo a cursar y auditar los gastos administrativos.",
+            space: "Centroderecha / PRO"
+          },
+          {
+            letter: "C",
+            title: "Gratuidad total y presupuesto actualizado por inflación:",
+            text: "Garantizar que la universidad siga siendo gratuita para todos y que el Estado aumente sus fondos automáticamente al ritmo de la inflación, sumando controles externos sobre cómo se gasta la plata.",
+            space: "Peronismo / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Escuelas",
         options: [
-          { letter: "A", text: "Garantizar por ley un piso de inversión educativa y paritarias nacionales para reducir la desigualdad salarial entre provincias.", space: "Peronismo / Izquierda" },
-          { letter: "B", text: "Declarar la educación como servicio esencial para garantizar guardias mínimas y continuidad de clases durante los paros.", space: "Libertaria / PRO" },
-          { letter: "C", text: "Implementar evaluaciones nacionales obligatorias y dar mayor autonomía pedagógica y de gestión a cada escuela.", space: "Centro / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Inversión garantizada y sueldos iguales en todo el país:",
+            text: "Fijar por ley un piso mínimo de gasto educativo y negociar un sueldo base nacional para los docentes, buscando que una escuela de una provincia pobre tenga los mismos recursos que una de la capital.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Educación como servicio esencial (escuelas abiertas siempre):",
+            text: "Declarar por ley que las escuelas no pueden cerrar del todo durante los paros docentes, obligando a garantizar guardias mínimas de clases (como pasa en los hospitales).",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "C",
+            title: "Evaluaciones nacionales y más libertad a cada escuela:",
+            text: "Tomar exámenes obligatorios en todo el país para medir cuánto aprenden los chicos y darle más poder a cada director para elegir métodos de enseñanza y contratar docentes.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Sistema de Salud",
         options: [
-          { letter: "A", text: "Integrar el sistema público, privado y sindical mediante una historia clínica digital única y redes de atención coordinadas.", space: "Centro / PRO" },
-          { letter: "B", text: "Desregular obras sociales y prepagas para que compitan libremente por precio y cobertura según la elección del usuario.", space: "Libertaria" },
-          { letter: "C", text: "Fortalecer el presupuesto de los hospitales públicos e impulsar la producción estatal de medicamentos esenciales.", space: "Peronismo / Izquierda" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Historia clínica digital única y red integrada:",
+            text: "Conectar en un mismo sistema informático los hospitales públicos, las obras sociales y las prepagas para que, por ejemplo, tus estudios médicos estén disponibles en cualquier guardia sin repetir análisis ni turnos.",
+            space: "Centro / PRO"
+          },
+          {
+            letter: "B",
+            title: "Libre competencia entre obras sociales y prepagas:",
+            text: "Eliminar trabas y regulaciones para que cualquier trabajador pueda elegir libremente su obra social o prepaga sin pasar por intermediarios sindicales, compitiendo por precio y cobertura.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Más presupuesto hospitalario y medicamentos fabricados por el Estado:",
+            text: "Reforzar la inversión en hospitales públicos y que laboratorios estatales produzcan remedios básicos (como antibióticos o insulina) para entregarlos gratis o a muy bajo costo.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Inflación y Moneda",
         options: [
-          { letter: "A", text: "Impulsar un plan de estabilización basado en la acumulación de reservas por exportaciones y acuerdos de precios y salarios.", space: "Peronismo" },
-          { letter: "B", text: "Avanzar hacia la competencia de monedas y la libre circulación del dólar para eliminar la emisión monetaria.", space: "Libertaria" },
-          { letter: "C", text: "Sostener el equilibrio fiscal y la independencia del Banco Central para estabilizar el peso y bajar la inflación de forma gradual.", space: "PRO / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Acumular dólares por exportaciones y acordar precios y salarios:",
+            text: "Frenar la suba de precios logrando que entren dólares del campo y la industria, mientras el gobierno convoca a empresas y sindicatos para pactar topes de aumentos en alimentos y tarifas.",
+            space: "Peronismo"
+          },
+          {
+            letter: "B",
+            title: "Libre uso del dólar y competencia de monedas:",
+            text: "Permitir que la gente pueda cobrar su sueldo, ahorrar y pagar en pesos, dólares o cualquier otra moneda libremente, prohibiendo que el Banco Central imprima billetes para financiar al Estado.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "No gastar más de lo que entra y Banco Central independiente:",
+            text: "Mantener las cuentas del Estado sin déficit y garantizar que el Banco Central no dependa del presidente de turno, para que el peso recupere valor y la inflación baje paso a paso.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Mercado Laboral",
         options: [
-          { letter: "A", text: "Modernizar la legislación laboral reemplazando las indemnizaciones tradicionales por fondos de cese y habilitando convenios por empresa.", space: "Libertaria / PRO" },
-          { letter: "B", text: "Reducir la jornada laboral sin disminución salarial para repartir las horas de trabajo disponibles y mejorar la productividad.", space: "Izquierda" },
-          { letter: "C", text: "Mantener la protección frente al despido, pero reducir los aportes patronales a las pymes que incorporen nuevos trabajadores formalmente.", space: "Peronismo / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Reemplazar indemnizaciones por un fondo de desempleo:",
+            text: "Cambiar el sistema actual de juicios e indemnizaciones por un fondo mensual (similar al de la construcción), donde el trabajador acumula un ahorro que cobra si lo despiden o si renuncia, facilitando que las empresas contraten.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "B",
+            title: "Reducir la jornada laboral sin bajar el sueldo:",
+            text: "Bajar las horas de trabajo diarias o semanales (por ejemplo, de 8 a 6 horas o semana de 4 días) manteniendo el mismo salario, para que las empresas necesiten contratar más personal y baje el desempleo.",
+            space: "Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Mantener la indemnización, pero bajar impuestos a las pymes que contraten:",
+            text: "Conservar las protecciones actuales frente al despido, pero eximir de cargas sociales durante los primeros años a las pequeñas empresas que blanqueen o sumen empleados.",
+            space: "Peronismo / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Sistema Tributario (Impuestos)",
         options: [
-          { letter: "A", text: "Simplificar el sistema tributario eliminando impuestos distorsivos y reduciendo el IVA a los alimentos de la canasta básica.", space: "Centro / UCR" },
-          { letter: "B", text: "Crear un impuesto permanente a los grandes patrimonios y rentas financieras para aliviar la carga impositiva sobre el consumo y los salarios.", space: "Peronismo / Izquierda" },
-          { letter: "C", text: "Reducir el gasto público para eliminar retenciones e impuestos que afectan la producción y la exportación.", space: "Libertaria / PRO" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Simplificar impuestos y sacar el IVA a la comida básica:",
+            text: "Eliminar impuestos complicados y quitar el 21% de IVA a productos esenciales (como leche, pan, yerba o carne) para que bajen directo en la caja del supermercado.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "B",
+            title: "Cobrar más impuestos a grandes fortunas y bajar impuestos al consumo:",
+            text: "Crear un impuesto permanente a los patrimonios más altos y ganancias financieras, usando esa recaudación para bajar los impuestos que pagan los trabajadores y jubilados en sus compras diarias.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Bajar el gasto del Estado para eliminar impuestos a la producción:",
+            text: "Achicar estructuras públicas para poder eliminar las retenciones al campo y los impuestos que encarecen producir y exportar en Argentina.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Seguridad",
         options: [
-          { letter: "A", text: "Priorizar la prevención social mediante mayor inversión estatal en urbanización de barrios, educación, deporte y salud mental.", space: "Peronismo / Izquierda" },
-          { letter: "B", text: "Bajar la edad de imputabilidad y endurecer las penas para delitos graves con el fin de reducir la reincidencia.", space: "Libertaria / PRO" },
-          { letter: "C", text: "Reforzar el despliegue de fuerzas federales e inteligencia criminal en fronteras y zonas críticas del narcotráfico.", space: "Centro / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Prevención social e inversión en barrios vulnerables:",
+            text: "Combatir el delito atacando sus causas sociales: urbanizar barrios, mejorar escuelas, crear centros deportivos y reforzar la atención en adicciones y salud mental.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Bajar la edad de imputabilidad y endurecer las penas:",
+            text: "Permitir que menores que cometen delitos graves (como homicidios o robos armados) sean juzgados penalmente y aumentar las condenas para evitar que salgan rápido en libertad.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "C",
+            title: "Más fuerzas federales e inteligencia contra el narcotráfico:",
+            text: "Reforzar el control de fronteras con radares, desplegar fuerzas federales en zonas críticas y crear unidades especializadas para desarticular bandas narco y lavar su dinero.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Asistencia y Planes Sociales",
         options: [
-          { letter: "A", text: "Mantener la asistencia directa vinculándola de forma obligatoria con capacitación laboral o terminalidad educativa.", space: "PRO / UCR" },
-          { letter: "B", text: "Eliminar intermediarios en el pago de la asistencia y establecer plazos limitados para fomentar la transición al empleo privado.", space: "Libertaria" },
-          { letter: "C", text: "Consolidar la Asignación Universal por Hijo (AUH) y avanzar hacia un ingreso básico garantizado para hogares en situación de vulnerabilidad.", space: "Peronismo / Izquierda" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Mantener la ayuda, pero exigir capacitación o terminar la escuela:",
+            text: "Seguir pagando los planes directamente a las familias, poniendo como requisito obligatorio cursar oficios o finalizar el secundario para no perder el beneficio.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "B",
+            title: "Eliminar intermediarios y poner plazo límite al plan:",
+            text: "Depositar la ayuda sin pasar por organizaciones sociales y fijar un tiempo máximo de cobro (por ejemplo, 1 o 2 años) mientras se incentiva el paso a un empleo privado.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Consolidar la AUH y avanzar hacia un ingreso básico garantizado:",
+            text: "Fortalecer la Asignación Universal por Hijo y garantizar un piso mínimo de ingresos estatal para todos los hogares que estén por debajo de la línea de pobreza.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Cultura",
         options: [
-          { letter: "A", text: "Eliminar los subsidios estatales a producciones artísticas y dejar que los proyectos culturales se financien por demanda del público.", space: "Libertaria" },
-          { letter: "B", text: "Sostener los fondos públicos de fomento cultural (como el INCAA) con criterios transparentes para proteger la industria nacional.", space: "Peronismo / Izquierda" },
-          { letter: "C", text: "Fomentar el mecenazgo mediante incentivos fiscales para que empresas privadas financien proyectos culturales sin gasto directo del Estado.", space: "PRO / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Que el cine y el arte se financien con el público, sin subsidios:",
+            text: "Eliminar los fondos estatales para películas, teatro o festivales, dejando que cada proyecto cultural se sostenga con las entradas que vende o con aportes privados.",
+            space: "Libertaria"
+          },
+          {
+            letter: "B",
+            title: "Mantener el apoyo estatal (como el INCAA) para proteger la cultura nacional:",
+            text: "Sostener los fondos públicos de fomento al cine, la música y el teatro con reglas claras, defendiendo la identidad cultural y los puestos de trabajo del sector.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Incentivos fiscales para que empresas privadas patrocinen cultura:",
+            text: "Crear leyes de mecenazgo donde empresas privadas puedan descontar impuestos si financian obras de teatro, museos o películas, sin que el Estado ponga plata directa.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       },
       {
         topic: "Ciencia y Tecnología",
         options: [
-          { letter: "A", text: "Garantizar por ley un presupuesto científico creciente y previsible para sostener tanto la investigación básica como la aplicada.", space: "Peronismo / Izquierda" },
-          { letter: "B", text: "Reducir la estructura estatal de investigación y orientar los recursos únicamente hacia proyectos aplicados con financiamiento privado.", space: "Libertaria" },
-          { letter: "C", text: "Crear consorcios entre universidades, provincias y empresas privadas con financiamiento atado a objetivos de desarrollo regional.", space: "PRO / UCR" },
-          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+          {
+            letter: "A",
+            title: "Presupuesto científico creciente garantizado por ley:",
+            text: "Asegurar por ley que la inversión en organismos como el CONICET crezca todos los años, financiando tanto investigaciones de largo plazo como desarrollos aplicados.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Achicar la estructura estatal y priorizar ciencia financiada por privados:",
+            text: "Reducir el gasto administrativo de los organismos científicos y enfocar los recursos únicamente en proyectos prácticos que tengan demanda o inversión de empresas privadas.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Asociar universidades con empresas y provincias para proyectos puntuales:",
+            text: "Armar equipos entre universidades públicas, gobiernos provinciales y empresas privadas (por ejemplo, en energía, agro o software) con fondos atados a resultados concretos.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna me convence.",
+            text: "",
+            space: "Ninguna"
+          }
         ]
       }
     ];
 
-    function renderQuestions(data, containerId, prefix) {
-      const container = document.getElementById(containerId);
-      data.forEach((item, idx) => {
+    function renderVarA() {
+      const container = document.getElementById("container-var-a");
+      const optionsHtml = dirigentesList.map(d => `<option value="${d}">${d}</option>`).join("");
+
+      dataVarA.forEach((item, idx) => {
         const block = document.createElement("div");
         block.className = "question-block";
-        block.id = `${prefix}-block-${idx}`;
+        block.id = `varA-block-${idx}`;
+
+        let rowsHtml = "";
+        item.options.forEach((opt, optIdx) => {
+          rowsHtml += `
+            <div class="match-row" id="varA-row-${idx}-${optIdx}">
+              <div class="match-quote">
+                <span class="opt-letter">${opt.letter})</span>
+                <span>${opt.text}</span>
+              </div>
+              <div class="match-select-wrap">
+                <select class="match-select" name="varA-q-${idx}-${optIdx}" onchange="onSelectDirigente(${idx}, ${optIdx}, this)">
+                  <option value="">-- Elegir dirigente --</option>
+                  ${optionsHtml}
+                </select>
+              </div>
+            </div>
+          `;
+        });
+
+        block.innerHTML = `
+          <div class="q-header">
+            <span class="q-num">${idx + 1}</span>
+            <span class="q-title">${item.topic}</span>
+          </div>
+          <div class="match-list">${rowsHtml}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function onSelectDirigente(qIdx, optIdx, selectEl) {
+      const row = document.getElementById(`varA-row-${qIdx}-${optIdx}`);
+      if (selectEl.value !== "") {
+        row.classList.add("selected");
+      } else {
+        row.classList.remove("selected");
+      }
+
+      const block = document.getElementById(`varA-block-${qIdx}`);
+      const selects = block.querySelectorAll("select");
+      const allSelected = Array.from(selects).every(s => s.value !== "");
+      if (allSelected) {
+        block.classList.add("answered");
+      } else {
+        block.classList.remove("answered");
+      }
+    }
+
+    function renderVarB() {
+      const container = document.getElementById("container-var-b");
+      dataVarB.forEach((item, idx) => {
+        const block = document.createElement("div");
+        block.className = "question-block";
+        block.id = `varB-block-${idx}`;
 
         let optsHtml = "";
         item.options.forEach((opt, optIdx) => {
           optsHtml += `
-            <label class="option-label" onclick="selectOption('${prefix}', ${idx}, this)">
-              <input type="radio" name="${prefix}-q-${idx}" value="${optIdx}">
+            <label class="option-label" onclick="selectOptionB(${idx}, this)">
+              <input type="radio" name="varB-q-${idx}" value="${optIdx}">
               <span class="opt-letter">${opt.letter})</span>
-              <span class="opt-text">${opt.text}</span>
+              <span class="opt-text">
+                <strong>${opt.title}</strong>
+                ${opt.text ? `<span>${opt.text}</span>` : ""}
+              </span>
             </label>
           `;
         });
@@ -947,8 +1298,8 @@
       });
     }
 
-    function selectOption(prefix, qIdx, labelEl) {
-      const block = document.getElementById(`${prefix}-block-${qIdx}`);
+    function selectOptionB(qIdx, labelEl) {
+      const block = document.getElementById(`varB-block-${qIdx}`);
       block.classList.add("answered");
       block.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
       labelEl.classList.add("selected");
@@ -1013,33 +1364,44 @@
             return;
           }
 
-          const records = rows.slice(1); // omitir encabezado
+          const records = rows.slice(1);
           document.getElementById("kpi-total").innerText = records.length;
           document.getElementById("org-last-update").innerText = `Actualizado: ${new Date().toLocaleTimeString("es-AR")} · Total: ${records.length} encuestas`;
 
-          const freqA = {};
           const freqB = {};
+          let sumScores = 0;
+          let countScores = 0;
+          const scoreBuckets = { "Alto (35-50 aciertos)": 0, "Medio (20-34 aciertos)": 0, "Bajo (0-19 aciertos)": 0 };
 
           records.forEach(r => {
-            const topA = (r[5] || "").split(" (")[0];
+            const rawA = r[5] || "";
+            const matchScore = rawA.match(/(\d+)\/50/);
+            if (matchScore) {
+              const sc = parseInt(matchScore[1]);
+              sumScores += sc;
+              countScores++;
+              if (sc >= 35) scoreBuckets["Alto (35-50 aciertos)"]++;
+              else if (sc >= 20) scoreBuckets["Medio (20-34 aciertos)"]++;
+              else scoreBuckets["Bajo (0-19 aciertos)"]++;
+            }
+
             const topB = (r[6] || "").split(" (")[0];
-            if (topA) freqA[topA] = (freqA[topA] || 0) + 1;
             if (topB) freqB[topB] = (freqB[topB] || 0) + 1;
           });
 
-          const sortA = Object.entries(freqA).sort((a, b) => b[1] - a[1]);
-          const sortB = Object.entries(freqB).sort((a, b) => b[1] - a[1]);
+          const avgScore = countScores > 0 ? (sumScores / countScores).toFixed(1) : "-";
+          document.getElementById("kpi-avg-a").innerText = countScores > 0 ? `${avgScore} / 50` : "-";
 
-          document.getElementById("kpi-top-a").innerText = sortA[0] ? `${sortA[0][0]} (${Math.round(sortA[0][1]*100/records.length)}%)` : "-";
+          const sortB = Object.entries(freqB).sort((a, b) => b[1] - a[1]);
           document.getElementById("kpi-top-b").innerText = sortB[0] ? `${sortB[0][0]} (${Math.round(sortB[0][1]*100/records.length)}%)` : "-";
 
-          document.getElementById("admin-chart-a").innerHTML = sortA.map(([name, cnt]) => {
-            const pct = Math.round((cnt * 100) / records.length);
+          document.getElementById("admin-chart-a").innerHTML = Object.entries(scoreBuckets).map(([label, cnt]) => {
+            const pct = records.length > 0 ? Math.round((cnt * 100) / records.length) : 0;
             return `
               <div style="margin-bottom:0.75rem;">
                 <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
-                  <span><strong>${name}</strong></span>
-                  <span>${cnt} votos (${pct}%)</span>
+                  <span><strong>${label}</strong></span>
+                  <span>${cnt} personas (${pct}%)</span>
                 </div>
                 <div class="admin-bar-track"><div class="admin-bar-fill" style="width:${pct}%"></div></div>
               </div>
@@ -1071,15 +1433,19 @@
           `).join("");
         })
         .catch(err => {
-          document.getElementById("org-last-update").innerText = "Error al leer los datos. Verificá haber agregado la función doGet en Apps Script.";
+          document.getElementById("org-last-update").innerText = "Error al leer los datos. Verificá Apps Script.";
           console.error(err);
         });
     }
 
     function nextFromStep1() {
-      const answered = document.querySelectorAll("#container-var-a input[type='radio']:checked").length;
-      if (answered < 10) {
-        document.getElementById("err-1").classList.remove("hidden");
+      const allSelects = document.querySelectorAll("#container-var-a select");
+      const missing = Array.from(allSelects).filter(s => s.value === "");
+      if (missing.length > 0) {
+        const errEl = document.getElementById("err-1");
+        errEl.innerText = `Te falta asignar dirigente en ${missing.length} de las 50 frases antes de continuar.`;
+        errEl.classList.remove("hidden");
+        missing[0].scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
       document.getElementById("err-1").classList.add("hidden");
@@ -1099,37 +1465,59 @@
     let shareSummaryText = "";
 
     function calculateResults() {
-      const countsA = {};
+      let totalCorrect = 0;
+      const correctByAuthor = {};
+      dirigentesList.forEach(d => correctByAuthor[d] = 0);
+
       const revelations = [];
+      const detalleARecords = [];
 
       dataVarA.forEach((item, idx) => {
-        const checked = document.querySelector(`input[name="varA-q-${idx}"]:checked`);
-        const optIdx = checked ? parseInt(checked.value) : 0;
-        const chosen = item.options[optIdx];
-        countsA[chosen.author] = (countsA[chosen.author] || 0) + 1;
-        revelations.push({
-          topic: item.topic,
-          text: chosen.text,
-          author: chosen.author
+        const topicItems = [];
+        const topicLog = [];
+        item.options.forEach((opt, optIdx) => {
+          const sel = document.querySelector(`select[name="varA-q-${idx}-${optIdx}"]`);
+          const guessed = sel ? sel.value : "";
+          const isOk = guessed === opt.author;
+          if (isOk) {
+            totalCorrect++;
+            correctByAuthor[opt.author]++;
+          }
+          topicItems.push({
+            letter: opt.letter,
+            text: opt.text,
+            guessed: guessed,
+            realAuthor: opt.author,
+            isOk: isOk
+          });
+          topicLog.push(`${opt.letter}: dijo ${guessed} (era ${opt.author})`);
         });
+        revelations.push({ topic: item.topic, items: topicItems });
+        detalleARecords.push(`${item.topic} [${topicLog.join("; ")}]`);
       });
 
       const countsB = {};
+      const revelationsB = [];
       dataVarB.forEach((item, idx) => {
         const checked = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
         const optIdx = checked ? parseInt(checked.value) : 0;
         const chosen = item.options[optIdx];
         countsB[chosen.space] = (countsB[chosen.space] || 0) + 1;
+        revelationsB.push({
+          topic: item.topic,
+          title: chosen.title,
+          space: chosen.space
+        });
       });
 
-      const sortedA = Object.entries(countsA).sort((a, b) => b[1] - a[1]);
+      const sortedAuthorHits = Object.entries(correctByAuthor).sort((a, b) => b[1] - a[1]);
       const sortedB = Object.entries(countsB).sort((a, b) => b[1] - a[1]);
 
       const barsA = document.getElementById("res-bars-a");
-      barsA.innerHTML = sortedA.map(([author, count]) => `
+      barsA.innerHTML = sortedAuthorHits.map(([author, hits]) => `
         <div class="bar-item">
-          <div class="bar-label"><span>${author}</span><strong>${count * 10}% (${count}/10)</strong></div>
-          <div class="bar-track"><div class="bar-fill" style="width: ${count * 10}%"></div></div>
+          <div class="bar-label"><span>${author}</span><strong>${hits}/10 aciertos</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width: ${hits * 10}%"></div></div>
         </div>
       `).join("");
 
@@ -1141,22 +1529,42 @@
         </div>
       `).join("");
 
-      const revList = document.getElementById("revelation-list");
-      revList.innerHTML = revelations.map((r, i) => `
+      const revListB = document.getElementById("revelation-list-b");
+      revListB.innerHTML = revelationsB.map((r, i) => `
         <div class="revelation-item">
-          <strong>${i + 1}. ${r.topic}:</strong> ${r.text} <span class="tag">${r.author}</span>
+          <strong>${i + 1}. ${r.topic}:</strong> ${r.title} <span class="badge-ok" style="background:#dbeafe; color:#1e40af;">${r.space}</span>
         </div>
       `).join("");
 
-      const topAuthor = sortedA[0] ? `${sortedA[0][0]} (${sortedA[0][1] * 10}%)` : "";
+      const revList = document.getElementById("revelation-list");
+      revList.innerHTML = revelations.map((r, i) => `
+        <div class="revelation-item">
+          <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.45rem;">${i + 1}. ${r.topic}</div>
+          ${r.items.map(it => `
+            <div style="margin-bottom: 0.45rem; padding-left: 0.5rem; border-left: 3px solid ${it.isOk ? '#10b981' : '#ef4444'};">
+              <div><strong>${it.letter})</strong> ${it.text}</div>
+              <div style="font-size: 0.84rem; margin-top: 0.15rem;">
+                Elegiste: <strong>${it.guessed}</strong>
+                ${it.isOk
+                  ? '<span class="badge-ok">✓ Acertaste</span>'
+                  : `<span class="badge-err">✗ Era ${it.realAuthor}</span>`
+                }
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `).join("");
+
+      const pctTotalA = Math.round((totalCorrect * 100) / 50);
+      const scoreSummaryA = `${totalCorrect}/50 aciertos (${pctTotalA}%)`;
       const topSpace = sortedB[0] ? `${sortedB[0][0]} (${sortedB[0][1] * 10}%)` : "";
       const declaredEl = document.querySelector('input[name="cierre2"]:checked');
       const declared = declaredEl ? declaredEl.value : "No declarado";
 
       document.getElementById("summary-subtitle").innerText =
-        `Voto habitual declarado: ${declared}. En el test ciego coincidiste principalmente con frases de ${topAuthor} y propuestas de orientación ${topSpace}.`;
+        `Voto habitual declarado: ${declared}. Identificaste correctamente ${scoreSummaryA} de las frases y en propuestas coincidiste principalmente con ${topSpace}.`;
 
-      shareSummaryText = `Hice el Test Ciego Elecciones 2027 (sin nombres ni camisetas):\n• Frases: mayor coincidencia con ${topAuthor}\n• Propuestas: mayor coincidencia con ${topSpace}\n¿Votás ideas o camisetas?`;
+      shareSummaryText = `Hice el Test Ciego Elecciones 2027:\n• Aciertos (¿Quién dijo qué?): ${scoreSummaryA}\n• Propuestas: mayor afinidad con ${topSpace}\n¿Reconocés lo que dicen los políticos sin ver su cara?`;
 
       const diffEl = document.querySelector('input[name="cierre1"]:checked');
       const payload = {
@@ -1165,9 +1573,9 @@
         dificultad: diffEl ? diffEl.value : "No especificado",
         edad: document.getElementById("edad").value,
         provincia: document.getElementById("provincia").value,
-        topReferenteA: topAuthor,
+        topReferenteA: scoreSummaryA,
         topEspacioB: topSpace,
-        detalleA: revelations.map(r => `${r.topic}: ${r.author}`).join(" | "),
+        detalleA: detalleARecords.join(" | "),
         detalleB: dataVarB.map((item, idx) => {
           const c = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
           const o = item.options[c ? parseInt(c.value) : 0];
@@ -1192,10 +1600,9 @@
       });
     }
 
-    renderQuestions(dataVarA, "container-var-a", "varA");
-    renderQuestions(dataVarB, "container-var-b", "varB");
+    renderVarA();
+    renderVarB();
 
-    // Abrir directo #organizacion si entra con ese hash en la URL
     if (window.location.hash === "#organizacion") {
       openOrgSection();
     }
