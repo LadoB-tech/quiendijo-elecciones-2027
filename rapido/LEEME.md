@@ -1,0 +1,1 @@
+Versión rápida del test
