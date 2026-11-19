@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encuesta Elecciones 2027: Frases y Propuestas</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.25rem;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    header h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: #cbd5e1;
+      font-size: 1rem;
+    }
+
+    .nav-steps {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .step-badge {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .step-badge.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 2rem auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .section-intro {
+      border-left: 4px solid var(--primary);
+      background: #eff6ff;
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-intro h2 {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-intro p {
+      font-size: 0.92rem;
+      color: #334155;
+    }
+
+    .question-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .question-block.answered {
+      border-color: #93c5fd;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-num {
+      background: var(--primary);
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .q-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #ffffff;
+    }
+
+    .option-label:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .option-label input[type="radio"] {
+      margin-top: 0.25rem;
+      accent-color: var(--primary);
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
+    .option-label.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .opt-letter {
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 20px;
+    }
+
+    .opt-text {
+      font-size: 0.95rem;
+      color: #1e293b;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #ffffff;
+      color: var(--text);
+      margin-top: 0.5rem;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.85rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Results Card */
+    .result-box {
+      background: linear-gradient(145deg, #0f172a, #1e3a8a);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
+    }
+
+    .result-box h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .result-panel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .result-panel h3 {
+      font-size: 1rem;
+      color: #93c5fd;
+      margin-bottom: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .bar-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .bar-track {
+      background: rgba(255, 255, 255, 0.15);
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      background: #38bdf8;
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .revelation-item {
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 0;
+      font-size: 0.92rem;
+    }
+
+    .revelation-item:last-child {
+      border-bottom: none;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      margin-left: 0.35rem;
+    }
+
+    .alert-msg {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Encuesta Elecciones 2027: Frases y Propuestas</h1>
+    <p>Test ciego de opinión pública. Elegí las frases y propuestas que más te representan sin saber de quién son y descubrí con qué espacio coincidís realmente.</p>
+  </header>
+
+  <nav class="nav-steps">
+    <button type="button" class="step-badge active" id="tab-1" onclick="goToStep(1)">1. Variante A: Frases</button>
+    <button type="button" class="step-badge" id="tab-2" onclick="goToStep(2)">2. Variante B: Propuestas</button>
+    <button type="button" class="step-badge" id="tab-3" onclick="goToStep(3)">3. Cierre y Perfil</button>
+    <button type="button" class="step-badge hidden" id="tab-4" onclick="goToStep(4)">4. Tus Resultados</button>
+  </nav>
+
+  <main class="container">
+    <!-- PASO 1: VARIANTE A -->
+    <section id="step-1">
+      <div class="section-intro">
+        <h2>Variante A — ¿Con qué frase coincidís más?</h2>
+        <p>En cada tema vas a encontrar 5 expresiones de distintos referentes políticos argentinos sin su nombre. Elegí la que más te represente.</p>
+      </div>
+      <div id="container-var-a"></div>
+      <div id="err-1" class="alert-msg hidden">Por favor, respondé las 10 preguntas de la Variante A antes de continuar.</div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" onclick="nextFromStep1()">Continuar a Variante B →</button>
+      </div>
+    </section>
+
+    <!-- PASO 2: VARIANTE B -->
+    <section id="step-2" class="hidden">
+      <div class="section-intro">
+        <h2>Variante B — ¿Qué propuesta te convence más?</h2>
+        <p>Ahora votá la idea sin etiquetas partidarias. Elegí la medida de política pública que consideres más adecuada para cada área.</p>
+      </div>
+      <div id="container-var-b"></div>
+      <div id="err-2" class="alert-msg hidden">Por favor, respondé las 10 preguntas de la Variante B antes de continuar.</div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" onclick="goToStep(1)">← Volver</button>
+        <button type="button" class="btn btn-primary" onclick="nextFromStep2()">Continuar al Cierre →</button>
+      </div>
+    </section>
+
+    <!-- PASO 3: CIERRE -->
+    <section id="step-3" class="hidden">
+      <div class="section-intro">
+        <h2>Bloque de Cierre y Perfil</h2>
+        <p>Últimas preguntas para contextualizar tus respuestas antes de revelar los resultados.</p>
+      </div>
+
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-num">1</span>
+          <span class="q-title">¿Qué parte de la encuesta te resultó más difícil de responder?</span>
+        </div>
+        <div class="options-list" id="cierre-q1">
+          <label class="option-label"><input type="radio" name="cierre1" value="Variante A"><span class="opt-text">La Variante A (elegir entre frases políticas sin ver quién las dijo).</span></label>
+          <label class="option-label"><input type="radio" name="cierre1" value="Variante B"><span class="opt-text">La Variante B (elegir propuestas técnicas sin etiquetas partidarias).</span></label>
+          <label class="option-label"><input type="radio" name="cierre1" value="Ambas"><span class="opt-text">Ambas me resultaron igual de difíciles.</span></label>
+          <label class="option-label"><input type="radio" name="cierre1" value="Ninguna"><span class="opt-text">Ninguna, pude responder todo con facilidad.</span></label>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-num">2</span>
+          <span class="q-title">Antes de ver tu resultado, ¿con qué espacio sentís que te identificás habitualmente?</span>
+        </div>
+        <div class="options-list" id="cierre-q2">
+          <label class="option-label"><input type="radio" name="cierre2" value="La Libertad Avanza / Libertarios"><span class="opt-text">La Libertad Avanza / Libertarios</span></label>
+          <label class="option-label"><input type="radio" name="cierre2" value="PRO / Centroderecha"><span class="opt-text">PRO / Centroderecha</span></label>
+          <label class="option-label"><input type="radio" name="cierre2" value="UCR / Centro"><span class="opt-text">UCR / Centro</span></label>
+          <label class="option-label"><input type="radio" name="cierre2" value="Peronismo / Unión por la Patria"><span class="opt-text">Peronismo / Unión por la Patria</span></label>
+          <label class="option-label"><input type="radio" name="cierre2" value="Frente de Izquierda"><span class="opt-text">Frente de Izquierda</span></label>
+          <label class="option-label"><input type="radio" name="cierre2" value="Independiente / Ninguno"><span class="opt-text">Independiente / Ninguno en particular</span></label>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-num">3</span>
+          <span class="q-title">Datos demográficos (opcionales)</span>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-weight: 600; font-size: 0.9rem;">Rango de edad</label>
+          <select id="edad">
+            <option value="No especificado">Prefiero no decir</option>
+            <option value="Menor de 18">Menor de 18 años</option>
+            <option value="18 a 29">18 a 29 años</option>
+            <option value="30 a 49">30 a 49 años</option>
+            <option value="50 o más">50 años o más</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-weight: 600; font-size: 0.9rem;">Provincia de residencia</label>
+          <select id="provincia">
+            <option value="No especificada">Prefiero no decir</option>
+            <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
+            <option value="Buenos Aires">Buenos Aires</option>
+            <option value="Catamarca">Catamarca</option>
+            <option value="Chaco">Chaco</option>
+            <option value="Chubut">Chubut</option>
+            <option value="Córdoba">Córdoba</option>
+            <option value="Corrientes">Corrientes</option>
+            <option value="Entre Ríos">Entre Ríos</option>
+            <option value="Formosa">Formosa</option>
+            <option value="Jujuy">Jujuy</option>
+            <option value="La Pampa">La Pampa</option>
+            <option value="La Rioja">La Rioja</option>
+            <option value="Mendoza">Mendoza</option>
+            <option value="Misiones">Misiones</option>
+            <option value="Neuquén">Neuquén</option>
+            <option value="Río Negro">Río Negro</option>
+            <option value="Salta">Salta</option>
+            <option value="San Juan">San Juan</option>
+            <option value="San Luis">San Luis</option>
+            <option value="Santa Cruz">Santa Cruz</option>
+            <option value="Santa Fe">Santa Fe</option>
+            <option value="Santiago del Estero">Santiago del Estero</option>
+            <option value="Tierra del Fuego">Tierra del Fuego</option>
+            <option value="Tucumán">Tucumán</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" onclick="goToStep(2)">← Volver</button>
+        <button type="button" class="btn btn-primary" onclick="calculateResults()">Revelar mis Resultados</button>
+      </div>
+    </section>
+
+    <!-- PASO 4: RESULTADOS -->
+    <section id="step-4" class="hidden">
+      <div class="result-box">
+        <h2>Tu Mapa de Coincidencias (Test Ciego)</h2>
+        <p style="color: #cbd5e1; font-size: 0.95rem;" id="summary-subtitle"></p>
+
+        <div class="result-grid">
+          <div class="result-panel">
+            <h3>Variante A: Frases por Referente</h3>
+            <div id="res-bars-a"></div>
+          </div>
+          <div class="result-panel">
+            <h3>Variante B: Propuestas por Espacio</h3>
+            <div id="res-bars-b"></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="button" class="btn" style="background: #38bdf8; color: #0f172a;" onclick="copyShareText()">Copiar resultado para compartir</button>
+          <button type="button" class="btn" style="background: rgba(255,255,255,0.15); color: #ffffff;" onclick="location.reload()">Reiniciar encuesta</button>
+        </div>
+        <p id="copy-confirm" style="margin-top: 0.6rem; font-size: 0.85rem; color: #86efac;" class="hidden">¡Resultado copiado al portapapeles!</p>
+      </div>
+
+      <div class="section-card">
+        <h3 style="margin-bottom: 1rem; color: var(--primary);">Detalle de tus elecciones en la Variante A (Quién dijo qué)</h3>
+        <div id="revelation-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Encuesta de opinión pública — Diseño neutral sin afiliación partidaria.
+  </footer>
+
+  <script>
+    const dataVarA = [
+      {
+        topic: "Educación y Universidades",
+        options: [
+          { letter: "A", text: "«La terrible inequidad entre aquel que puede ir a una escuela privada versus aquel que tiene que caer en la escuela pública.»", author: "Mauricio Macri" },
+          { letter: "B", text: "«Hay que declarar la educación como servicio esencial para que los chicos no sean rehenes de los paros docentes.»", author: "Patricia Bullrich" },
+          { letter: "C", text: "«Que cada uno pague por lo que consume, lo que vale.»", author: "Javier Milei" },
+          { letter: "D", text: "«La universidad pública y gratuita es lo que permite que el hijo de un trabajador llegue a ser profesional.»", author: "Axel Kicillof" },
+          { letter: "E", text: "«Cuando inauguramos universidades en el conurbano, decían que los pobres no llegaban; hoy son primera generación de graduados.»", author: "Cristina Fernández de Kirchner" }
+        ]
+      },
+      {
+        topic: "Salud y Gestión Sanitaria",
+        options: [
+          { letter: "A", text: "«El derecho a la salud no puede depender del tamaño de la billetera; donde hay una necesidad, tiene que estar el hospital público.»", author: "Axel Kicillof" },
+          { letter: "B", text: "«Si la gente hubiera hecho lo que tenía que hacer sin el Estado metiéndose en el medio, hubiéramos tenido muchos menos muertos y la economía no se hubiera destruido.»", author: "Javier Milei" },
+          { letter: "C", text: "«Hay que terminar con los privilegios y las cajas de las obras sociales sindicales para que el trabajador elija libremente.»", author: "Patricia Bullrich" },
+          { letter: "D", text: "«La vacunación y la prevención son herramientas fundamentales para salvar vidas y construir un futuro sano.»", author: "Mauricio Macri" },
+          { letter: "E", text: "«La salud pública no es un gasto ni un negocio: es un derecho humano básico que el Estado debe garantizar con inversión y medicamentos gratuitos.»", author: "Cristina Fernández de Kirchner" }
+        ]
+      },
+      {
+        topic: "Pobreza y Asistencia Social",
+        options: [
+          { letter: "A", text: "«Va a llegar un momento donde la gente se va a morir de hambre. De alguna manera va a decidir algo para no morirse. No necesito intervenir.»", author: "Javier Milei" },
+          { letter: "B", text: "«Los planes sociales tienen que tener un límite de tiempo y exigir contraprestación; se terminó el negocio de los gerentes de la pobreza.»", author: "Patricia Bullrich" },
+          { letter: "C", text: "«Lo que hay que combatir no es al que recibe ayuda, sino a la desigualdad.»", author: "Axel Kicillof" },
+          { letter: "D", text: "«Las políticas sociales como la AUH no son asistencialismo: son la base para que las familias tengan piso de dignidad y consuman.»", author: "Cristina Fernández de Kirchner" },
+          { letter: "E", text: "«Mi compromiso es construir un país con oportunidades de trabajo genuino para avanzar hacia la pobreza cero.»", author: "Mauricio Macri" }
+        ]
+      },
+      {
+        topic: "Deuda y FMI",
+        options: [
+          { letter: "A", text: "«Volver al mundo y recuperar el crédito internacional es fundamental para financiar el crecimiento sin ajustar a la gente.»", author: "Mauricio Macri" },
+          { letter: "B", text: "«Argentina va a honrar todas sus deudas y va a hacer un ajuste fiscal mucho más profundo que el que pide el propio Fondo.»", author: "Javier Milei" },
+          { letter: "C", text: "«La Argentina demostró que se puede crecer, incluir y desendeudarse sin someterse a las recetas de ajuste del FMI.»", author: "Axel Kicillof" },
+          { letter: "D", text: "«No se puede pagar la deuda a costa del hambre del pueblo; primero hay que crecer para después poder pagar.»", author: "Cristina Fernández de Kirchner" },
+          { letter: "E", text: "«Sin orden fiscal ni acuerdos serios con los organismos internacionales, Argentina queda aislada y sin inversiones.»", author: "Patricia Bullrich" }
+        ]
+      },
+      {
+        topic: "Economía y Rol del Estado",
+        options: [
+          { letter: "A", text: "«Hace falta un mejor Estado y más eficaz, pero sin destruirlo ni achicarlo o estúpidamente dejar a la gente sin lo que necesita.»", author: "Axel Kicillof" },
+          { letter: "B", text: "«Hay que animarse a un cambio profundo de raíz: achicar el Estado burocrático y bajar impuestos para liberar al sector privado.»", author: "Patricia Bullrich" },
+          { letter: "C", text: "«La motosierra y la licuadora, que son los pilares del ajuste, no se negocian. El déficit cero no se negocia.»", author: "Javier Milei" },
+          { letter: "D", text: "«El Estado tiene que ser el motor que articula la inversión pública y privada para desarrollar la industria nacional.»", author: "Cristina Fernández de Kirchner" },
+          { letter: "E", text: "«Hay que hacer un sinceramiento de la economía para salir de los parches y volver a crecer sobre bases reales.»", author: "Mauricio Macri" }
+        ]
+      },
+      {
+        topic: "Género e Igualdad",
+        options: [
+          { letter: "A", text: "«La igualdad de género es una condición indispensable para la justicia social.»", author: "Axel Kicillof" },
+          { letter: "B", text: "«Ante la ley somos todos iguales, sin privilegios ni distinciones por sexo o condición.»", author: "Javier Milei" },
+          { letter: "C", text: "«La igualdad de oportunidades entre hombres y mujeres empieza por cerrar la brecha salarial y promover el empleo femenino.»", author: "Mauricio Macri" },
+          { letter: "D", text: "«No necesitamos ministerios llenos de burocracia sino leyes firmes y protección real contra la violencia hacia las mujeres.»", author: "Patricia Bullrich" },
+          { letter: "E", text: "«Las conquistas de derechos de las mujeres y diversidades no son una moda: son ampliaciones de democracia que hay que defender.»", author: "Cristina Fernández de Kirchner" }
+        ]
+      },
+      {
+        topic: "Derechos y Seguridad",
+        options: [
+          { letter: "A", text: "«El que las hace, las paga; hay que respaldar a las fuerzas de seguridad y terminar con la doctrina abolicionista.»", author: "Patricia Bullrich" },
+          { letter: "B", text: "«Durante cien años nos metieron en la cabeza que donde nace una necesidad nace un derecho, y esa aberración nos llevó a la decadencia.»", author: "Javier Milei" },
+          { letter: "C", text: "«Los derechos humanos son una bandera histórica de la democracia argentina que no se negocia ni se mercantiliza.»", author: "Cristina Fernández de Kirchner" },
+          { letter: "D", text: "«El curro de los derechos humanos.»", author: "Mauricio Macri" },
+          { letter: "E", text: "«Donde hay una necesidad nace un derecho, y la seguridad se construye tanto con prevención social como con una policía equipada.»", author: "Axel Kicillof" }
+        ]
+      },
+      {
+        topic: "Obra Pública y Gestión",
+        options: [
+          { letter: "A", text: "«Hacer las obras que no se ven pero cambian la vida, con licitaciones transparentes y sin corrupción.»", author: "Mauricio Macri" },
+          { letter: "B", text: "«La obra pública no es un gasto, es una inversión estratégica que dinamiza la economía, genera empleo y mejora la calidad de vida.»", author: "Axel Kicillof" },
+          { letter: "C", text: "«Vamos a digitalizar y simplificar todos los trámites del Estado para que ningún argentino pierda tiempo ni plata frente a una ventanilla.»", author: "Javier Milei" },
+          { letter: "D", text: "«Cada peso de obra pública tiene que estar auditado y priorizado en infraestructura productiva, no en propaganda política.»", author: "Patricia Bullrich" },
+          { letter: "E", text: "«Cuando el Estado invierte en rutas, escuelas y hospitales, no solo mejora la vida de la gente sino que tracciona toda la economía.»", author: "Cristina Fernández de Kirchner" }
+        ]
+      },
+      {
+        topic: "Inflación y Precios",
+        options: [
+          { letter: "A", text: "«Cuando se corta la emisión monetaria y se alcanza el equilibrio fiscal, la inflación empieza a caer de manera contundente.»", author: "Javier Milei" },
+          { letter: "B", text: "«La inflación es un fenómeno multicausal: si no controlás la puja distributiva y las tarifas, los salarios siempre corren de atrás.»", author: "Cristina Fernández de Kirchner" },
+          { letter: "C", text: "«No podemos seguir conviviendo con empresarios que remarcan precios por las dudas y después no los bajan.»", author: "Mauricio Macri" },
+          { letter: "D", text: "«Cuando se fortalece el mercado interno y se cuida el tipo de cambio, la economía crece con estabilidad.»", author: "Axel Kicillof" },
+          { letter: "E", text: "«Sin déficit cero ni un Banco Central independiente es imposible terminar con la inflación que destruye el bolsillo de los argentinos.»", author: "Patricia Bullrich" }
+        ]
+      },
+      {
+        topic: "Corrupción y Transparencia",
+        options: [
+          { letter: "A", text: "«Los que nos acusan de corrupción son los mismos que fugaron la deuda externa y blanquearon capitales de sus propios familiares.»", author: "Axel Kicillof" },
+          { letter: "B", text: "«La transparencia y el acceso a la información pública son herramientas fundamentales para que los ciudadanos controlen a sus gobernantes.»", author: "Mauricio Macri" },
+          { letter: "C", text: "«Al eliminar las regulaciones, los permisos discrecionales y las cajas políticas, terminamos de raíz con los incentivos para la corrupción.»", author: "Javier Milei" },
+          { letter: "D", text: "«Hay que ir a fondo contra las mafias, recuperar lo robado con extinción de dominio y terminar con la impunidad en la política.»", author: "Patricia Bullrich" },
+          { letter: "E", text: "«Muchas veces se usa la denuncia de corrupción como herramienta de persecución judicial para proscribir proyectos políticos populares.»", author: "Cristina Fernández de Kirchner" }
+        ]
+      }
+    ];
+
+    const dataVarB = [
+      {
+        topic: "Universidades",
+        options: [
+          { letter: "A", text: "Implementar un sistema de financiamiento por alumno (vouchers) para fomentar la competencia y eficiencia entre instituciones.", space: "Libertaria" },
+          { letter: "B", text: "Mantener la gratuidad para residentes y establecer aranceles para extranjeros no residentes, optimizando gastos administrativos.", space: "Centroderecha / PRO" },
+          { letter: "C", text: "Mantener la gratuidad universitaria y actualizar el presupuesto automáticamente por inflación con auditorías externas de gestión.", space: "Peronismo / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Escuelas",
+        options: [
+          { letter: "A", text: "Garantizar por ley un piso de inversión educativa y paritarias nacionales para reducir la desigualdad salarial entre provincias.", space: "Peronismo / Izquierda" },
+          { letter: "B", text: "Declarar la educación como servicio esencial para garantizar guardias mínimas y continuidad de clases durante los paros.", space: "Libertaria / PRO" },
+          { letter: "C", text: "Implementar evaluaciones nacionales obligatorias y dar mayor autonomía pedagógica y de gestión a cada escuela.", space: "Centro / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Sistema de Salud",
+        options: [
+          { letter: "A", text: "Integrar el sistema público, privado y sindical mediante una historia clínica digital única y redes de atención coordinadas.", space: "Centro / PRO" },
+          { letter: "B", text: "Desregular obras sociales y prepagas para que compitan libremente por precio y cobertura según la elección del usuario.", space: "Libertaria" },
+          { letter: "C", text: "Fortalecer el presupuesto de los hospitales públicos e impulsar la producción estatal de medicamentos esenciales.", space: "Peronismo / Izquierda" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Inflación y Moneda",
+        options: [
+          { letter: "A", text: "Impulsar un plan de estabilización basado en la acumulación de reservas por exportaciones y acuerdos de precios y salarios.", space: "Peronismo" },
+          { letter: "B", text: "Avanzar hacia la competencia de monedas y la libre circulación del dólar para eliminar la emisión monetaria.", space: "Libertaria" },
+          { letter: "C", text: "Sostener el equilibrio fiscal y la independencia del Banco Central para estabilizar el peso y bajar la inflación de forma gradual.", space: "PRO / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Mercado Laboral",
+        options: [
+          { letter: "A", text: "Modernizar la legislación laboral reemplazando las indemnizaciones tradicionales por fondos de cese y habilitando convenios por empresa.", space: "Libertaria / PRO" },
+          { letter: "B", text: "Reducir la jornada laboral sin disminución salarial para repartir las horas de trabajo disponibles y mejorar la productividad.", space: "Izquierda" },
+          { letter: "C", text: "Mantener la protección frente al despido, pero reducir los aportes patronales a las pymes que incorporen nuevos trabajadores formalmente.", space: "Peronismo / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Sistema Tributario (Impuestos)",
+        options: [
+          { letter: "A", text: "Simplificar el sistema tributario eliminando impuestos distorsivos y reduciendo el IVA a los alimentos de la canasta básica.", space: "Centro / UCR" },
+          { letter: "B", text: "Crear un impuesto permanente a los grandes patrimonios y rentas financieras para aliviar la carga impositiva sobre el consumo y los salarios.", space: "Peronismo / Izquierda" },
+          { letter: "C", text: "Reducir el gasto público para eliminar retenciones e impuestos que afectan la producción y la exportación.", space: "Libertaria / PRO" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Seguridad",
+        options: [
+          { letter: "A", text: "Priorizar la prevención social mediante mayor inversión estatal en urbanización de barrios, educación, deporte y salud mental.", space: "Peronismo / Izquierda" },
+          { letter: "B", text: "Bajar la edad de imputabilidad y endurecer las penas para delitos graves con el fin de reducir la reincidencia.", space: "Libertaria / PRO" },
+          { letter: "C", text: "Reforzar el despliegue de fuerzas federales e inteligencia criminal en fronteras y zonas críticas del narcotráfico.", space: "Centro / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Asistencia y Planes Sociales",
+        options: [
+          { letter: "A", text: "Mantener la asistencia directa vinculándola de forma obligatoria con capacitación laboral o terminalidad educativa.", space: "PRO / UCR" },
+          { letter: "B", text: "Eliminar intermediarios en el pago de la asistencia y establecer plazos limitados para fomentar la transición al empleo privado.", space: "Libertaria" },
+          { letter: "C", text: "Consolidar la Asignación Universal por Hijo (AUH) y avanzar hacia un ingreso básico garantizado para hogares en situación de vulnerabilidad.", space: "Peronismo / Izquierda" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Cultura",
+        options: [
+          { letter: "A", text: "Eliminar los subsidios estatales a producciones artísticas y dejar que los proyectos culturales se financien por demanda del público.", space: "Libertaria" },
+          { letter: "B", text: "Sostener los fondos públicos de fomento cultural (como el INCAA) con criterios transparentes para proteger la industria nacional.", space: "Peronismo / Izquierda" },
+          { letter: "C", text: "Fomentar el mecenazgo mediante incentivos fiscales para que empresas privadas financien proyectos culturales sin gasto directo del Estado.", space: "PRO / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      },
+      {
+        topic: "Ciencia y Tecnología",
+        options: [
+          { letter: "A", text: "Garantizar por ley un presupuesto científico creciente y previsible para sostener tanto la investigación básica como la aplicada.", space: "Peronismo / Izquierda" },
+          { letter: "B", text: "Reducir la estructura estatal de investigación y orientar los recursos únicamente hacia proyectos aplicados con financiamiento privado.", space: "Libertaria" },
+          { letter: "C", text: "Crear consorcios entre universidades, provincias y empresas privadas con financiamiento atado a objetivos de desarrollo regional.", space: "PRO / UCR" },
+          { letter: "D", text: "Ninguna me convence.", space: "Ninguna" }
+        ]
+      }
+    ];
+
+    function renderQuestions(data, containerId, prefix) {
+      const container = document.getElementById(containerId);
+      data.forEach((item, idx) => {
+        const block = document.createElement("div");
+        block.className = "question-block";
+        block.id = `${prefix}-block-${idx}`;
+
+        let optsHtml = "";
+        item.options.forEach((opt, optIdx) => {
+          optsHtml += `
+            <label class="option-label" onclick="selectOption('${prefix}', ${idx}, this)">
+              <input type="radio" name="${prefix}-q-${idx}" value="${optIdx}">
+              <span class="opt-letter">${opt.letter})</span>
+              <span class="opt-text">${opt.text}</span>
+            </label>
+          `;
+        });
+
+        block.innerHTML = `
+          <div class="q-header">
+            <span class="q-num">${idx + 1}</span>
+            <span class="q-title">${item.topic}</span>
+          </div>
+          <div class="options-list">${optsHtml}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function selectOption(prefix, qIdx, labelEl) {
+      const block = document.getElementById(`${prefix}-block-${qIdx}`);
+      block.classList.add("answered");
+      block.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
+      labelEl.classList.add("selected");
+    }
+
+    document.querySelectorAll("#step-3 .option-label").forEach(label => {
+      label.addEventListener("click", function() {
+        const parent = this.parentElement;
+        parent.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
+        this.classList.add("selected");
+      });
+    });
+
+    function goToStep(step) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step-${i}`).classList.add("hidden");
+        document.getElementById(`tab-${i}`).classList.remove("active");
+      }
+      document.getElementById(`step-${step}`).classList.remove("hidden");
+      document.getElementById(`tab-${step}`).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function nextFromStep1() {
+      const answered = document.querySelectorAll("#container-var-a input[type='radio']:checked").length;
+      if (answered < 10) {
+        document.getElementById("err-1").classList.remove("hidden");
+        return;
+      }
+      document.getElementById("err-1").classList.add("hidden");
+      goToStep(2);
+    }
+
+    function nextFromStep2() {
+      const answered = document.querySelectorAll("#container-var-b input[type='radio']:checked").length;
+      if (answered < 10) {
+        document.getElementById("err-2").classList.remove("hidden");
+        return;
+      }
+      document.getElementById("err-2").classList.add("hidden");
+      goToStep(3);
+    }
+
+    let shareSummaryText = "";
+
+    function calculateResults() {
+      const countsA = {};
+      const revelations = [];
+
+      dataVarA.forEach((item, idx) => {
+        const checked = document.querySelector(`input[name="varA-q-${idx}"]:checked`);
+        const optIdx = checked ? parseInt(checked.value) : 0;
+        const chosen = item.options[optIdx];
+        countsA[chosen.author] = (countsA[chosen.author] || 0) + 1;
+        revelations.push({
+          topic: item.topic,
+          text: chosen.text,
+          author: chosen.author
+        });
+      });
+
+      const countsB = {};
+      dataVarB.forEach((item, idx) => {
+        const checked = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
+        const optIdx = checked ? parseInt(checked.value) : 0;
+        const chosen = item.options[optIdx];
+        countsB[chosen.space] = (countsB[chosen.space] || 0) + 1;
+      });
+
+      const sortedA = Object.entries(countsA).sort((a, b) => b[1] - a[1]);
+      const sortedB = Object.entries(countsB).sort((a, b) => b[1] - a[1]);
+
+      const barsA = document.getElementById("res-bars-a");
+      barsA.innerHTML = sortedA.map(([author, count]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${author}</span><strong>${count * 10}% (${count}/10)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width: ${count * 10}%"></div></div>
+        </div>
+      `).join("");
+
+      const barsB = document.getElementById("res-bars-b");
+      barsB.innerHTML = sortedB.map(([space, count]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${space}</span><strong>${count * 10}% (${count}/10)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width: ${count * 10}%"></div></div>
+        </div>
+      `).join("");
+
+      const revList = document.getElementById("revelation-list");
+      revList.innerHTML = revelations.map((r, i) => `
+        <div class="revelation-item">
+          <strong>${i + 1}. ${r.topic}:</strong> ${r.text} <span class="tag">${r.author}</span>
+        </div>
+      `).join("");
+
+      const topAuthor = sortedA[0] ? `${sortedA[0][0]} (${sortedA[0][1] * 10}%)` : "";
+      const topSpace = sortedB[0] ? `${sortedB[0][0]} (${sortedB[0][1] * 10}%)` : "";
+      const declaredEl = document.querySelector('input[name="cierre2"]:checked');
+      const declared = declaredEl ? declaredEl.value : "No declarado";
+
+      document.getElementById("summary-subtitle").innerText =
+        `Voto habitual declarado: ${declared}. En el test ciego coincidiste principalmente con frases de ${topAuthor} y propuestas de orientación ${topSpace}.`;
+
+      shareSummaryText = `Hice el Test Ciego Elecciones 2027 (sin nombres ni camisetas):
+• Frases: mayor coincidencia con ${topAuthor}
+• Propuestas: mayor coincidencia con ${topSpace}
+¿Votás ideas o camisetas?`;
+
+      document.getElementById("tab-4").classList.remove("hidden");
+      goToStep(4);
+    }
+
+    function copyShareText() {
+      navigator.clipboard.writeText(shareSummaryText).then(() => {
+        document.getElementById("copy-confirm").classList.remove("hidden");
+      });
+    }
+
+    renderQuestions(dataVarA, "container-var-a", "varA");
+    renderQuestions(dataVarB, "container-var-b", "varB");
+  </script>
+</body>
+</html>
