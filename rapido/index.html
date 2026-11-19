@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Político: ¿Quién dijo qué? · Versión rápida</title>
+  <meta name="description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
+
+  <!-- Vista previa al compartir (WhatsApp, Facebook, X, Telegram) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Test Político" />
+  <meta property="og:title" content="Test Político: ¿Quién dijo qué?" />
+  <meta property="og:description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
+  <meta property="og:url" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/rapido/" />
+  <meta property="og:image" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/logo.png" />
+  <meta property="og:image:secure_url" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/logo.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta property="og:image:alt" content="Logo de Test Político: ¿Quién dijo qué?" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Test Político: ¿Quién dijo qué?" />
+  <meta name="twitter:description" content="10 frases y 8 propuestas. Jugá en 3 minutos." />
+  <meta name="twitter:image" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/logo.png" />
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="apple-touch-icon" href="../logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4338ca;
+      --secondary: #0ea5e9;
+      --accent: #f43f5e;
+      --ok: #10b981;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.55; min-height: 100vh; }
+    button { font: inherit; }
+    .hidden { display: none !important; }
+
+    /* BARRA SUPERIOR */
+    .topbar {
+      background: linear-gradient(125deg, #1e1b4b 0%, #3730a3 45%, #0284c7 82%, #f43f5e 125%);
+      color: #fff; position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+    }
+    .topbar-inner { max-width: 720px; margin: 0 auto; padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .topbar img { width: 38px; height: 38px; }
+    .topbar-title { font-weight: 800; font-size: 1rem; line-height: 1.2; }
+    .topbar-step { margin-left: auto; font-weight: 800; font-size: 0.85rem; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); padding: 0.3rem 0.75rem; border-radius: 999px; white-space: nowrap; }
+    .progress { height: 5px; background: rgba(255,255,255,0.2); }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #34d399); transition: width 0.35s ease; }
+
+    .container { max-width: 720px; margin: 1.5rem auto; padding: 0 1rem 4rem; }
+
+    /* PORTADA */
+    .start-card { text-align: center; background: #fff; border-radius: 22px; padding: 2rem 1.25rem; border: 1.5px solid var(--border); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+    .start-card img { width: 170px; height: 170px; margin-bottom: 0.5rem; }
+    .start-card h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; line-height: 1.2; }
+    .time-pill { display: inline-flex; gap: 0.4rem; align-items: center; background: linear-gradient(135deg, #ecfdf5, #e0f2fe); color: #065f46; border: 1.5px solid #a7f3d0; font-weight: 800; font-size: 0.9rem; padding: 0.4rem 0.95rem; border-radius: 999px; margin: 0.85rem 0 0.6rem; }
+    .start-card .lead { color: #334155; font-size: 0.98rem; max-width: 520px; margin: 0 auto 1.4rem; }
+    .start-q { font-weight: 800; font-size: 1.05rem; color: #1e1b4b; margin-bottom: 0.25rem; }
+    .start-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; }
+
+    /* TARJETA DE JUEGO */
+    .game-card { background: #fff; border-radius: 22px; padding: 1.5rem 1.25rem; border: 1.5px solid var(--border); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); animation: pop 0.28s ease; }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .phase-pill { display: inline-block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.3rem 0.8rem; border-radius: 999px; margin-bottom: 0.9rem; }
+    .phase-a { background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe; }
+    .phase-b { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .topic { font-weight: 800; color: var(--muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
+    .quote { font-size: 1.25rem; font-weight: 700; color: #1e1b4b; line-height: 1.4; margin-bottom: 1.3rem; padding: 1rem 1.1rem; background: linear-gradient(135deg, #f8fafc, #eef2ff); border-radius: 14px; border-left: 5px solid var(--primary); }
+    .question-title { font-size: 1.2rem; font-weight: 800; color: #1e1b4b; margin-bottom: 1rem; }
+
+    .choices { display: grid; gap: 0.65rem; }
+    .choices.two-col { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 480px) { .choices.two-col { grid-template-columns: 1fr; } }
+    .choice {
+      width: 100%; text-align: left; border: 2px solid #cbd5e1; background: #f8fafc; color: #1e293b;
+      border-radius: 14px; padding: 0.9rem 1rem; font-weight: 700; font-size: 0.98rem; cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s, background 0.15s; display: block;
+    }
+    .choice:hover:not(:disabled) { border-color: #818cf8; background: #eef2ff; transform: translateY(-1px); }
+    .choice:disabled { cursor: default; }
+    .choice.correct { background: #dcfce7; border-color: #22c55e; color: #14532d; }
+    .choice.wrong { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
+    .choice.faded { opacity: 0.45; }
+    .choice.picked { background: linear-gradient(135deg, #eef2ff, #e0f2fe); border-color: var(--primary); }
+    .choice .more-link { display: inline-block; margin-top: 0.35rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); text-decoration: underline; cursor: pointer; }
+    .choice .more-text { display: block; margin-top: 0.4rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
+    .choice.center { text-align: center; }
+
+    .feedback { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 12px; font-weight: 800; font-size: 1rem; text-align: center; animation: pop 0.2s ease; }
+    .feedback.ok { background: #dcfce7; color: #166534; }
+    .feedback.err { background: #fee2e2; color: #991b1b; }
+    .game-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; gap: 0.75rem; }
+    .link-btn { background: none; border: none; color: var(--muted); font-weight: 700; cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0; }
+    .link-btn:hover { color: var(--primary); }
+
+    /* BOTONES */
+    .btn { padding: 0.95rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 0.98rem; cursor: pointer; border: none; transition: all 0.2s ease; }
+    .btn-primary { background: linear-gradient(135deg, #4338ca 0%, #0284c7 100%); color: #fff; box-shadow: 0 6px 18px rgba(67, 56, 202, 0.28); }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .btn-block { width: 100%; }
+
+    /* INTERMEDIO */
+    .mid-card { text-align: center; }
+    .big-score { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #4338ca, #0284c7); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; margin: 0.4rem 0; }
+
+    /* RESULTADOS */
+    .result-box { background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 55%, #0284c7 100%); color: #fff; border-radius: 20px; padding: 1.75rem 1.4rem; margin-bottom: 1.4rem; box-shadow: 0 12px 30px rgba(30, 27, 75, 0.25); }
+    .result-box h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.3rem; }
+    @media (max-width: 640px) { .result-grid { grid-template-columns: 1fr; } }
+    .result-panel { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 1.1rem; }
+    .result-panel h3 { font-size: 0.85rem; color: #bae6fd; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; }
+    .bar-item { margin-bottom: 0.7rem; }
+    .bar-label { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.86rem; margin-bottom: 0.25rem; }
+    .bar-track { background: rgba(255,255,255,0.18); height: 9px; border-radius: 999px; overflow: hidden; }
+    .bar-fill { background: linear-gradient(90deg, #38bdf8, #34d399); height: 100%; border-radius: 999px; }
+    .result-actions { margin-top: 1.4rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .result-actions .btn { flex: 1 1 auto; }
+
+    .profile-card { background: #fff; border-radius: 20px; padding: 1.6rem 1.4rem; margin-bottom: 1.4rem; border: 2px solid #818cf8; box-shadow: 0 8px 24px rgba(67, 56, 202, 0.1); }
+    .profile-head { display: flex; gap: 1.1rem; align-items: center; margin-bottom: 1.1rem; }
+    .avatar { width: 128px; height: 128px; flex-shrink: 0; animation: bounce-in 0.6s cubic-bezier(.2,1.6,.4,1); }
+    @keyframes bounce-in { from { transform: scale(0.4) rotate(-12deg); opacity: 0; } to { transform: none; opacity: 1; } }
+    @media (max-width: 520px) { .profile-head { flex-direction: column; text-align: center; } }
+    .profile-badge { display: inline-block; background: linear-gradient(135deg, #eef2ff, #e0f2fe); color: var(--primary); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.3rem 0.8rem; border-radius: 999px; margin-bottom: 0.45rem; border: 1px solid #c7d2fe; }
+    .profile-nick { font-size: 1.6rem; font-weight: 800; line-height: 1.15; }
+    .profile-title { font-size: 1rem; font-weight: 800; color: #475569; margin-top: 0.15rem; }
+    .profile-quote { margin-top: 0.5rem; display: inline-block; background: #f8fafc; border: 1.5px dashed #c7d2fe; border-radius: 12px; padding: 0.45rem 0.8rem; font-weight: 800; font-style: italic; color: #1e1b4b; font-size: 0.98rem; }
+    .profile-praise { margin-top: 0.6rem; background: linear-gradient(135deg, #fef9c3, #fce7f3); border: 1.5px solid #fde68a; border-radius: 12px; padding: 0.6rem 0.85rem; font-weight: 600; font-size: 0.94rem; color: #713f12; text-align: left; }
+    .profile-desc { font-size: 0.97rem; color: #334155; margin-bottom: 1.2rem; }
+    .pros-cons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.1rem; }
+    @media (max-width: 640px) { .pros-cons-grid { grid-template-columns: 1fr; } }
+    .pc-box { border-radius: 12px; padding: 1.1rem; }
+    .pc-box.defend { background: #ecfdf5; border: 1.5px solid #a7f3d0; }
+    .pc-box.reject { background: #fff1f2; border: 1.5px solid #fecdd3; }
+    .pc-box h4 { font-size: 0.96rem; font-weight: 800; margin-bottom: 0.6rem; }
+    .pc-box.defend h4 { color: #065f46; }
+    .pc-box.reject h4 { color: #9f1239; }
+    .pc-box ul { padding-left: 1.2rem; font-size: 0.91rem; }
+    .pc-box li { margin-bottom: 0.4rem; }
+    .insight-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 640px) { .insight-pills { grid-template-columns: 1fr; } }
+    .insight-pill { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.91rem; }
+    .insight-pill strong { display: block; color: var(--primary); margin-bottom: 0.25rem; }
+
+    .section-card { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 1.5rem 1.3rem; margin-bottom: 1.4rem; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); }
+    .section-card h3 { margin-bottom: 0.9rem; color: var(--primary); font-size: 1.08rem; }
+    .revelation-item { border-bottom: 1px solid var(--border); padding: 0.9rem 0; font-size: 0.93rem; }
+    .revelation-item:last-child { border-bottom: none; }
+    .badge-ok, .badge-err, .badge-space { display: inline-block; font-weight: 800; font-size: 0.76rem; padding: 0.16rem 0.55rem; border-radius: 6px; margin-left: 0.3rem; }
+    .badge-ok { background: #dcfce7; color: #166534; }
+    .badge-err { background: #fee2e2; color: #991b1b; }
+    .badge-space { background: #e0e7ff; color: #3730a3; }
+
+    /* FORMULARIO MAIL */
+    .mail-card { border: 2px solid #a7f3d0; background: linear-gradient(135deg, #ffffff, #ecfdf5); }
+    .mail-card h3 { color: #065f46 !important; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 0.9rem; }
+    @media (max-width: 640px) { .form-grid-2 { grid-template-columns: 1fr; } }
+    label.f { font-weight: 700; font-size: 0.88rem; }
+    input[type="text"], input[type="email"], select {
+      width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #fff; color: var(--text); margin-top: 0.3rem;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    .mail-ok { margin-top: 0.9rem; background: #dcfce7; border: 1.5px solid #86efac; color: #166534; padding: 0.8rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+    .alert-msg { margin-top: 0.8rem; background: #fff1f2; color: #be123c; border: 1.5px solid #fecdd3; padding: 0.75rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.9rem; }
+    .toast { margin-top: 0.6rem; font-size: 0.88rem; color: #86efac; font-weight: 700; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+
+    @media print {
+      .topbar, .no-print, footer { display: none !important; }
+      body { background: #fff; }
+      .container { max-width: 100%; margin: 0; padding: 0; }
+      .result-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section-card, .profile-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <img src="../logo.png" alt="" />
+      <div class="topbar-title">Test Político<br><span style="font-weight:600; font-size:0.82rem; opacity:0.85;">¿Quién dijo qué? · Versión rápida</span></div>
+      <div class="topbar-step hidden" id="step-label"></div>
+    </div>
+    <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <main class="container">
+
+    <!-- PORTADA + VOTO HABITUAL -->
+    <section id="s-start">
+      <div class="start-card">
+        <img src="../logo.png" alt="Test Político: ¿Quién dijo qué?" />
+        <h1>¿Reconocés lo que dicen sin ver quién habla?</h1>
+        <div class="time-pill">⏱️ Jugás en 3 minutos</div>
+        <p class="lead"><strong>Parte 1:</strong> 10 frases y posturas públicas, ¿quién lo dijo?<br><strong>Parte 2:</strong> 8 propuestas sin nombres ni partidos, ¿cuál te convence?</p>
+        <p class="start-q">Para arrancar: ¿con qué espacio te identificás habitualmente?</p>
+        <p class="start-sub">Es anónimo. Al final te mostramos si tus ideas coinciden con tu voto.</p>
+        <div class="choices two-col" id="start-choices"></div>
+      </div>
+    </section>
+
+    <!-- PARTE 1 -->
+    <section id="s-a" class="hidden">
+      <div class="game-card" id="a-card"></div>
+    </section>
+
+    <!-- INTERMEDIO -->
+    <section id="s-mid" class="hidden">
+      <div class="game-card mid-card">
+        <span class="phase-pill phase-a">🎤 Fin de la parte 1</span>
+        <p style="font-weight:700; color: var(--muted);">Acertaste</p>
+        <div class="big-score" id="mid-score"></div>
+        <p id="mid-msg" style="font-weight:700; margin-bottom: 1.3rem;"></p>
+        <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:14px; padding:1rem; margin-bottom:1.3rem; text-align:left;">
+          <strong style="color:#0369a1;">🧭 Parte 2: ¿Con qué te identificás?</strong><br>
+          <span style="font-size:0.94rem;">8 temas, 3 propuestas cada uno. Sin nombres ni partidos: elegí la que más te convence.</span>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="startPartB()">Vamos →</button>
+      </div>
+    </section>
+
+    <!-- PARTE 2 -->
+    <section id="s-b" class="hidden">
+      <div class="game-card" id="b-card"></div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="s-results" class="hidden">
+      <div class="result-box">
+        <h2 id="result-greeting">Tus resultados</h2>
+        <p style="color: #e0f2fe; font-size: 0.96rem;" id="summary-subtitle"></p>
+        <div class="result-grid">
+          <div class="result-panel">
+            <h3>🎤 Parte 1: aciertos por referente</h3>
+            <div id="res-bars-a"></div>
+          </div>
+          <div class="result-panel">
+            <h3>🧭 Parte 2: afinidad por espacio</h3>
+            <div id="res-bars-b"></div>
+          </div>
+        </div>
+        <div class="result-actions no-print">
+          <button type="button" class="btn" style="background:#38bdf8; color:#0f172a;" onclick="shareResult()">📲 Compartir mi resultado</button>
+          <button type="button" class="btn" style="background:#10b981; color:#fff;" onclick="window.print()">📄 Guardar en PDF</button>
+          <button type="button" class="btn" style="background:rgba(255,255,255,0.18); color:#fff;" onclick="playAgain()">🔄 Jugar otra vez</button>
+        </div>
+        <p id="copy-confirm" class="toast hidden">¡Resultado copiado! Pegalo en WhatsApp o en tus redes.</p>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-head">
+          <div class="avatar" id="fb-avatar"></div>
+          <div>
+            <span class="profile-badge">🏆 Tu perfil político a ciegas</span>
+            <div class="profile-nick" id="fb-nick"></div>
+            <div class="profile-title" id="fb-archetype-title"></div>
+            <div class="profile-quote" id="fb-frase"></div>
+            <div class="profile-praise" id="fb-elogio"></div>
+          </div>
+        </div>
+        <p class="profile-desc" id="fb-archetype-desc"></p>
+        <div class="pros-cons-grid">
+          <div class="pc-box defend"><h4>✅ Lo que defendés</h4><ul id="fb-defend-list"></ul></div>
+          <div class="pc-box reject"><h4>❌ Lo que rechazás o no te convence</h4><ul id="fb-reject-list"></ul></div>
+        </div>
+        <div class="insight-pills">
+          <div class="insight-pill"><strong>🧭 Chequeo de coherencia (voto vs. ideas)</strong><span id="fb-coherence-text"></span></div>
+          <div class="insight-pill"><strong>🎯 Tu ojo político (parte 1)</strong><span id="fb-radar-text"></span></div>
+        </div>
+      </div>
+
+      <!-- DATOS OPCIONALES, DESPUÉS DEL RESULTADO -->
+      <div class="section-card mail-card no-print">
+        <h3>📩 ¿Te mandamos el informe completo por mail?</h3>
+        <p style="font-size:0.9rem; color: var(--muted); margin-bottom: 1rem;">Opcional. Te llega con el detalle de cada frase, tus elecciones y un botón para seguir jugando.</p>
+        <div class="form-grid-2">
+          <div><label class="f" for="nombre">Nombre (opcional)</label><input type="text" id="nombre" placeholder="Ej: Juan Pérez" /></div>
+          <div><label class="f" for="email-usuario">Correo electrónico</label><input type="email" id="email-usuario" placeholder="Ej: juan@correo.com" /></div>
+        </div>
+        <div class="form-grid-2">
+          <div>
+            <label class="f" for="edad">Rango de edad (opcional)</label>
+            <select id="edad">
+              <option value="No especificado">Prefiero no decir</option>
+              <option value="Menor de 18">Menor de 18 años</option>
+              <option value="18 a 29">18 a 29 años</option>
+              <option value="30 a 49">30 a 49 años</option>
+              <option value="50 o más">50 años o más</option>
+            </select>
+          </div>
+          <div>
+            <label class="f" for="provincia">Provincia (opcional)</label>
+            <select id="provincia">
+              <option value="No especificada">Prefiero no decir</option>
+              <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="mail-btn" onclick="submitContact()">✉️ Enviarme el informe</button>
+        <div id="mail-err" class="alert-msg hidden">Revisá el correo: parece que falta algo (ej: nombre@correo.com).</div>
+        <div id="mail-ok" class="mail-ok hidden"></div>
+      </div>
+
+      <div class="section-card">
+        <h3>🧭 Tus elecciones en la parte 2</h3>
+        <div id="revelation-list-b"></div>
+      </div>
+      <div class="section-card">
+        <h3>🎤 Corrección de la parte 1: qué elegiste vs. quién lo dijo</h3>
+        <div id="revelation-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Test Político — Experimento ciudadano independiente, sin afiliación partidaria.
+  </footer>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
+    const GAME_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/rapido/";
+    const LOGO_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/logo.png";
+    const FRASES_POR_PARTIDA = 10;
+    const TEMAS_FUERA_PARTE_2 = ["2. Escuelas", "10. Ciencia"]; // la versión rápida usa 8 de los 10 temas
+    const AUTO_AVANCE_MS = 1600;
+
+    const dirigentesList = [
+      { full: "Javier Milei", short: "Javier Milei" },
+      { full: "Mauricio Macri / Patricia Bullrich", short: "Macri / Bullrich" },
+      { full: "Cristina Kirchner / Axel Kicillof", short: "Cristina / Kicillof" },
+      { full: "Myriam Bregman", short: "Myriam Bregman" }
+    ];
+
+    const themeColors = [
+      "#4338ca", "#0ea5e9", "#f43f5e", "#f59e0b", "#10b981",
+      "#8b5cf6", "#ec4899", "#06b6d4", "#eab308", "#6366f1"
+    ];
+
+    const dataVarA = [
+      {
+        emoji: "🎓",
+        topic: "1. Educación y Universidades",
+        options: [
+          { letter: "A", text: "«Hay que declarar la educación como servicio esencial para que los chicos no sean rehenes de los paros docentes.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "B", text: "«La educación pública no se vende, se defiende en las calles; quieren arancelar la universidad para que vuelva a ser un privilegio de pocos.»", author: "Myriam Bregman" },
+          { letter: "C", text: "«Que cada uno pague por lo que consume, lo que vale.»", author: "Javier Milei" },
+          { letter: "D", text: "«La universidad pública y gratuita es lo que permite que el hijo de un trabajador llegue a ser profesional.»", author: "Cristina Kirchner / Axel Kicillof" }
+        ]
+      },
+      {
+        emoji: "🏥",
+        topic: "2. Salud y Gestión Sanitaria",
+        options: [
+          { letter: "A", text: "«El derecho a la salud no puede depender del tamaño de la billetera; donde hay una necesidad, tiene que estar el hospital público.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "B", text: "«Si la gente hubiera hecho lo que tenía que hacer sin el Estado metiéndose en el medio, hubiéramos tenido muchos menos muertos y la economía no se hubiera destruido.»", author: "Javier Milei" },
+          { letter: "C", text: "«Hay que declarar de utilidad pública los laboratorios y avanzar hacia un sistema único de salud gratuito y de calidad para toda la población.»", author: "Myriam Bregman" },
+          { letter: "D", text: "«Hay que terminar con los privilegios y las cajas de las obras sociales sindicales para que el trabajador elija libremente.»", author: "Mauricio Macri / Patricia Bullrich" }
+        ]
+      },
+      {
+        emoji: "🤝",
+        topic: "3. Pobreza y Asistencia Social",
+        options: [
+          { letter: "A", text: "«Va a llegar un momento donde la gente se va a morir de hambre. De alguna manera va a decidir algo para no morirse. No necesito intervenir.»", author: "Javier Milei" },
+          { letter: "B", text: "«No sobran planes sociales, faltan salarios dignos; el ajuste lo tienen que pagar los grandes empresarios y no las familias trabajadoras.»", author: "Myriam Bregman" },
+          { letter: "C", text: "«Los planes sociales tienen que tener un límite de tiempo y exigir contraprestación; se terminó el negocio de los gerentes de la pobreza.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "D", text: "«Lo que hay que combatir no es al que recibe ayuda, sino a la desigualdad.»", author: "Cristina Kirchner / Axel Kicillof" }
+        ]
+      },
+      {
+        emoji: "🌐",
+        topic: "4. Deuda Externa y FMI",
+        options: [
+          { letter: "A", text: "«Volver al mundo y recuperar el crédito internacional es fundamental para financiar el crecimiento sin ajustar a la gente.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "B", text: "«No se puede pagar la deuda a costa del hambre del pueblo; primero hay que crecer para después poder pagar.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "C", text: "«Hay que romper con el FMI y desconocer una deuda externa que es ilegal, ilegítima y fraudulenta, investigando quiénes se la fugaron.»", author: "Myriam Bregman" },
+          { letter: "D", text: "«Argentina va a honrar todas sus deudas y va a hacer un ajuste fiscal mucho más profundo que el que pide el propio Fondo.»", author: "Javier Milei" }
+        ]
+      },
+      {
+        emoji: "⚙️",
+        topic: "5. Economía y Rol del Estado",
+        options: [
+          { letter: "A", text: "«Hay que nacionalizar la banca y el comercio exterior para evitar la fuga de capitales y poner los recursos estratégicos al servicio del pueblo trabajador.»", author: "Myriam Bregman" },
+          { letter: "B", text: "«Hace falta un mejor Estado y más eficaz, pero sin destruirlo ni achicarlo o estúpidamente dejar a la gente sin lo que necesita.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "C", text: "«La motosierra y la licuadora, que son los pilares del ajuste, no se negocian. El déficit cero no se negocian.»", author: "Javier Milei" },
+          { letter: "D", text: "«Hay que animarse a un cambio profundo de raíz: achicar el Estado burocrático y bajar impuestos para liberar al sector privado.»", author: "Mauricio Macri / Patricia Bullrich" }
+        ]
+      },
+      {
+        emoji: "⚖️",
+        topic: "6. Género e Igualdad",
+        options: [
+          { letter: "A", text: "«La igualdad de género es una condición indispensable para la justicia social.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "B", text: "«No necesitamos ministerios llenos de burocracia sino leyes firmes y protección real contra la violencia hacia las mujeres.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "C", text: "«Ante la ley somos todos iguales, sin privilegios ni distinciones por sexo o condición.»", author: "Javier Milei" },
+          { letter: "D", text: "«Ni un paso atrás con nuestros derechos: el Estado tiene que garantizar presupuesto real para combatir la violencia machista y sostener la ESI y el aborto legal.»", author: "Myriam Bregman" }
+        ]
+      },
+      {
+        emoji: "🛡️",
+        topic: "7. Derechos y Seguridad",
+        options: [
+          { letter: "A", text: "«El que las hace, las paga; hay que respaldar a las fuerzas de seguridad y terminar con la doctrina abolicionista.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "B", text: "«Quieren criminalizar la protesta social y darle carta blanca a la policía para reprimir mientras ajustan al pueblo trabajador.»", author: "Myriam Bregman" },
+          { letter: "C", text: "«Durante cien años nos metieron en la cabeza que donde nace una necesidad nace un derecho, y esa aberración nos llevó a la decadencia.»", author: "Javier Milei" },
+          { letter: "D", text: "«Donde hay una necesidad nace un derecho, y la seguridad se construye tanto con prevención social como con una policía equipada.»", author: "Cristina Kirchner / Axel Kicillof" }
+        ]
+      },
+      {
+        emoji: "🏗️",
+        topic: "8. Obra Pública y Gestión",
+        options: [
+          { letter: "A", text: "«La obra pública tiene que estar bajo control de los trabajadores y vecinos para construir viviendas populares y terminar con el negocio de la patria contratista.»", author: "Myriam Bregman" },
+          { letter: "B", text: "«Hacer las obras que no se ven pero cambian la vida, con licitaciones transparentes y sin corrupción.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "C", text: "«La obra pública no es un gasto, es una inversión estratégica que dinamiza la economía, genera empleo y mejora la calidad de vida.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "D", text: "«Vamos a digitalizar y simplificar todos los trámites del Estado para que ningún argentino pierda tiempo ni plata frente a una ventanilla.»", author: "Javier Milei" }
+        ]
+      },
+      {
+        emoji: "💸",
+        topic: "9. Inflación y Precios",
+        options: [
+          { letter: "A", text: "«La inflación es un fenómeno multicausal: si no controlás la puja distributiva y las tarifas, los salarios siempre corren de atrás.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "B", text: "«Cuando se corta la emisión monetaria y se alcanza el equilibrio fiscal, la inflación empieza a caer de manera contundente.»", author: "Javier Milei" },
+          { letter: "C", text: "«Contra la inflación hay que congelar los precios de la canasta básica y aplicar una cláusula gatillo para que los salarios y jubilaciones nunca pierdan.»", author: "Myriam Bregman" },
+          { letter: "D", text: "«Sin déficit cero ni un Banco Central independiente es imposible terminar con la inflación que destruye el bolsillo de los argentinos.»", author: "Mauricio Macri / Patricia Bullrich" }
+        ]
+      },
+      {
+        emoji: "🔍",
+        topic: "10. Corrupción y Transparencia",
+        options: [
+          { letter: "A", text: "«Hay que ir a fondo contra las mafias, recuperar lo robado con extinción de dominio y terminar con la impunidad en la política.»", author: "Mauricio Macri / Patricia Bullrich" },
+          { letter: "B", text: "«Muchas veces se usa la denuncia de corrupción como herramienta de persecución judicial para proscribir proyectos políticos populares.»", author: "Cristina Kirchner / Axel Kicillof" },
+          { letter: "C", text: "«La verdadera corrupción es estructural: todo funcionario político y juez debería ganar lo mismo que una maestra y ser elegido por voto popular.»", author: "Myriam Bregman" },
+          { letter: "D", text: "«Al eliminar las regulaciones, los permisos discrecionales y las cajas políticas, terminamos de raíz con los incentivos para la corrupción.»", author: "Javier Milei" }
+        ]
+      }
+    ];
+
+    const dataVarB = [
+      {
+        emoji: "🎓",
+        topic: "1. Universidades",
+        options: [
+          {
+            letter: "A",
+            title: "Sistema de becas o vales por alumno (vouchers):",
+            text: "En lugar de darle el presupuesto directo a la universidad, el Estado le entrega el dinero o vale a cada estudiante para que elija dónde estudiar (pública o privada), fomentando que las facultades compitan por mejorar su nivel.",
+            space: "Libertaria"
+          },
+          {
+            letter: "B",
+            title: "Gratuidad para argentinos y arancel para extranjeros no residentes:",
+            text: "Mantener la universidad pública gratuita para ciudadanos y residentes del país, pero cobrar una cuota a estudiantes extranjeros que vienen solo a cursar y auditar los gastos administrativos.",
+            space: "Centroderecha / PRO"
+          },
+          {
+            letter: "C",
+            title: "Gratuidad total y presupuesto actualizado por inflación:",
+            text: "Garantizar que la universidad siga siendo gratuita para todos y que el Estado aumente sus fondos automáticamente al ritmo de la inflación, sumando controles externos sobre cómo se gasta la plata.",
+            space: "Peronismo / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🏫",
+        topic: "2. Escuelas",
+        options: [
+          {
+            letter: "A",
+            title: "Inversión garantizada y sueldos iguales en todo el país:",
+            text: "Fijar por ley un piso mínimo de gasto educativo y negociar un sueldo base nacional para los docentes, buscando que una escuela de una provincia pobre tenga los mismos recursos que una de la capital.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Educación como servicio esencial (escuelas abiertas siempre):",
+            text: "Declarar por ley que las escuelas no pueden cerrar del todo durante los paros docentes, obligando a garantizar guardias mínimas de clases (como pasa en los hospitales).",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "C",
+            title: "Evaluaciones nacionales y más libertad a cada escuela:",
+            text: "Tomar exámenes obligatorios en todo el país para medir cuánto aprenden los chicos y darle más poder a cada director para elegir métodos de enseñanza y contratar docentes.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🏥",
+        topic: "3. Salud",
+        options: [
+          {
+            letter: "A",
+            title: "Historia clínica digital única y red integrada:",
+            text: "Conectar en un mismo sistema informático los hospitales públicos, las obras sociales y las prepagas para que, por ejemplo, tus estudios médicos estén disponibles en cualquier guardia sin repetir análisis ni turnos.",
+            space: "Centro / PRO"
+          },
+          {
+            letter: "B",
+            title: "Libre competencia entre obras sociales y prepagas:",
+            text: "Eliminar trabas y regulaciones para que cualquier trabajador pueda elegir libremente su obra social o prepaga sin pasar por intermediarios sindicales, compitiendo por precio y cobertura.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Más presupuesto hospitalario y medicamentos fabricados por el Estado:",
+            text: "Reforzar la inversión en hospitales públicos y que laboratorios estatales produzcan remedios básicos (como antibióticos o insulina) para entregarlos gratis o a muy bajo costo.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "💵",
+        topic: "4. Inflación",
+        options: [
+          {
+            letter: "A",
+            title: "Acumular dólares por exportaciones y acordar precios y salarios:",
+            text: "Frenar la suba de precios logrando que entren dólares del campo y la industria, mientras el gobierno convoca a empresas y sindicatos para pactar topes de aumentos en alimentos y tarifas.",
+            space: "Peronismo"
+          },
+          {
+            letter: "B",
+            title: "Libre uso del dólar y competencia de monedas:",
+            text: "Permitir que la gente pueda cobrar su sueldo, ahorrar y pagar en pesos, dólares o cualquier otra moneda libremente, prohibiendo que el Banco Central imprima billetes para financiar al Estado.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "No gastar más de lo que entra y Banco Central independiente:",
+            text: "Mantener las cuentas del Estado sin déficit y garantizar que el Banco Central no dependa del presidente de turno, para que el peso recupere valor y la inflación baje paso a paso.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "💼",
+        topic: "5. Trabajo",
+        options: [
+          {
+            letter: "A",
+            title: "Reemplazar indemnizaciones por un fondo de desempleo:",
+            text: "Cambiar el sistema actual de juicios e indemnizaciones por un fondo mensual (similar al de la construcción), donde el trabajador acumula un ahorro que cobra si lo despiden o si renuncia, facilitando que las empresas contraten.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "B",
+            title: "Reducir la jornada laboral sin bajar el sueldo:",
+            text: "Bajar las horas de trabajo diarias o semanales (por ejemplo, de 8 a 6 horas o semana de 4 días) manteniendo el mismo salario, para que las empresas necesiten contratar más personal y baje el desempleo.",
+            space: "Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Mantener la indemnización, pero bajar impuestos a las pymes que contraten:",
+            text: "Conservar las protecciones actuales frente al despido, pero eximir de cargas sociales durante los primeros años a las pequeñas empresas que blanqueen o sumen empleados.",
+            space: "Peronismo / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🧾",
+        topic: "6. Impuestos",
+        options: [
+          {
+            letter: "A",
+            title: "Simplificar impuestos y sacar el IVA a la comida básica:",
+            text: "Eliminar impuestos complicados y quitar el 21% de IVA a productos esenciales (como leche, pan, yerba o carne) para que bajen directo en la caja del supermercado.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "B",
+            title: "Cobrar más impuestos a grandes fortunas y bajar impuestos al consumo:",
+            text: "Crear un impuesto permanente a los patrimonios más altos y ganancias financieras, usando esa recaudación para bajar los impuestos que pagan los trabajadores y jubilados en sus compras diarias.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Bajar el gasto del Estado para eliminar impuestos a la producción:",
+            text: "Achicar estructuras públicas para poder eliminar las retenciones al campo y los impuestos que encarecen producir y exportar en Argentina.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🚓",
+        topic: "7. Seguridad",
+        options: [
+          {
+            letter: "A",
+            title: "Prevención social e inversión en barrios vulnerables:",
+            text: "Combatir el delito atacando sus causas sociales: urbanizar barrios, mejorar escuelas, crear centros deportivos y reforzar la atención en adicciones y salud mental.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Bajar la edad de imputabilidad y endurecer las penas:",
+            text: "Permitir que menores que cometen delitos graves (como homicidios o robos armados) sean juzgados penalmente y aumentar las condenas para evitar que salgan rápido en libertad.",
+            space: "Libertaria / PRO"
+          },
+          {
+            letter: "C",
+            title: "Más fuerzas federales e inteligencia contra el narcotráfico:",
+            text: "Reforzar el control de fronteras con radares, desplegar fuerzas federales en zonas críticas y crear unidades especializadas para desarticular bandas narco y lavar su dinero.",
+            space: "Centro / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🤲",
+        topic: "8. Planes sociales",
+        options: [
+          {
+            letter: "A",
+            title: "Mantener la ayuda, pero exigir capacitación o terminar la escuela:",
+            text: "Seguir pagando los planes directamente a las familias, poniendo como requisito obligatorio cursar oficios o finalizar el secundario para no perder el beneficio.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "B",
+            title: "Eliminar intermediarios y poner plazo límite al plan:",
+            text: "Depositar la ayuda sin pasar por organizaciones sociales y fijar un tiempo máximo de cobro (por ejemplo, 1 o 2 años) mientras se incentiva el paso a un empleo privado.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Consolidar la AUH y avanzar hacia un ingreso básico garantizado:",
+            text: "Fortalecer la Asignación Universal por Hijo y garantizar un piso mínimo de ingresos estatal para todos los hogares que estén por debajo de la línea de pobreza.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🎬",
+        topic: "9. Cine y cultura",
+        options: [
+          {
+            letter: "A",
+            title: "Que el cine y el arte se financien con el público, sin subsidios:",
+            text: "Eliminar los fondos estatales para películas, teatro o festivales, dejando que cada proyecto cultural se sostenga con las entradas que vende o con aportes privados.",
+            space: "Libertaria"
+          },
+          {
+            letter: "B",
+            title: "Mantener el apoyo estatal (como el INCAA) para proteger la cultura nacional:",
+            text: "Sostener los fondos públicos de fomento al cine, la música y el teatro con reglas claras, defendiendo la identidad cultural y los puestos de trabajo del sector.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "C",
+            title: "Incentivos fiscales para que empresas privadas patrocinen cultura:",
+            text: "Crear leyes de mecenazgo donde empresas privadas puedan descontar impuestos si financian obras de teatro, museos o películas, sin que el Estado ponga plata directa.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      },
+      {
+        emoji: "🔬",
+        topic: "10. Ciencia",
+        options: [
+          {
+            letter: "A",
+            title: "Presupuesto científico creciente garantizado por ley:",
+            text: "Asegurar por ley que la inversión en organismos como el CONICET crezca todos los años, financiando tanto investigaciones de largo plazo como desarrollos aplicados.",
+            space: "Peronismo / Izquierda"
+          },
+          {
+            letter: "B",
+            title: "Achicar la estructura estatal y priorizar ciencia financiada por privados:",
+            text: "Reducir el gasto administrativo de los organismos científicos y enfocar los recursos únicamente en proyectos prácticos que tengan demanda o inversión de empresas privadas.",
+            space: "Libertaria"
+          },
+          {
+            letter: "C",
+            title: "Asociar universidades con empresas y provincias para proyectos puntuales:",
+            text: "Armar equipos entre universidades públicas, gobiernos provinciales y empresas privadas (por ejemplo, en energía, agro o software) con fondos atados a resultados concretos.",
+            space: "PRO / UCR"
+          },
+          {
+            letter: "D",
+            title: "Ninguna de estas ideas me convence.",
+            text: "",
+            space: "Ninguna"
+          }
+        ]
+      }
+    ];
+
+
+    const ESPACIOS_DECLARADOS = [
+      "La Libertad Avanza / Libertarios",
+      "PRO / Centroderecha",
+      "UCR / Centro",
+      "Peronismo / Unión por la Patria",
+      "Frente de Izquierda",
+      "Independiente / Ninguno"
+    ];
+
+    // Frases para el "Lo que defendés / rechazás", según tema y opción elegida
+    const BULLETS = {
+      "Universidades": {
+        A: ["La libre elección del estudiante mediante vouchers y la competencia entre universidades.", "El financiamiento directo sin competencia ni elección individual del alumno."],
+        B: ["La universidad gratuita para argentinos, arancelando a extranjeros no residentes y auditando gastos.", "El subsidio universitario sin controles ni distinción de residencia."],
+        C: ["La universidad pública, gratuita y con presupuesto actualizado por inflación.", "El arancelamiento universitario o los sistemas de vouchers privados."]
+      },
+      "Salud": {
+        A: ["Una historia clínica digital única que integre hospitales, obras sociales y prepagas.", null],
+        B: ["La libre competencia entre obras sociales y prepagas sin intermediarios sindicales.", "El monopolio o intermediación sindical obligatoria en la salud."],
+        C: ["Mayor presupuesto para hospitales públicos y producción estatal de medicamentos gratuitos.", "La mercantilización de la salud pública o el recorte de medicamentos."]
+      },
+      "Inflación": {
+        A: ["Acuerdos de precios y salarios junto al ingreso de dólares por exportaciones.", null],
+        B: ["La libre competencia de monedas, el uso libre del dólar y prohibir la emisión monetaria.", "El control estatal de precios y la emisión monetaria para financiar el gasto."],
+        C: ["El equilibrio fiscal y un Banco Central independiente para fortalecer la moneda.", null]
+      },
+      "Trabajo": {
+        A: ["Reemplazar indemnizaciones por un fondo de desempleo para facilitar la contratación.", "Los costos laborales rígidos y la litigiosidad por despidos."],
+        B: ["Reducir la jornada laboral sin bajar salarios para repartir el empleo.", null],
+        C: ["Conservar la indemnización por despido y bajar impuestos a pymes que contraten.", null]
+      },
+      "Impuestos": {
+        A: ["Quitar el IVA a los alimentos de la canasta básica y simplificar impuestos.", null],
+        B: ["Gravar más a las grandes fortunas para aliviar los impuestos al consumo popular.", "Los sistemas tributarios regresivos que pesan más sobre trabajadores y jubilados."],
+        C: ["Achicar el gasto público para eliminar retenciones e impuestos a la producción.", "La alta presión impositiva y las retenciones sobre quienes producen y exportan."]
+      },
+      "Seguridad": {
+        A: ["La prevención social, urbanización y salud mental para atacar las causas del delito.", "Las políticas exclusivamente punitivas sin abordaje social."],
+        B: ["Bajar la edad de imputabilidad y endurecer las penas para delitos graves.", "La laxitud penal frente a delitos graves cometidos por menores o reincidentes."],
+        C: ["Mayor despliegue de fuerzas federales e inteligencia financiera contra el narcotráfico.", null]
+      },
+      "Planes sociales": {
+        A: ["Mantener la ayuda social exigiendo capacitación laboral o terminar la escuela.", null],
+        B: ["Eliminar intermediarios y fijar un plazo límite a los planes sociales.", "El asistencialismo permanente y la intermediación de organizaciones sociales."],
+        C: ["Fortalecer la AUH y garantizar un piso básico de ingresos contra la pobreza.", null]
+      },
+      "Cine y cultura": {
+        A: ["Que los proyectos culturales se financien con el público o aportes privados, sin subsidios.", "El financiamiento estatal de producciones artísticas o cinematográficas."],
+        B: ["El fomento estatal (como el INCAA) para proteger la cultura nacional y su empleo.", "El desfinanciamiento de la industria cultural nacional."],
+        C: ["Leyes de mecenazgo con incentivos fiscales para que empresas patrocinen la cultura.", null]
+      }
+    };
+
+    // ---------- PERFILES Y AVATARES ----------
+    const PERFILES = {
+      esceptico: {
+        nick: "🔎 La Lupa", title: "Perfil Escéptico / Independiente", color: "#475569", skin: "#a3e635", tip: "#facc15",
+        frase: "Mostrame los números y después hablamos.",
+        elogio: "Tenés algo que escasea: no te comés ningún verso. Pensar con cabeza propia y pedir pruebas antes de creer es lo que hace mejor cualquier debate.",
+        desc: "Nada te convence a la primera: mirás cada propuesta con lupa y mantenés distancia de las recetas tradicionales de todos los espacios."
+      },
+      hibrido: {
+        nick: "🧰 La Navaja Suiza", title: "Perfil Pragmático / Híbrido", color: "#0f766e", skin: "#fdba74", tip: "#f0abfc",
+        frase: "Ni de acá ni de allá: lo que funcione.",
+        elogio: "Elegís con la cabeza abierta, tema por tema, sin camiseta puesta. Esa flexibilidad es justo lo que hace falta para encontrar acuerdos.",
+        desc: "No te casás con ninguna ideología: sacás la herramienta que sirve para cada problema y combinás propuestas de distintos espacios."
+      },
+      liberal: {
+        nick: "🚀 El Cohete", title: "Perfil Liberal / Pro-Mercado", color: "#15803d", skin: "#67e8f9", tip: "#fde047",
+        frase: "Menos trabas, más despegue.",
+        elogio: "Confiás en lo que la gente puede lograr cuando la dejan crecer. Esa energía emprendedora mueve proyectos, empleos e ideas nuevas.",
+        desc: "Priorizás la libertad individual, menos gasto estatal, menos impuestos y la competencia privada por sobre la intervención del Estado."
+      },
+      reformista: {
+        nick: "🧭 La Brújula", title: "Perfil Reformista / Institucionalista", color: "#4338ca", skin: "#86efac", tip: "#fda4af",
+        frase: "Reglas claras y cuentas en orden.",
+        elogio: "Sabés que lo que funciona se construye con reglas claras y paciencia. Ese sentido del orden y del largo plazo le da estabilidad a todo lo demás.",
+        desc: "Buscás equilibrio fiscal, reglas claras y un Estado más moderno, combinando gestión eficiente con incentivos al sector privado."
+      },
+      desarrollista: {
+        nick: "🏗️ La Grúa", title: "Perfil Estado Presente / Desarrollista", color: "#c2410c", skin: "#c4b5fd", tip: "#67e8f9",
+        frase: "Si el Estado no construye, ¿quién?",
+        elogio: "Pensás en grande y en todos: escuelas, hospitales y trabajo para que nadie quede afuera. Esa vocación de construir en común suma un montón.",
+        desc: "Defendés un Estado activo que construye: que garantice derechos sociales, financie la educación y la salud pública y proteja el mercado interno."
+      },
+      igualitario: {
+        nick: "📣 El Megáfono", title: "Perfil Igualitario / Progresista", color: "#be185d", skin: "#bef264", tip: "#93c5fd",
+        frase: "Que la torta se reparta mejor.",
+        elogio: "Te importa que a nadie le falte lo básico y levantás la voz por quien no la tiene. Esa empatía es el motor de muchas de las mejores conquistas sociales.",
+        desc: "Priorizás la redistribución de la riqueza, la ampliación de derechos laborales y un fuerte rol social del Estado."
+      }
+    };
+
+    // Avatares: aliens neutrales, sin colores partidarios
+    function avatarSVG(key) {
+      const p = PERFILES[key];
+      const id = "av-" + key;
+      const eye = (cx, cy, rot) => `
+        <ellipse cx="${cx}" cy="${cy}" rx="13" ry="17" fill="#111827" transform="rotate(${rot} ${cx} ${cy})"/>
+        <circle cx="${cx - 4}" cy="${cy - 6}" r="4.5" fill="#ffffff"/>
+        <circle cx="${cx + 4}" cy="${cy + 5}" r="2" fill="#ffffff" opacity="0.8"/>`;
+      const mouths = {
+        esceptico: `<path d="M90 124 L112 120" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M106 70 L130 62" stroke="#1f2937" stroke-width="4.5" stroke-linecap="round"/>`,
+        hibrido: `<path d="M88 120 Q100 130 112 120" stroke="#1f2937" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        liberal: `<path d="M86 118 Q100 134 114 118 Z" fill="#1f2937"/>`,
+        reformista: `<path d="M90 122 Q100 128 110 122" stroke="#1f2937" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        desarrollista: `<path d="M86 119 Q100 132 114 119" stroke="#1f2937" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        igualitario: `<ellipse cx="100" cy="123" rx="8" ry="7" fill="#1f2937"/>`
+      };
+      const extras = {
+        esceptico: `
+          <line x1="158" y1="160" x2="180" y2="184" stroke="#3f3f46" stroke-width="10" stroke-linecap="round"/>
+          <circle cx="144" cy="146" r="24" fill="rgba(224,242,254,0.5)" stroke="#f8fafc" stroke-width="7"/>
+          <circle cx="137" cy="139" r="6" fill="#ffffff" opacity="0.85"/>`,
+        hibrido: `
+          <g transform="rotate(-25 150 150)">
+            <rect x="153" y="114" width="10" height="34" rx="4" fill="#e2e8f0"/>
+            <rect x="139" y="120" width="8" height="28" rx="3" fill="#cbd5e1" transform="rotate(-25 143 148)"/>
+            <rect x="131" y="144" width="44" height="24" rx="11" fill="#dc2626"/>
+            <rect x="150" y="149" width="6" height="14" fill="#fff"/>
+            <rect x="146" y="153" width="14" height="6" fill="#fff"/>
+          </g>`,
+        liberal: `
+          <g transform="rotate(-30 40 120)">
+            <path d="M40 84 C52 96 54 120 50 142 L30 142 C26 120 28 96 40 84 Z" fill="#f8fafc"/>
+            <circle cx="40" cy="112" r="7" fill="#38bdf8"/>
+            <path d="M30 130 L20 146 L31 142 Z" fill="#ef4444"/>
+            <path d="M50 130 L60 146 L49 142 Z" fill="#ef4444"/>
+            <path d="M33 142 L40 164 L47 142 Z" fill="#fb923c"/>
+          </g>
+          <circle cx="160" cy="58" r="3" fill="#fff"/><circle cx="172" cy="96" r="2" fill="#fff"/><circle cx="26" cy="54" r="2.5" fill="#fff"/>`,
+        reformista: `
+          <circle cx="80" cy="96" r="20" fill="none" stroke="#1f2937" stroke-width="4"/>
+          <circle cx="120" cy="96" r="20" fill="none" stroke="#1f2937" stroke-width="4"/>
+          <path d="M100 94 L100 94" stroke="#1f2937" stroke-width="4"/>
+          <circle cx="152" cy="156" r="22" fill="#f8fafc" stroke="#facc15" stroke-width="6"/>
+          <path d="M152 140 L157 156 L152 172 L147 156 Z" fill="#ef4444"/>
+          <path d="M152 156 L157 156 L152 172 L147 156 Z" fill="#334155"/>
+          <circle cx="152" cy="156" r="3" fill="#0f172a"/>`,
+        desarrollista: `
+          <path d="M52 72 C52 40 74 30 100 30 C126 30 148 40 148 72 Z" fill="#facc15"/>
+          <rect x="44" y="68" width="112" height="11" rx="5.5" fill="#eab308"/>
+          <rect x="94" y="32" width="12" height="36" rx="5" fill="#fde047"/>
+          <g transform="translate(156 158)">
+            <g fill="#e2e8f0">
+              <circle r="15"/>
+              <rect x="-5" y="-23" width="10" height="10" rx="2"/><rect x="-5" y="13" width="10" height="10" rx="2"/>
+              <rect x="-23" y="-5" width="10" height="10" rx="2"/><rect x="13" y="-5" width="10" height="10" rx="2"/>
+            </g>
+            <circle r="6" fill="${p.color}"/>
+          </g>`,
+        igualitario: `
+          <g transform="rotate(-18 146 150)">
+            <path d="M124 142 L166 122 L166 178 L124 158 Z" fill="#f8fafc"/>
+            <rect x="112" y="140" width="16" height="20" rx="4" fill="#cbd5e1"/>
+            <rect x="132" y="158" width="8" height="18" rx="3" fill="#94a3b8"/>
+          </g>
+          <path d="M176 112 Q186 126 180 140" stroke="#fde68a" stroke-width="5" fill="none" stroke-linecap="round"/>`
+      };
+      const antennas = `
+        <path d="M84 50 Q76 30 68 16" stroke="${p.skin}" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M116 50 Q124 30 132 16" stroke="${p.skin}" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <circle cx="68" cy="15" r="8" fill="${p.tip}"/>
+        <circle cx="132" cy="15" r="8" fill="${p.tip}"/>`;
+      return `
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar ${p.nick}">
+          <defs><clipPath id="${id}"><circle cx="100" cy="100" r="92"/></clipPath></defs>
+          <circle cx="100" cy="100" r="98" fill="#ffffff"/>
+          <circle cx="100" cy="100" r="92" fill="${p.color}"/>
+          <g clip-path="url(#${id})">
+            <circle cx="56" cy="44" r="70" fill="#ffffff" opacity="0.1"/>
+            <circle cx="40" cy="160" r="2.5" fill="#fff" opacity="0.6"/>
+            <circle cx="166" cy="40" r="2" fill="#fff" opacity="0.6"/>
+            <path d="M58 214 C58 170 78 148 100 148 C122 148 142 170 142 214 Z" fill="#1e1b4b"/>
+            <path d="M88 148 L100 164 L112 148 Z" fill="${p.tip}"/>
+          </g>
+          ${antennas}
+          <path d="M52 94 C52 60 74 46 100 46 C126 46 148 60 148 94 C148 124 126 148 100 148 C74 148 52 124 52 94 Z" fill="${p.skin}"/>
+          <ellipse cx="72" cy="112" rx="7" ry="4" fill="#fb7185" opacity="0.35"/>
+          <ellipse cx="128" cy="112" rx="7" ry="4" fill="#fb7185" opacity="0.35"/>
+          ${eye(80, 96, -12)}
+          ${eye(120, 96, 12)}
+          ${mouths[key]}
+          ${extras[key]}
+        </svg>`;
+    }
+
+    // ---------- ESTADO DEL JUEGO ----------
+    let declared = "";
+    let roundA = [];      // [{topic, emoji, text, author}]
+    let answersA = [];    // nombre elegido por frase
+    let idxA = 0;
+    let dataB = [];       // temas de la parte 2 (con opciones mezcladas)
+    let answersB = [];    // opción elegida por tema
+    let idxB = 0;
+    let lockA = false;
+    let results = null;   // se arma al terminar
+    let dataSent = false;
+    let contactSent = false;
+    const sessionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+    const TOTAL_STEPS = () => FRASES_POR_PARTIDA + dataB.length;
+    const cleanTopic = t => t.replace(/^\d+\.\s*/, "");
+    const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    function show(id) {
+      ["s-start", "s-a", "s-mid", "s-b", "s-results"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setProgress(done, label) {
+      document.getElementById("progress-fill").style.width = `${Math.round((done / TOTAL_STEPS()) * 100)}%`;
+      const el = document.getElementById("step-label");
+      if (label) { el.textContent = label; el.classList.remove("hidden"); } else { el.classList.add("hidden"); }
+    }
+
+    // Arma la partida: 1 frase por tema, repartiendo los 4 referentes de forma pareja (2 o 3 cada uno)
+    function buildRound() {
+      const slots = shuffle(dirigentesList.flatMap(d => [d.full, d.full, d.full])).slice(0, dataVarA.length);
+      roundA = shuffle(dataVarA.map((item, i) => {
+        const opt = item.options.find(o => o.author === slots[i]);
+        return { topic: cleanTopic(item.topic), emoji: item.emoji, text: opt.text, author: opt.author };
+      })).slice(0, FRASES_POR_PARTIDA);
+      answersA = Array(roundA.length).fill("");
+      idxA = 0;
+
+      dataB = dataVarB
+        .filter(t => !TEMAS_FUERA_PARTE_2.includes(t.topic))
+        .map(t => {
+          const ideas = t.options.filter(o => o.space !== "Ninguna");
+          const ninguna = t.options.find(o => o.space === "Ninguna");
+          return { topic: cleanTopic(t.topic), emoji: t.emoji, options: [...shuffle(ideas), ninguna] };
+        });
+      answersB = Array(dataB.length).fill(null);
+      idxB = 0;
+    }
+
+    // ---------- PORTADA ----------
+    function renderStart() {
+      document.getElementById("start-choices").innerHTML = ESPACIOS_DECLARADOS.map((e, i) =>
+        `<button type="button" class="choice center" onclick="pickDeclared(${i})">${esc(e)}</button>`
+      ).join("");
+    }
+
+    function pickDeclared(i) {
+      declared = ESPACIOS_DECLARADOS[i];
+      show("s-a");
+      renderA();
+    }
+
+    // ---------- PARTE 1 ----------
+    function renderA() {
+      lockA = false;
+      const q = roundA[idxA];
+      setProgress(idxA, `Frase ${idxA + 1}/${roundA.length}`);
+      const card = document.getElementById("a-card");
+      card.style.animation = "none"; card.offsetHeight; card.style.animation = "";
+      card.innerHTML = `
+        <span class="phase-pill phase-a">🎤 Parte 1 · ¿Quién lo dijo?</span>
+        <div class="topic">${q.emoji} ${esc(q.topic)}</div>
+        <div class="quote">${esc(q.text)}</div>
+        <div class="choices two-col" id="a-choices">
+          ${dirigentesList.map((d, i) => `<button type="button" class="choice center" data-full="${esc(d.full)}" onclick="answerA(${i})">${esc(d.full)}</button>`).join("")}
+        </div>
+        <div id="a-feedback"></div>
+        <div class="game-nav">
+          <span></span>
+          <button type="button" class="btn btn-primary hidden" id="a-next" onclick="nextA()">Siguiente →</button>
+        </div>`;
+    }
+
+    let autoTimer = null;
+    function answerA(i) {
+      if (lockA) return;
+      lockA = true;
+      const q = roundA[idxA];
+      const picked = dirigentesList[i].full;
+      answersA[idxA] = picked;
+      const ok = picked === q.author;
+      document.querySelectorAll("#a-choices .choice").forEach(b => {
+        b.disabled = true;
+        const full = b.getAttribute("data-full");
+        if (full === q.author) b.classList.add("correct");
+        else if (full === picked) b.classList.add("wrong");
+        else b.classList.add("faded");
+      });
+      document.getElementById("a-feedback").innerHTML = ok
+        ? `<div class="feedback ok">✓ ¡Acertaste! Lo dijo ${esc(q.author)}</div>`
+        : `<div class="feedback err">✗ Nop. Lo dijo ${esc(q.author)}</div>`;
+      document.getElementById("a-next").classList.remove("hidden");
+      setProgress(idxA + 1, `Frase ${idxA + 1}/${roundA.length}`);
+      autoTimer = setTimeout(nextA, AUTO_AVANCE_MS);
+    }
+
+    function nextA() {
+      clearTimeout(autoTimer);
+      if (!lockA) return;
+      idxA++;
+      if (idxA < roundA.length) { renderA(); return; }
+      const hits = roundA.filter((q, i) => answersA[i] === q.author).length;
+      document.getElementById("mid-score").textContent = `${hits}/${roundA.length}`;
+      document.getElementById("mid-msg").textContent =
+        hits >= 7 ? "¡Radar político afiladísimo! 🔥" :
+        hits >= 4 ? "Buen oído, pero varias te sorprendieron 👀" :
+        "¡Fuera de contexto, todos suenan parecido! 😅";
+      setProgress(roundA.length, "Parte 1 ✓");
+      show("s-mid");
+    }
+
+    // ---------- PARTE 2 ----------
+    function startPartB() { show("s-b"); renderB(); }
+
+    function renderB() {
+      const t = dataB[idxB];
+      setProgress(roundA.length + idxB, `Tema ${idxB + 1}/${dataB.length}`);
+      const card = document.getElementById("b-card");
+      card.style.animation = "none"; card.offsetHeight; card.style.animation = "";
+      card.innerHTML = `
+        <span class="phase-pill phase-b">🧭 Parte 2 · ¿Con qué te identificás?</span>
+        <div class="question-title">${t.emoji} ${esc(t.topic)}: ¿qué propuesta te convence más?</div>
+        <div class="choices" id="b-choices">
+          ${t.options.map((o, i) => {
+            const title = o.title.replace(/:\s*$/, "");
+            const more = o.text
+              ? `<br><span class="more-link" onclick="toggleMore(event, ${i})">ver más</span><span class="more-text hidden" id="more-${i}">${esc(o.text)}</span>`
+              : "";
+            return `<div role="button" tabindex="0" class="choice ${answersB[idxB] === i ? "picked" : ""}" onclick="answerB(${i})" onkeydown="if(event.key==='Enter')answerB(${i})">${esc(title)}${more}</div>`;
+          }).join("")}
+        </div>
+        <div class="game-nav">
+          ${idxB > 0 ? `<button type="button" class="link-btn" onclick="prevB()">← Anterior</button>` : "<span></span>"}
+          <span style="font-size:0.82rem; color:var(--muted);">Tocá una opción para seguir</span>
+        </div>`;
+    }
+
+    function toggleMore(ev, i) {
+      ev.stopPropagation();
+      const el = document.getElementById(`more-${i}`);
+      el.classList.toggle("hidden");
+      ev.target.textContent = el.classList.contains("hidden") ? "ver más" : "ver menos";
+    }
+
+    let lockB = false;
+    function answerB(i) {
+      if (lockB) return;
+      lockB = true;
+      answersB[idxB] = i;
+      document.querySelectorAll("#b-choices .choice").forEach((c, j) => c.classList.toggle("picked", j === i));
+      setTimeout(() => {
+        lockB = false;
+        idxB++;
+        if (idxB < dataB.length) renderB();
+        else finish();
+      }, 380);
+    }
+
+    function prevB() { if (idxB > 0) { idxB--; renderB(); } }
+
+    // ---------- RESULTADOS ----------
+    function finish() {
+      setProgress(TOTAL_STEPS(), "¡Listo! 🏁");
+
+      // Parte 1
+      let totalCorrect = 0;
+      const byAuthor = {};
+      dirigentesList.forEach(d => byAuthor[d.full] = { hits: 0, total: 0 });
+      const revA = roundA.map((q, i) => {
+        const ok = answersA[i] === q.author;
+        byAuthor[q.author].total++;
+        if (ok) { totalCorrect++; byAuthor[q.author].hits++; }
+        return { ...q, guessed: answersA[i], ok };
+      });
+      const nA = roundA.length;
+      const pctA = Math.round(totalCorrect * 100 / nA);
+      const scoreSummaryA = `${totalCorrect}/${nA} aciertos (${pctA}%)`;
+
+      // Parte 2
+      const nB = dataB.length;
+      const countsB = {};
+      const chosenB = dataB.map((t, i) => {
+        const o = t.options[answersB[i]];
+        countsB[o.space] = (countsB[o.space] || 0) + 1;
+        return { topic: t.topic, letter: o.letter, title: o.title.replace(/:\s*$/, ""), space: o.space };
+      });
+      const sortedB = Object.entries(countsB).sort((a, b) => b[1] - a[1]);
+      const topName = sortedB[0][0];
+      const topCount = sortedB[0][1];
+      const topSpace = `${topName} (${Math.round(topCount * 100 / nB)}%)`;
+
+      // Perfil
+      let key;
+      if (topName === "Ninguna" && topCount >= 3) key = "esceptico";
+      else if (topCount <= 2) key = "hibrido";
+      else if (topName.includes("Libertaria")) key = "liberal";
+      else if (topName.includes("PRO") || topName.includes("Centro") || topName.includes("UCR")) key = "reformista";
+      else if (topName.includes("Peronismo") && !topName.includes("Izquierda")) key = "desarrollista";
+      else if (topName.includes("Izquierda")) key = "igualitario";
+      else key = "hibrido";
+      const perfil = PERFILES[key];
+
+      const defend = [], reject = [], noneTopics = [];
+      chosenB.forEach(c => {
+        if (c.space === "Ninguna") { noneTopics.push(c.topic); return; }
+        const b = (BULLETS[c.topic] || {})[c.letter];
+        if (b) { if (b[0]) defend.push(b[0]); if (b[1]) reject.push(b[1]); }
+      });
+      if (noneTopics.length) reject.push(`Las propuestas tradicionales de todos los espacios en: ${noneTopics.join(", ")}.`);
+      if (!defend.length) defend.push("Una mirada independiente y crítica frente a las ofertas electorales actuales.");
+      if (!reject.length) reject.push("Los extremos ideológicos rígidos, priorizando soluciones equilibradas.");
+      const finalDefend = defend.slice(0, 5), finalReject = reject.slice(0, 5);
+
+      // Coherencia
+      const dec = declared.toLowerCase(), top = topName.toLowerCase();
+      const isMatch =
+        (dec.includes("libertad") && top.includes("libertaria")) ||
+        (dec.includes("pro /") && (top.includes("pro") || top.includes("centroderecha"))) ||
+        (dec.includes("ucr") && (top.includes("ucr") || top.includes("centro"))) ||
+        (dec.includes("peronismo") && top.includes("peronismo")) ||
+        (dec.includes("izquierda") && top.includes("izquierda"));
+      let coherence;
+      if (topName === "Ninguna" && declared.includes("Independiente")) coherence = `Te definiste como independiente y lo confirmaste: en la mayoría de los temas ninguna propuesta te convenció.`;
+      else if (declared.includes("Independiente")) coherence = `Te definiste como independiente, y a ciegas tu mayor afinidad fue con propuestas de ${topSpace}.`;
+      else if (topName === "Ninguna") coherence = `Te identificás con ${declared}, pero en la mayoría de los temas ninguna propuesta te convenció.`;
+      else if (isMatch) coherence = `Tu voto (${declared}) coincide con tus ideas: sin etiquetas, elegiste sobre todo propuestas de tu propio espacio (${topSpace}).`;
+      else coherence = `¡Dato revelador! Te identificás con ${declared}, pero sin ver nombres coincidiste más con ideas de ${topSpace}.`;
+
+      const radar =
+        totalCorrect >= 7 ? `Con ${scoreSummaryA}, tenés un radar político afiladísimo: reconocés el discurso de cada referente sin ver quién habla.` :
+        totalCorrect >= 4 ? `Con ${scoreSummaryA}, tenés buen oído político, aunque varias frases te sonaron más parecidas de lo que imaginabas.` :
+        `Con ${scoreSummaryA}, ¡caíste en el efecto del test ciego! Fuera de contexto, muchas frases suenan distinto a la imagen de cada dirigente.`;
+
+      // Pintar
+      document.getElementById("summary-subtitle").textContent =
+        `Voto habitual: ${declared}. Acertaste ${scoreSummaryA} y en propuestas coincidiste más con ${topSpace}.`;
+
+      document.getElementById("res-bars-a").innerHTML = Object.entries(byAuthor)
+        .filter(([, v]) => v.total > 0)
+        .sort((a, b) => (b[1].hits / b[1].total) - (a[1].hits / a[1].total))
+        .map(([a, v]) => `
+          <div class="bar-item">
+            <div class="bar-label"><span>${esc(a)}</span><strong>${v.hits}/${v.total}</strong></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round(v.hits * 100 / v.total)}%"></div></div>
+          </div>`).join("");
+
+      document.getElementById("res-bars-b").innerHTML = sortedB.map(([s, c]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${esc(s)}</span><strong>${Math.round(c * 100 / nB)}% (${c}/${nB})</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c * 100 / nB)}%"></div></div>
+        </div>`).join("");
+
+      document.getElementById("fb-avatar").innerHTML = avatarSVG(key);
+      document.getElementById("fb-nick").textContent = perfil.nick;
+      document.getElementById("fb-nick").style.color = perfil.color;
+      document.getElementById("fb-archetype-title").textContent = perfil.title;
+      document.getElementById("fb-frase").textContent = `💬 «${perfil.frase}»`;
+      document.getElementById("fb-elogio").textContent = `✨ ${perfil.elogio}`;
+      document.getElementById("fb-archetype-desc").textContent = perfil.desc;
+      document.getElementById("fb-defend-list").innerHTML = finalDefend.map(b => `<li>${esc(b)}</li>`).join("");
+      document.getElementById("fb-reject-list").innerHTML = finalReject.map(b => `<li>${esc(b)}</li>`).join("");
+      document.getElementById("fb-coherence-text").textContent = coherence;
+      document.getElementById("fb-radar-text").textContent = radar;
+
+      document.getElementById("revelation-list-b").innerHTML = chosenB.map(c => `
+        <div class="revelation-item"><strong>${esc(c.topic)}</strong><br>${esc(c.title)} <span class="badge-space">${esc(c.space)}</span></div>`).join("");
+
+      document.getElementById("revelation-list").innerHTML = revA.map(r => `
+        <div class="revelation-item" style="border-left: 3px solid ${r.ok ? "#10b981" : "#f43f5e"}; padding-left: 0.7rem;">
+          <div style="font-weight:800; color: var(--primary); font-size:0.85rem;">${r.emoji} ${esc(r.topic)}</div>
+          <div>«${esc(r.text.replace(/^«|»$/g, ""))}»</div>
+          <div style="font-size:0.85rem; margin-top:0.2rem;">Elegiste: <strong>${esc(r.guessed)}</strong>
+            ${r.ok ? '<span class="badge-ok">✓ Acertaste</span>' : `<span class="badge-err">✗ Era ${esc(r.author)}</span>`}</div>
+        </div>`).join("");
+
+      results = { scoreSummaryA, topSpace, perfil, finalDefend, finalReject, coherence, radar, revA, chosenB, byAuthor, sortedB, nB };
+      show("s-results");
+    }
+
+    // ---------- MAIL CON DETALLE + SEGUIR JUGANDO ----------
+    function buildEmailHtml(nombre) {
+      const r = results;
+      const li = arr => arr.map(b => `<li style="margin-bottom:4px;">${esc(b)}</li>`).join("");
+      return `
+<div style="font-family: Arial, Helvetica, sans-serif; color:#0f172a; max-width:640px; margin:0 auto; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+  <div style="background:#3730a3; color:#ffffff; padding:22px; text-align:center;">
+    <img src="${LOGO_URL}" width="84" height="84" alt="Test Político" style="display:block; margin:0 auto 8px;">
+    <h2 style="margin:0; font-size:22px;">Tu informe del Test Político</h2>
+    <p style="margin:6px 0 0; color:#e0f2fe; font-size:14px;">${nombre ? "Hola, " + esc(nombre) + " · " : ""}Voto habitual: ${esc(declared)}</p>
+  </div>
+  <div style="padding:22px;">
+    <div style="background:#f8fafc; border:2px solid ${r.perfil.color}; border-radius:12px; padding:16px; margin-bottom:20px; text-align:center;">
+      <div style="font-size:11px; font-weight:bold; text-transform:uppercase; color:#4338ca; letter-spacing:1px;">Tu perfil político a ciegas</div>
+      <div style="font-size:26px; font-weight:bold; color:${r.perfil.color}; margin:6px 0 2px;">${esc(r.perfil.nick)}</div>
+      <div style="font-size:14px; font-weight:bold; color:#475569;">${esc(r.perfil.title)}</div>
+      <div style="font-size:16px; font-weight:bold; font-style:italic; color:#1e1b4b; margin-top:8px;">💬 «${esc(r.perfil.frase)}»</div>
+      <div style="font-size:14px; color:#713f12; background:#fef9c3; border:1px solid #fde68a; border-radius:8px; padding:10px; margin-top:10px; text-align:left;">✨ ${esc(r.perfil.elogio)}</div>
+      <p style="margin:10px 0 0; font-size:14px; text-align:left;">${esc(r.perfil.desc)}</p>
+    </div>
+
+    <p style="margin:0 0 4px; font-weight:bold; color:#065f46;">✅ Lo que defendés</p>
+    <ul style="margin:0 0 12px; font-size:14px;">${li(r.finalDefend)}</ul>
+    <p style="margin:0 0 4px; font-weight:bold; color:#9f1239;">❌ Lo que rechazás o no te convence</p>
+    <ul style="margin:0 0 12px; font-size:14px;">${li(r.finalReject)}</ul>
+    <p style="font-size:14px;"><strong>🧭 Coherencia (voto vs. ideas):</strong> ${esc(r.coherence)}</p>
+    <p style="font-size:14px;"><strong>🎯 Tu ojo político:</strong> ${esc(r.radar)}</p>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">1. Resumen</h3>
+    <p style="font-size:14px;"><strong>Parte 1 (¿Quién lo dijo?):</strong> ${esc(r.scoreSummaryA)}</p>
+    <ul style="font-size:14px;">${Object.entries(r.byAuthor).filter(([, v]) => v.total).map(([a, v]) => `<li><strong>${esc(a)}:</strong> ${v.hits}/${v.total}</li>`).join("")}</ul>
+    <p style="font-size:14px;"><strong>Parte 2 (¿Con qué te identificás?):</strong> más coincidencia con ${esc(r.topSpace)}</p>
+    <ul style="font-size:14px;">${r.sortedB.map(([s, c]) => `<li><strong>${esc(s)}:</strong> ${Math.round(c * 100 / r.nB)}% (${c}/${r.nB})</li>`).join("")}</ul>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">2. Tus elecciones en la parte 2</h3>
+    <ol style="font-size:14px;">${r.chosenB.map(c => `<li style="margin-bottom:6px;"><strong>${esc(c.topic)}:</strong> ${esc(c.title)} <em>(${esc(c.space)})</em></li>`).join("")}</ol>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">3. Corrección de la parte 1</h3>
+    <ul style="font-size:14px; padding-left:18px;">${r.revA.map(q => `
+      <li style="margin-bottom:10px;"><strong>${esc(q.topic)}:</strong> ${esc(q.text)}<br>
+        <span style="color:${q.ok ? "#166534" : "#991b1b"};">Elegiste: <strong>${esc(q.guessed)}</strong> — ${q.ok ? "✓ Acertaste" : "✗ Era " + esc(q.author)}</span></li>`).join("")}</ul>
+
+    <div style="text-align:center; margin:28px 0 8px;">
+      <a href="${GAME_URL}" style="display:inline-block; background:#4338ca; color:#ffffff; text-decoration:none; font-weight:bold; font-size:16px; padding:14px 28px; border-radius:10px;">🔄 Seguir jugando</a>
+      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">Cada partida trae frases distintas. ¡Compartilo y compará resultados!</p>
+    </div>
+  </div>
+</div>`;
+    }
+
+    function buildPayload(withContact) {
+      const r = results;
+      const nombre = withContact ? document.getElementById("nombre").value.trim() : "";
+      const email = withContact ? document.getElementById("email-usuario").value.trim() : "";
+      return {
+        fecha: new Date().toLocaleString("es-AR"),
+        votoHabitual: declared,
+        dificultad: "Versión rápida",   // esta columna identifica de qué versión viene la respuesta
+        edad: document.getElementById("edad").value,
+        provincia: document.getElementById("provincia").value,
+        topReferenteA: r.scoreSummaryA,
+        topEspacioB: r.topSpace,
+        detalleA: r.revA.map(q => `${q.topic} [dijo ${q.guessed} (era ${q.author})]`).join(" | "),
+        detalleB: r.chosenB.map(c => `${c.topic}: ${c.space}`).join(" | "),
+        nombre: nombre || "Anónimo",
+        email: email,
+        emailHtml: email ? buildEmailHtml(nombre) : "",
+        perfil: r.perfil.title,
+        version: "rapida",
+        sesion: sessionId
+      };
+    }
+
+    function postData(payload, onUnload) {
+      const body = JSON.stringify(payload);
+      if (onUnload && navigator.sendBeacon) {
+        navigator.sendBeacon(GOOGLE_SCRIPT_URL, new Blob([body], { type: "text/plain;charset=utf-8" }));
+        return Promise.resolve();
+      }
+      return fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST", mode: "no-cors", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, body
+      });
+    }
+
+    // Guarda la respuesta anónima si la persona se va sin dejar el mail
+    function sendAnonymousIfPending(onUnload) {
+      if (!results || dataSent) return;
+      dataSent = true;
+      postData(buildPayload(false), onUnload).catch(() => {});
+    }
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") sendAnonymousIfPending(true); });
+    window.addEventListener("pagehide", () => sendAnonymousIfPending(true));
+
+    function submitContact() {
+      if (contactSent) return;
+      const email = document.getElementById("email-usuario").value.trim();
+      const err = document.getElementById("mail-err");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.classList.remove("hidden"); return; }
+      err.classList.add("hidden");
+      const btn = document.getElementById("mail-btn");
+      btn.disabled = true; btn.textContent = "Enviando...";
+      contactSent = true; dataSent = true;
+      postData(buildPayload(true), false)
+        .then(() => {
+          btn.textContent = "✓ Pedido enviado";
+          const ok = document.getElementById("mail-ok");
+          ok.textContent = `✉️ Listo: te estamos mandando el informe a ${email}. Si en unos minutos no lo ves, revisá Spam o Promociones.`;
+          ok.classList.remove("hidden");
+        })
+        .catch(() => {
+          contactSent = false; dataSent = false;
+          btn.disabled = false; btn.textContent = "✉️ Enviarme el informe";
+          err.textContent = "No pudimos enviarlo. Revisá tu conexión y probá de nuevo.";
+          err.classList.remove("hidden");
+        });
+    }
+
+    // ---------- COMPARTIR / JUGAR OTRA VEZ ----------
+    function shareText() {
+      const r = results;
+      return `Hice el Test Político a ciegas 🗳️
+${r.perfil.nick} (${r.perfil.title})
+💬 «${r.perfil.frase}»
+🎤 ¿Quién lo dijo?: ${r.scoreSummaryA}
+🧭 Propuestas: más afinidad con ${r.topSpace}
+¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos 👉 ${GAME_URL}`;
+    }
+
+    function shareResult() {
+      const text = shareText();
+      if (navigator.share) {
+        navigator.share({ title: "Test Político: ¿Quién dijo qué?", text }).catch(() => {});
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => document.getElementById("copy-confirm").classList.remove("hidden"));
+    }
+
+    function playAgain() {
+      sendAnonymousIfPending(false);
+      location.reload();
+    }
+
+    // ---------- INICIO ----------
+    buildRound();
+    renderStart();
+  </script>
+</body>
+</html>
