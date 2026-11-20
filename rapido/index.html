@@ -93,6 +93,12 @@
     .choice.wrong { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
     .choice.faded { opacity: 0.45; }
     .choice.picked { background: linear-gradient(135deg, #eef2ff, #e0f2fe); border-color: var(--primary); }
+    .topic-b { font-weight: 800; font-size: 1.15rem; color: #1e1b4b; margin-bottom: 0.6rem; }
+    .context-box { background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 0.75rem 0.95rem; font-size: 0.9rem; color: #0c4a6e; margin-bottom: 1rem; line-height: 1.5; }
+    .context-box ul { margin: 0.35rem 0 0 1.1rem; }
+    .context-box li { margin-bottom: 0.15rem; }
+    .choice .opt-text { font-weight: 500; color: #334155; }
+    .choice.none-opt { text-align: center; font-weight: 700; color: var(--muted); background: #fff; border-style: dashed; }
     .choice .more-link { display: inline-block; margin-top: 0.35rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); text-decoration: underline; cursor: pointer; }
     .choice .more-text { display: block; margin-top: 0.4rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
     .choice.center { text-align: center; }
@@ -229,7 +235,7 @@
         <p id="mid-msg" style="font-weight:700; margin-bottom: 1.3rem;"></p>
         <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:14px; padding:1rem; margin-bottom:1.3rem; text-align:left;">
           <strong style="color:#0369a1;">🧭 Parte 2: ¿Con qué te identificás?</strong><br>
-          <span style="font-size:0.94rem;">8 temas, 3 propuestas cada uno. Sin nombres ni partidos: elegí la que más te convence.</span>
+          <span style="font-size:0.94rem;">8 temas, 4 posturas cada uno. Sin nombres ni partidos: elegí la que más te convence.</span>
         </div>
         <button type="button" class="btn btn-primary btn-block" onclick="startPartB()">Vamos →</button>
       </div>
@@ -360,7 +366,6 @@
     const GAME_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/rapido/";
     const LOGO_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/logo.png";
     const FRASES_POR_PARTIDA = 10;
-    const TEMAS_FUERA_PARTE_2 = ["2. Escuelas", "10. Ciencia"]; // la versión rápida usa 8 de los 10 temas
     const AUTO_AVANCE_MS = 1600;
 
     const dirigentesList = [
@@ -478,309 +483,131 @@
       }
     ];
 
-    const dataVarB = [
+    // ---------- PARTE 2: 8 temas, 4 posturas fijas (una por espacio) + "Ninguna" ----------
+    const LIB = "Libertaria", CEN = "Centro (PRO / UCR)", PER = "Peronismo", IZQ = "Izquierda";
+    const DATA_B = [
       {
-        emoji: "🎓",
-        topic: "1. Universidades",
+        topic: "Universidades", emoji: "🎓",
+        contexto: "Las universidades públicas son gratuitas y las financia el Estado nacional. El debate es cuánta plata reciben y quién paga.",
+        pregunta: "¿Cómo se deberían financiar?",
         options: [
-          {
-            letter: "A",
-            title: "Sistema de becas o vales por alumno (vouchers):",
-            text: "En lugar de darle el presupuesto directo a la universidad, el Estado le entrega el dinero o vale a cada estudiante para que elija dónde estudiar (pública o privada), fomentando que las facultades compitan por mejorar su nivel.",
-            space: "Libertaria"
-          },
-          {
-            letter: "B",
-            title: "Gratuidad para argentinos y arancel para extranjeros no residentes:",
-            text: "Mantener la universidad pública gratuita para ciudadanos y residentes del país, pero cobrar una cuota a estudiantes extranjeros que vienen solo a cursar y auditar los gastos administrativos.",
-            space: "Centroderecha / PRO"
-          },
-          {
-            letter: "C",
-            title: "Gratuidad total y presupuesto actualizado por inflación:",
-            text: "Garantizar que la universidad siga siendo gratuita para todos y que el Estado aumente sus fondos automáticamente al ritmo de la inflación, sumando controles externos sobre cómo se gasta la plata.",
-            space: "Peronismo / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Con un vale por estudiante.", text: "Cada uno elige dónde estudiar, pública o privada, y las universidades compiten por ser mejores.",
+            defend: "Que cada estudiante elija dónde estudiar con un vale y las universidades compitan por calidad.", reject: "Financiar universidades sin que compitan por la calidad." },
+          { space: CEN, title: "Gratis para argentinos, con arancel a extranjeros.", text: "Y auditoría de los gastos, para que la plata rinda más.",
+            defend: "Universidad gratis para argentinos, con arancel a extranjeros no residentes y gastos auditados.", reject: "El subsidio universitario sin controles ni distinción de residencia." },
+          { space: PER, title: "Gratis para todos, con presupuesto por ley.", text: "Que se actualice por inflación para que los sueldos y las clases no se pierdan cada año.",
+            defend: "Universidad gratuita con un presupuesto que se actualice por ley.", reject: "Recortar o arancelar la universidad pública." },
+          { space: IZQ, title: "Gratis y con el doble de presupuesto.", text: "Para mejores sueldos docentes y más becas, así más chicos de familias humildes pueden estudiar. Se paga con plata que hoy va a la deuda externa.",
+            defend: "Duplicar el presupuesto universitario para sueldos docentes y becas.", reject: "Priorizar el pago de la deuda externa por sobre la educación." }
         ]
       },
       {
-        emoji: "🏫",
-        topic: "2. Escuelas",
+        topic: "Salud", emoji: "🏥",
+        contexto: "Hay tres sistemas: hospitales públicos (gratis para todos), obras sociales (de trabajadores en blanco, muchas manejadas por sindicatos) y prepagas privadas.",
+        pregunta: "¿Qué cambiarías?",
         options: [
-          {
-            letter: "A",
-            title: "Inversión garantizada y sueldos iguales en todo el país:",
-            text: "Fijar por ley un piso mínimo de gasto educativo y negociar un sueldo base nacional para los docentes, buscando que una escuela de una provincia pobre tenga los mismos recursos que una de la capital.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "B",
-            title: "Educación como servicio esencial (escuelas abiertas siempre):",
-            text: "Declarar por ley que las escuelas no pueden cerrar del todo durante los paros docentes, obligando a garantizar guardias mínimas de clases (como pasa en los hospitales).",
-            space: "Libertaria / PRO"
-          },
-          {
-            letter: "C",
-            title: "Evaluaciones nacionales y más libertad a cada escuela:",
-            text: "Tomar exámenes obligatorios en todo el país para medir cuánto aprenden los chicos y darle más poder a cada director para elegir métodos de enseñanza y contratar docentes.",
-            space: "Centro / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Que compitan entre todas.", text: "Cada uno lleva sus aportes a la obra social o prepaga que quiera.",
+            defend: "Que cada persona elija su obra social o prepaga y compitan por precio y calidad.", reject: "La intermediación obligatoria de los sindicatos en la salud." },
+          { space: CEN, title: "Que funcionen como una sola red.", text: "Con historia clínica digital compartida entre lo público y lo privado.",
+            defend: "Una red de salud integrada, con historia clínica digital compartida.", reject: "" },
+          { space: PER, title: "Más fuerza al hospital público.", text: "Más presupuesto y medicamentos fabricados por el Estado.",
+            defend: "Más presupuesto para hospitales públicos y medicamentos fabricados por el Estado.", reject: "El recorte en la salud pública." },
+          { space: IZQ, title: "Un único sistema estatal y gratuito.", text: "Que integre a las obras sociales y las prepagas.",
+            defend: "Un sistema único de salud, estatal y gratuito.", reject: "La salud como negocio de las prepagas." }
         ]
       },
       {
-        emoji: "🏥",
-        topic: "3. Salud",
+        topic: "Inflación", emoji: "📈",
+        contexto: "Es la suba de los precios. Hay distintas explicaciones: que el Estado imprime pesos para cubrir su déficit, que faltan dólares o que las grandes empresas fijan precios.",
+        pregunta: "¿Cómo la bajarías?",
         options: [
-          {
-            letter: "A",
-            title: "Historia clínica digital única y red integrada:",
-            text: "Conectar en un mismo sistema informático los hospitales públicos, las obras sociales y las prepagas para que, por ejemplo, tus estudios médicos estén disponibles en cualquier guardia sin repetir análisis ni turnos.",
-            space: "Centro / PRO"
-          },
-          {
-            letter: "B",
-            title: "Libre competencia entre obras sociales y prepagas:",
-            text: "Eliminar trabas y regulaciones para que cualquier trabajador pueda elegir libremente su obra social o prepaga sin pasar por intermediarios sindicales, compitiendo por precio y cobertura.",
-            space: "Libertaria"
-          },
-          {
-            letter: "C",
-            title: "Más presupuesto hospitalario y medicamentos fabricados por el Estado:",
-            text: "Reforzar la inversión en hospitales públicos y que laboratorios estatales produzcan remedios básicos (como antibióticos o insulina) para entregarlos gratis o a muy bajo costo.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Prohibiendo imprimir pesos.", text: "Y que cada uno use la moneda que quiera, incluido el dólar.",
+            defend: "Prohibir la emisión de pesos y la libre elección de moneda.", reject: "Que el Estado imprima pesos para financiarse." },
+          { space: CEN, title: "Con cuentas en orden.", text: "Déficit cero y un Banco Central independiente del gobierno.",
+            defend: "Déficit cero y un Banco Central independiente del gobierno.", reject: "Que el Estado gaste más de lo que recauda." },
+          { space: PER, title: "Con acuerdos.", text: "De precios y salarios entre el Estado, las empresas y los sindicatos.",
+            defend: "Acuerdos de precios y salarios entre Estado, empresas y sindicatos.", reject: "Dejar los precios librados solo al mercado." },
+          { space: IZQ, title: "Con control estatal.", text: "De los precios de las grandes empresas y del comercio exterior.",
+            defend: "Control estatal de los precios de las grandes empresas y del comercio exterior.", reject: "Que las grandes empresas fijen precios sin control." }
         ]
       },
       {
-        emoji: "💵",
-        topic: "4. Inflación",
+        topic: "Trabajo", emoji: "💼",
+        contexto: "En 2026 se aprobó una reforma laboral: las empresas aportan a un fondo para pagar indemnizaciones y se flexibilizaron jornadas y vacaciones.",
+        pregunta: "¿Qué hay que hacer ahora?",
         options: [
-          {
-            letter: "A",
-            title: "Acumular dólares por exportaciones y acordar precios y salarios:",
-            text: "Frenar la suba de precios logrando que entren dólares del campo y la industria, mientras el gobierno convoca a empresas y sindicatos para pactar topes de aumentos en alimentos y tarifas.",
-            space: "Peronismo"
-          },
-          {
-            letter: "B",
-            title: "Libre uso del dólar y competencia de monedas:",
-            text: "Permitir que la gente pueda cobrar su sueldo, ahorrar y pagar en pesos, dólares o cualquier otra moneda libremente, prohibiendo que el Banco Central imprima billetes para financiar al Estado.",
-            space: "Libertaria"
-          },
-          {
-            letter: "C",
-            title: "No gastar más de lo que entra y Banco Central independiente:",
-            text: "Mantener las cuentas del Estado sin déficit y garantizar que el Banco Central no dependa del presidente de turno, para que el peso recupere valor y la inflación baje paso a paso.",
-            space: "PRO / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Ir más allá.", text: "Que cada empresa y trabajador acuerden sus condiciones, con menos reglas generales.",
+            defend: "Profundizar la reforma laboral, con acuerdos por empresa y menos reglas generales.", reject: "Las reglas laborales rígidas e iguales para todos." },
+          { space: CEN, title: "Dejarla como está.", text: "Y bajar impuestos al empleo nuevo para que se contrate en blanco.",
+            defend: "Mantener la reforma laboral y bajar impuestos al empleo nuevo.", reject: "El trabajo en negro." },
+          { space: PER, title: "Revisarla.", text: "Volver a la indemnización tradicional y a los convenios por actividad.",
+            defend: "Volver a la indemnización tradicional y a los convenios por actividad.", reject: "La flexibilización de los derechos laborales." },
+          { space: IZQ, title: "Derogarla.", text: "Y bajar la jornada a 6 horas sin bajar sueldos.",
+            defend: "Derogar la reforma laboral y una jornada de 6 horas sin bajar sueldos.", reject: "La reforma laboral de 2026." }
         ]
       },
       {
-        emoji: "💼",
-        topic: "5. Trabajo",
+        topic: "Impuestos", emoji: "💰",
+        contexto: "Con lo que se recauda se pagan escuelas, hospitales, jubilaciones y seguridad. Los principales son tres:<ul><li>El <strong>IVA</strong> lo pagamos todos al comprar: es el 21% del precio.</li><li><strong>Ganancias</strong> lo pagan las empresas y quienes cobran sueldos altos.</li><li>Las <strong>retenciones</strong> las paga quien exporta, sobre todo el campo, y van solo a la Nación, no a las provincias.</li></ul>",
+        pregunta: "¿Qué cambiarías primero?",
         options: [
-          {
-            letter: "A",
-            title: "Reemplazar indemnizaciones por un fondo de desempleo:",
-            text: "Cambiar el sistema actual de juicios e indemnizaciones por un fondo mensual (similar al de la construcción), donde el trabajador acumula un ahorro que cobra si lo despiden o si renuncia, facilitando que las empresas contraten.",
-            space: "Libertaria / PRO"
-          },
-          {
-            letter: "B",
-            title: "Reducir la jornada laboral sin bajar el sueldo:",
-            text: "Bajar las horas de trabajo diarias o semanales (por ejemplo, de 8 a 6 horas o semana de 4 días) manteniendo el mismo salario, para que las empresas necesiten contratar más personal y baje el desempleo.",
-            space: "Izquierda"
-          },
-          {
-            letter: "C",
-            title: "Mantener la indemnización, pero bajar impuestos a las pymes que contraten:",
-            text: "Conservar las protecciones actuales frente al despido, pero eximir de cargas sociales durante los primeros años a las pequeñas empresas que blanqueen o sumen empleados.",
-            space: "Peronismo / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Eliminar impuestos ya.", text: "Achicando el gasto del Estado, empezando por las retenciones.",
+            defend: "Achicar el gasto del Estado para eliminar impuestos, empezando por las retenciones.", reject: "La alta presión impositiva sobre quienes producen." },
+          { space: CEN, title: "Bajarlos de a poco.", text: "Simplificar el sistema sin que se genere déficit.",
+            defend: "Bajar y simplificar impuestos de forma gradual, sin generar déficit.", reject: "Los cambios bruscos que desordenan las cuentas públicas." },
+          { space: PER, title: "Mantener las retenciones.", text: "Y usar esa plata en obras y programas sociales.",
+            defend: "Mantener las retenciones para financiar obras y programas sociales.", reject: "Eliminar retenciones a costa de la obra pública y los programas sociales." },
+          { space: IZQ, title: "Que paguen más los que más tienen.", text: "Impuesto a las grandes fortunas y sin IVA en la canasta básica.",
+            defend: "Un impuesto a las grandes fortunas y sacar el IVA de la canasta básica.", reject: "Que proporcionalmente paguen más impuestos los que menos tienen." }
         ]
       },
       {
-        emoji: "🧾",
-        topic: "6. Impuestos",
+        topic: "Seguridad", emoji: "🚔",
+        contexto: "Desde septiembre de 2026, los chicos de 14 y 15 años pueden ser juzgados penalmente (antes era desde los 16).",
+        pregunta: "¿Qué priorizarías contra el delito?",
         options: [
-          {
-            letter: "A",
-            title: "Simplificar impuestos y sacar el IVA a la comida básica:",
-            text: "Eliminar impuestos complicados y quitar el 21% de IVA a productos esenciales (como leche, pan, yerba o carne) para que bajen directo en la caja del supermercado.",
-            space: "Centro / UCR"
-          },
-          {
-            letter: "B",
-            title: "Cobrar más impuestos a grandes fortunas y bajar impuestos al consumo:",
-            text: "Crear un impuesto permanente a los patrimonios más altos y ganancias financieras, usando esa recaudación para bajar los impuestos que pagan los trabajadores y jubilados en sus compras diarias.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "C",
-            title: "Bajar el gasto del Estado para eliminar impuestos a la producción:",
-            text: "Achicar estructuras públicas para poder eliminar las retenciones al campo y los impuestos que encarecen producir y exportar en Argentina.",
-            space: "Libertaria / PRO"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Más mano dura.", text: "Penas más largas y sin salidas anticipadas.",
+            defend: "Penas más largas y sin salidas anticipadas.", reject: "Los beneficios que permiten a condenados salir antes." },
+          { space: CEN, title: "Ir contra el narco.", text: "Más fuerzas federales, tecnología e inteligencia.",
+            defend: "Más fuerzas federales, tecnología e inteligencia contra el narcotráfico.", reject: "" },
+          { space: PER, title: "Más Estado en los barrios.", text: "Policía de cercanía, escuelas y clubes.",
+            defend: "Policía de cercanía y más presencia del Estado en los barrios.", reject: "Responder al delito solo con castigo." },
+          { space: IZQ, title: "Atacar las causas sociales.", text: "Y más control sobre los abusos policiales.",
+            defend: "Atacar las causas sociales del delito y controlar los abusos policiales.", reject: "La mano dura como única respuesta." }
         ]
       },
       {
-        emoji: "🚓",
-        topic: "7. Seguridad",
+        topic: "Planes sociales", emoji: "🤝",
+        contexto: "Son pagos del Estado a personas sin trabajo formal. La AUH es por cada hijo y exige escuela y vacunas al día. Los planes para adultos son una ayuda mientras consiguen empleo.",
+        pregunta: "¿Hasta dónde tiene que ayudar el Estado?",
         options: [
-          {
-            letter: "A",
-            title: "Prevención social e inversión en barrios vulnerables:",
-            text: "Combatir el delito atacando sus causas sociales: urbanizar barrios, mejorar escuelas, crear centros deportivos y reforzar la atención en adicciones y salud mental.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "B",
-            title: "Bajar la edad de imputabilidad y endurecer las penas:",
-            text: "Permitir que menores que cometen delitos graves (como homicidios o robos armados) sean juzgados penalmente y aumentar las condenas para evitar que salgan rápido en libertad.",
-            space: "Libertaria / PRO"
-          },
-          {
-            letter: "C",
-            title: "Más fuerzas federales e inteligencia contra el narcotráfico:",
-            text: "Reforzar el control de fronteras con radares, desplegar fuerzas federales en zonas críticas y crear unidades especializadas para desarticular bandas narco y lavar su dinero.",
-            space: "Centro / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Solo a los chicos.", text: "Se mantiene la AUH y se terminan los planes para adultos.",
+            defend: "Mantener la AUH y terminar con los planes para adultos.", reject: "Los planes sociales permanentes para adultos." },
+          { space: CEN, title: "A adultos, pero con fecha de vencimiento.", text: "Un tiempo limitado mientras se capacitan.",
+            defend: "Ayuda para adultos por un tiempo limitado, mientras se capacitan.", reject: "La ayuda social sin plazo ni contraprestación." },
+          { space: PER, title: "A adultos, a cambio de trabajar.", text: "En cooperativas, comedores u obras del barrio.",
+            defend: "Planes para adultos a cambio de trabajo en cooperativas, comedores u obras.", reject: "Dejar sin ayuda a quien no consigue empleo." },
+          { space: IZQ, title: "A todos los que no tengan trabajo, sin fecha de corte.", text: "Un ingreso igual a la canasta básica.",
+            defend: "Un ingreso igual a la canasta básica para todas las personas sin trabajo.", reject: "Que haya personas viviendo por debajo de la línea de pobreza." }
         ]
       },
       {
-        emoji: "🤲",
-        topic: "8. Planes sociales",
+        topic: "Cine y cultura", emoji: "🎬",
+        contexto: "El Estado ayuda a financiar películas, teatro y música a través de organismos como el INCAA. El debate es si debe seguir haciéndolo y cómo.",
+        pregunta: "¿Cómo se debería financiar?",
         options: [
-          {
-            letter: "A",
-            title: "Mantener la ayuda, pero exigir capacitación o terminar la escuela:",
-            text: "Seguir pagando los planes directamente a las familias, poniendo como requisito obligatorio cursar oficios o finalizar el secundario para no perder el beneficio.",
-            space: "PRO / UCR"
-          },
-          {
-            letter: "B",
-            title: "Eliminar intermediarios y poner plazo límite al plan:",
-            text: "Depositar la ayuda sin pasar por organizaciones sociales y fijar un tiempo máximo de cobro (por ejemplo, 1 o 2 años) mientras se incentiva el paso a un empleo privado.",
-            space: "Libertaria"
-          },
-          {
-            letter: "C",
-            title: "Consolidar la AUH y avanzar hacia un ingreso básico garantizado:",
-            text: "Fortalecer la Asignación Universal por Hijo y garantizar un piso mínimo de ingresos estatal para todos los hogares que estén por debajo de la línea de pobreza.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
-        ]
-      },
-      {
-        emoji: "🎬",
-        topic: "9. Cine y cultura",
-        options: [
-          {
-            letter: "A",
-            title: "Que el cine y el arte se financien con el público, sin subsidios:",
-            text: "Eliminar los fondos estatales para películas, teatro o festivales, dejando que cada proyecto cultural se sostenga con las entradas que vende o con aportes privados.",
-            space: "Libertaria"
-          },
-          {
-            letter: "B",
-            title: "Mantener el apoyo estatal (como el INCAA) para proteger la cultura nacional:",
-            text: "Sostener los fondos públicos de fomento al cine, la música y el teatro con reglas claras, defendiendo la identidad cultural y los puestos de trabajo del sector.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "C",
-            title: "Incentivos fiscales para que empresas privadas patrocinen cultura:",
-            text: "Crear leyes de mecenazgo donde empresas privadas puedan descontar impuestos si financian obras de teatro, museos o películas, sin que el Estado ponga plata directa.",
-            space: "PRO / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
-        ]
-      },
-      {
-        emoji: "🔬",
-        topic: "10. Ciencia",
-        options: [
-          {
-            letter: "A",
-            title: "Presupuesto científico creciente garantizado por ley:",
-            text: "Asegurar por ley que la inversión en organismos como el CONICET crezca todos los años, financiando tanto investigaciones de largo plazo como desarrollos aplicados.",
-            space: "Peronismo / Izquierda"
-          },
-          {
-            letter: "B",
-            title: "Achicar la estructura estatal y priorizar ciencia financiada por privados:",
-            text: "Reducir el gasto administrativo de los organismos científicos y enfocar los recursos únicamente en proyectos prácticos que tengan demanda o inversión de empresas privadas.",
-            space: "Libertaria"
-          },
-          {
-            letter: "C",
-            title: "Asociar universidades con empresas y provincias para proyectos puntuales:",
-            text: "Armar equipos entre universidades públicas, gobiernos provinciales y empresas privadas (por ejemplo, en energía, agro o software) con fondos atados a resultados concretos.",
-            space: "PRO / UCR"
-          },
-          {
-            letter: "D",
-            title: "Ninguna de estas ideas me convence.",
-            text: "",
-            space: "Ninguna"
-          }
+          { space: LIB, title: "Sin plata pública.", text: "Con entradas y aportes privados.",
+            defend: "Que la cultura se financie con entradas y aportes privados.", reject: "Los subsidios estatales a la cultura." },
+          { space: CEN, title: "Con empresas.", text: "Las que financian cultura pagan menos impuestos (mecenazgo).",
+            defend: "Mecenazgo: que las empresas que financian cultura paguen menos impuestos.", reject: "" },
+          { space: PER, title: "Con apoyo estatal.", text: "Sostener el INCAA y los fondos de fomento con reglas claras.",
+            defend: "Sostener el INCAA y los fondos de fomento con reglas claras.", reject: "El desfinanciamiento de la cultura nacional." },
+          { space: IZQ, title: "Con más apoyo estatal.", text: "Más presupuesto, gestionado junto a los trabajadores del sector.",
+            defend: "Más presupuesto cultural, gestionado junto a sus trabajadores.", reject: "Los recortes en cultura." }
         ]
       }
     ];
-
+    const NINGUNA = { space: "Ninguna", title: "Ninguna me convence.", text: "", defend: "", reject: "" };
 
     const ESPACIOS_DECLARADOS = [
       "La Libertad Avanza / Libertarios",
@@ -790,50 +617,6 @@
       "Frente de Izquierda",
       "Independiente / Ninguno"
     ];
-
-    // Frases para el "Lo que defendés / rechazás", según tema y opción elegida
-    const BULLETS = {
-      "Universidades": {
-        A: ["La libre elección del estudiante mediante vouchers y la competencia entre universidades.", "El financiamiento directo sin competencia ni elección individual del alumno."],
-        B: ["La universidad gratuita para argentinos, arancelando a extranjeros no residentes y auditando gastos.", "El subsidio universitario sin controles ni distinción de residencia."],
-        C: ["La universidad pública, gratuita y con presupuesto actualizado por inflación.", "El arancelamiento universitario o los sistemas de vouchers privados."]
-      },
-      "Salud": {
-        A: ["Una historia clínica digital única que integre hospitales, obras sociales y prepagas.", null],
-        B: ["La libre competencia entre obras sociales y prepagas sin intermediarios sindicales.", "El monopolio o intermediación sindical obligatoria en la salud."],
-        C: ["Mayor presupuesto para hospitales públicos y producción estatal de medicamentos gratuitos.", "La mercantilización de la salud pública o el recorte de medicamentos."]
-      },
-      "Inflación": {
-        A: ["Acuerdos de precios y salarios junto al ingreso de dólares por exportaciones.", null],
-        B: ["La libre competencia de monedas, el uso libre del dólar y prohibir la emisión monetaria.", "El control estatal de precios y la emisión monetaria para financiar el gasto."],
-        C: ["El equilibrio fiscal y un Banco Central independiente para fortalecer la moneda.", null]
-      },
-      "Trabajo": {
-        A: ["Reemplazar indemnizaciones por un fondo de desempleo para facilitar la contratación.", "Los costos laborales rígidos y la litigiosidad por despidos."],
-        B: ["Reducir la jornada laboral sin bajar salarios para repartir el empleo.", null],
-        C: ["Conservar la indemnización por despido y bajar impuestos a pymes que contraten.", null]
-      },
-      "Impuestos": {
-        A: ["Quitar el IVA a los alimentos de la canasta básica y simplificar impuestos.", null],
-        B: ["Gravar más a las grandes fortunas para aliviar los impuestos al consumo popular.", "Los sistemas tributarios regresivos que pesan más sobre trabajadores y jubilados."],
-        C: ["Achicar el gasto público para eliminar retenciones e impuestos a la producción.", "La alta presión impositiva y las retenciones sobre quienes producen y exportan."]
-      },
-      "Seguridad": {
-        A: ["La prevención social, urbanización y salud mental para atacar las causas del delito.", "Las políticas exclusivamente punitivas sin abordaje social."],
-        B: ["Bajar la edad de imputabilidad y endurecer las penas para delitos graves.", "La laxitud penal frente a delitos graves cometidos por menores o reincidentes."],
-        C: ["Mayor despliegue de fuerzas federales e inteligencia financiera contra el narcotráfico.", null]
-      },
-      "Planes sociales": {
-        A: ["Mantener la ayuda social exigiendo capacitación laboral o terminar la escuela.", null],
-        B: ["Eliminar intermediarios y fijar un plazo límite a los planes sociales.", "El asistencialismo permanente y la intermediación de organizaciones sociales."],
-        C: ["Fortalecer la AUH y garantizar un piso básico de ingresos contra la pobreza.", null]
-      },
-      "Cine y cultura": {
-        A: ["Que los proyectos culturales se financien con el público o aportes privados, sin subsidios.", "El financiamiento estatal de producciones artísticas o cinematográficas."],
-        B: ["El fomento estatal (como el INCAA) para proteger la cultura nacional y su empleo.", "El desfinanciamiento de la industria cultural nacional."],
-        C: ["Leyes de mecenazgo con incentivos fiscales para que empresas patrocinen la cultura.", null]
-      }
-    };
 
     // ---------- PERFILES Y AVATARES ----------
     const PERFILES = {
@@ -1010,13 +793,7 @@
       answersA = Array(roundA.length).fill("");
       idxA = 0;
 
-      dataB = dataVarB
-        .filter(t => !TEMAS_FUERA_PARTE_2.includes(t.topic))
-        .map(t => {
-          const ideas = t.options.filter(o => o.space !== "Ninguna");
-          const ninguna = t.options.find(o => o.space === "Ninguna");
-          return { topic: cleanTopic(t.topic), emoji: t.emoji, options: [...shuffle(ideas), ninguna] };
-        });
+      dataB = DATA_B.map(t => ({ ...t, options: [...shuffle(t.options), NINGUNA] }));
       answersB = Array(dataB.length).fill(null);
       idxB = 0;
     }
@@ -1103,27 +880,19 @@
       card.style.animation = "none"; card.offsetHeight; card.style.animation = "";
       card.innerHTML = `
         <span class="phase-pill phase-b">🧭 Parte 2 · ¿Con qué te identificás?</span>
-        <div class="question-title">${t.emoji} ${esc(t.topic)}: ¿qué propuesta te convence más?</div>
+        <div class="topic-b">${t.emoji} ${esc(t.topic)}</div>
+        <div class="context-box">📖 ${t.contexto}</div>
+        <div class="question-title">${esc(t.pregunta)}</div>
         <div class="choices" id="b-choices">
-          ${t.options.map((o, i) => {
-            const title = o.title.replace(/:\s*$/, "");
-            const more = o.text
-              ? `<br><span class="more-link" onclick="toggleMore(event, ${i})">ver más</span><span class="more-text hidden" id="more-${i}">${esc(o.text)}</span>`
-              : "";
-            return `<div role="button" tabindex="0" class="choice ${answersB[idxB] === i ? "picked" : ""}" onclick="answerB(${i})" onkeydown="if(event.key==='Enter')answerB(${i})">${esc(title)}${more}</div>`;
-          }).join("")}
+          ${t.options.map((o, i) => `
+            <div role="button" tabindex="0" class="choice ${answersB[idxB] === i ? "picked" : ""} ${o.space === "Ninguna" ? "none-opt" : ""}" onclick="answerB(${i})" onkeydown="if(event.key==='Enter')answerB(${i})">
+              <strong>${esc(o.title)}</strong>${o.text ? ` <span class="opt-text">${esc(o.text)}</span>` : ""}
+            </div>`).join("")}
         </div>
         <div class="game-nav">
           ${idxB > 0 ? `<button type="button" class="link-btn" onclick="prevB()">← Anterior</button>` : "<span></span>"}
           <span style="font-size:0.82rem; color:var(--muted);">Tocá una opción para seguir</span>
         </div>`;
-    }
-
-    function toggleMore(ev, i) {
-      ev.stopPropagation();
-      const el = document.getElementById(`more-${i}`);
-      el.classList.toggle("hidden");
-      ev.target.textContent = el.classList.contains("hidden") ? "ver más" : "ver menos";
     }
 
     let lockB = false;
@@ -1166,7 +935,7 @@
       const chosenB = dataB.map((t, i) => {
         const o = t.options[answersB[i]];
         countsB[o.space] = (countsB[o.space] || 0) + 1;
-        return { topic: t.topic, letter: o.letter, title: o.title.replace(/:\s*$/, ""), space: o.space };
+        return { topic: t.topic, title: o.text ? `${o.title} ${o.text}` : o.title, space: o.space, defend: o.defend, reject: o.reject };
       });
       const sortedB = Object.entries(countsB).sort((a, b) => b[1] - a[1]);
       const topName = sortedB[0][0];
@@ -1175,20 +944,21 @@
 
       // Perfil
       let key;
-      if (topName === "Ninguna" && topCount >= 3) key = "esceptico";
-      else if (topCount <= 2) key = "hibrido";
-      else if (topName.includes("Libertaria")) key = "liberal";
-      else if (topName.includes("PRO") || topName.includes("Centro") || topName.includes("UCR")) key = "reformista";
-      else if (topName.includes("Peronismo") && !topName.includes("Izquierda")) key = "desarrollista";
-      else if (topName.includes("Izquierda")) key = "igualitario";
+      const tiedTop = sortedB.length > 1 && sortedB[1][1] === topCount;
+      if (topName === "Ninguna" && topCount >= 3 && !tiedTop) key = "esceptico";
+      else if (topCount <= 2 || tiedTop) key = "hibrido";
+      else if (topName === LIB) key = "liberal";
+      else if (topName === CEN) key = "reformista";
+      else if (topName === PER) key = "desarrollista";
+      else if (topName === IZQ) key = "igualitario";
       else key = "hibrido";
       const perfil = PERFILES[key];
 
       const defend = [], reject = [], noneTopics = [];
       chosenB.forEach(c => {
         if (c.space === "Ninguna") { noneTopics.push(c.topic); return; }
-        const b = (BULLETS[c.topic] || {})[c.letter];
-        if (b) { if (b[0]) defend.push(b[0]); if (b[1]) reject.push(b[1]); }
+        if (c.defend) defend.push(c.defend);
+        if (c.reject) reject.push(c.reject);
       });
       if (noneTopics.length) reject.push(`Las propuestas tradicionales de todos los espacios en: ${noneTopics.join(", ")}.`);
       if (!defend.length) defend.push("Una mirada independiente y crítica frente a las ofertas electorales actuales.");
@@ -1198,11 +968,10 @@
       // Coherencia
       const dec = declared.toLowerCase(), top = topName.toLowerCase();
       const isMatch =
-        (dec.includes("libertad") && top.includes("libertaria")) ||
-        (dec.includes("pro /") && (top.includes("pro") || top.includes("centroderecha"))) ||
-        (dec.includes("ucr") && (top.includes("ucr") || top.includes("centro"))) ||
-        (dec.includes("peronismo") && top.includes("peronismo")) ||
-        (dec.includes("izquierda") && top.includes("izquierda"));
+        (dec.includes("libertad") && topName === LIB) ||
+        ((dec.includes("pro /") || dec.includes("ucr")) && topName === CEN) ||
+        (dec.includes("peronismo") && topName === PER) ||
+        (dec.includes("izquierda") && topName === IZQ);
       let coherence;
       if (topName === "Ninguna" && declared.includes("Independiente")) coherence = `Te definiste como independiente y lo confirmaste: en la mayoría de los temas ninguna propuesta te convenció.`;
       else if (declared.includes("Independiente")) coherence = `Te definiste como independiente, y a ciegas tu mayor afinidad fue con propuestas de ${topSpace}.`;
