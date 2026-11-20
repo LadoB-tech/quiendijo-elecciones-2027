@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Político: ¿Reconocés lo que dicen sin ver quién habla?</title>
-  <meta property="og:title" content="Test Político: ¿Reconocés lo que dicen sin ver quién habla?" />
-<meta property="og:description" content="Un desafío en dos etapas: adiviná qué dirigente dijo cada frase real y elegí propuestas sin etiquetas ni partidos." />
-<meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/" />
+  <title>Test Político: ¿Quién dijo qué? · Versión rápida</title>
+  <meta name="description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
+
+  <!-- Vista previa al compartir (WhatsApp, Facebook, X, Telegram) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Test Político" />
+  <meta property="og:title" content="Test Político: ¿Quién dijo qué?" />
+  <meta property="og:description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
+  <meta property="og:url" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/rapido/" />
   <meta property="og:image" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/preview.jpg" />
   <meta property="og:image:secure_url" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/preview.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -15,810 +19,191 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Logo de Test Político: ¿Quién dijo qué?" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Test Político: ¿Quién dijo qué?" />
+  <meta name="twitter:description" content="10 frases y 8 propuestas. Jugá en 3 minutos." />
   <meta name="twitter:image" content="https://ladob-tech.github.io/quiendijo-elecciones-2027/preview.jpg" />
-  <link rel="icon" type="image/png" href="logo.png" />
-  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="apple-touch-icon" href="../logo.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #4338ca;
-      --primary-hover: #3730a3;
       --secondary: #0ea5e9;
       --accent: #f43f5e;
-      --amber: #f59e0b;
-      --emerald: #10b981;
+      --ok: #10b981;
       --bg: #f1f5f9;
       --card: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.55; min-height: 100vh; }
+    button { font: inherit; }
+    .hidden { display: none !important; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.55;
-    }
-
-    /* HEADER VIBRANTE */
-    header {
+    /* BARRA SUPERIOR */
+    .topbar {
       background: linear-gradient(125deg, #1e1b4b 0%, #3730a3 45%, #0284c7 82%, #f43f5e 125%);
-      color: #ffffff;
-      padding: 3rem 1.25rem 2.75rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      color: #fff; position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
     }
+    .topbar-inner { max-width: 720px; margin: 0 auto; padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .topbar img { width: 38px; height: 38px; }
+    .topbar-title { font-weight: 800; font-size: 1rem; line-height: 1.2; }
+    .topbar-step { margin-left: auto; font-weight: 800; font-size: 0.85rem; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); padding: 0.3rem 0.75rem; border-radius: 999px; white-space: nowrap; }
+    .progress { height: 5px; background: rgba(255,255,255,0.2); }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #34d399); transition: width 0.35s ease; }
 
-    .header-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      background: rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      color: #ffffff;
-      font-size: 0.82rem;
-      font-weight: 700;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      margin-bottom: 0.9rem;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
+    .container { max-width: 720px; margin: 1.5rem auto; padding: 0 1rem 4rem; }
 
-    header h1 {
-      font-size: 2.35rem;
-      font-weight: 800;
-      margin-bottom: 0.65rem;
-      letter-spacing: -0.03em;
-      text-shadow: 0 2px 12px rgba(15, 23, 42, 0.25);
-    }
+    /* PORTADA */
+    .start-card { text-align: center; background: #fff; border-radius: 22px; padding: 2rem 1.25rem; border: 1.5px solid var(--border); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+    .start-card img { width: 170px; height: 170px; margin-bottom: 0.5rem; }
+    .start-card h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; line-height: 1.2; }
+    .time-pill { display: inline-flex; gap: 0.4rem; align-items: center; background: linear-gradient(135deg, #ecfdf5, #e0f2fe); color: #065f46; border: 1.5px solid #a7f3d0; font-weight: 800; font-size: 0.9rem; padding: 0.4rem 0.95rem; border-radius: 999px; margin: 0.85rem 0 0.6rem; }
+    .start-card .lead { color: #334155; font-size: 0.98rem; max-width: 520px; margin: 0 auto 1.4rem; }
+    .start-q { font-weight: 800; font-size: 1.05rem; color: #1e1b4b; margin-bottom: 0.25rem; }
+    .start-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; }
 
-    header p {
-      max-width: 720px;
-      margin: 0 auto;
-      color: #e0f2fe;
-      font-size: 1.05rem;
-      font-weight: 500;
-    }
+    /* TARJETA DE JUEGO */
+    .game-card { background: #fff; border-radius: 22px; padding: 1.5rem 1.25rem; border: 1.5px solid var(--border); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); animation: pop 0.28s ease; }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .phase-pill { display: inline-block; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.3rem 0.8rem; border-radius: 999px; margin-bottom: 0.9rem; }
+    .phase-a { background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe; }
+    .phase-b { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .topic { font-weight: 800; color: var(--muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
+    .quote { font-size: 1.25rem; font-weight: 700; color: #1e1b4b; line-height: 1.4; margin-bottom: 1.3rem; padding: 1rem 1.1rem; background: linear-gradient(135deg, #f8fafc, #eef2ff); border-radius: 14px; border-left: 5px solid var(--primary); }
+    .question-title { font-size: 1.2rem; font-weight: 800; color: #1e1b4b; margin-bottom: 1rem; }
 
-    /* NAVEGACIÓN + BARRA DE PROGRESO */
-    .nav-wrapper {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    .choices { display: grid; gap: 0.65rem; }
+    .choices.two-col { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 480px) { .choices.two-col { grid-template-columns: 1fr; } }
+    .choice {
+      width: 100%; text-align: left; border: 2px solid #cbd5e1; background: #f8fafc; color: #1e293b;
+      border-radius: 14px; padding: 0.9rem 1rem; font-weight: 700; font-size: 0.98rem; cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s, background 0.15s; display: block;
     }
+    .choice:hover:not(:disabled) { border-color: #818cf8; background: #eef2ff; transform: translateY(-1px); }
+    .choice:disabled { cursor: default; }
+    .choice.correct { background: #dcfce7; border-color: #22c55e; color: #14532d; }
+    .choice.wrong { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
+    .choice.faded { opacity: 0.45; }
+    .choice.picked { background: linear-gradient(135deg, #eef2ff, #e0f2fe); border-color: var(--primary); }
+    .star-badge { display: inline-block; background: #fef3c7; color: #92400e; border: 1.5px solid #fcd34d; font-weight: 800; font-size: 0.75rem; padding: 0.15rem 0.55rem; border-radius: 999px; margin-left: 0.4rem; vertical-align: middle; }
+    .choice.selected { background: #fef3c7; border-color: #f59e0b; color: #78350f; }
+    .choice.selected::before { content: "⭐ "; }
+    .themes-card { border: 2px solid #fcd34d; background: linear-gradient(135deg, #ffffff, #fffbeb); }
+    .themes-card h3 { color: #92400e !important; }
+    .theme-row { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.55rem 0; border-bottom: 1px solid #fde68a; font-size: 0.95rem; }
+    .theme-row:last-child { border-bottom: none; }
+    .reflect { background: #fff; border: 1.5px dashed #f59e0b; border-radius: 12px; padding: 0.9rem 1rem; margin-top: 0.9rem; font-weight: 700; color: #78350f; font-size: 0.97rem; }
+    .themes-card ul { margin: 0.6rem 0 0 1.2rem; font-size: 0.93rem; }
+    .themes-card li { margin-bottom: 0.35rem; }
+    .topic-b { font-weight: 800; font-size: 1.15rem; color: #1e1b4b; margin-bottom: 0.6rem; }
+    .context-box { background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 0.75rem 0.95rem; font-size: 0.9rem; color: #0c4a6e; margin-bottom: 1rem; line-height: 1.5; }
+    .context-box ul { margin: 0.35rem 0 0 1.1rem; }
+    .context-box li { margin-bottom: 0.15rem; }
+    .choice .opt-text { font-weight: 500; color: #334155; }
+    .choice.none-opt { text-align: center; font-weight: 700; color: var(--muted); background: #fff; border-style: dashed; }
+    .choice .more-link { display: inline-block; margin-top: 0.35rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); text-decoration: underline; cursor: pointer; }
+    .choice .more-text { display: block; margin-top: 0.4rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
+    .choice.center { text-align: center; }
 
-    .nav-steps {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
-
-    .step-badge {
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      border: 1.5px solid var(--border);
-      background: #f8fafc;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .step-badge:hover {
-      border-color: #a5b4fc;
-      color: var(--primary);
-    }
-
-    .step-badge.active {
-      background: linear-gradient(135deg, #4338ca, #0284c7);
-      color: #ffffff;
-      border-color: transparent;
-      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);
-    }
-
-    .step-badge.admin-tab {
-      margin-left: auto;
-      background: #0f172a;
-      color: #f8fafc;
-      border-color: #0f172a;
-    }
-
-    @media (max-width: 720px) {
-      .step-badge.admin-tab {
-        margin-left: 0;
-      }
-      header h1 {
-        font-size: 1.85rem;
-      }
-    }
-
-    .progress-bar-container {
-      width: 100%;
-      height: 5px;
-      background: #e2e8f0;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #4338ca, #0ea5e9, #10b981);
-      transition: width 0.35s ease;
-    }
-
-    .container {
-      max-width: 940px;
-      margin: 1.75rem auto;
-      padding: 0 1.25rem 4rem;
-    }
-
-    /* BANNER INTRODUCTORIO DE SECCIÓN */
-    .section-intro {
-      background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
-      border: 1.5px solid #c7d2fe;
-      border-left: 6px solid var(--primary);
-      padding: 1.25rem 1.5rem;
-      border-radius: 14px;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 14px rgba(67, 56, 202, 0.06);
-    }
-
-    .section-intro h2 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #1e1b4b;
-      margin-bottom: 0.25rem;
-    }
-
-    .section-intro p {
-      font-size: 0.94rem;
-      color: #334155;
-      max-width: 660px;
-    }
-
-    .counter-pill {
-      background: #ffffff;
-      border: 1.5px solid #c7d2fe;
-      padding: 0.55rem 1rem;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      color: var(--primary);
-      white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    }
-
-    /* TARJETAS DE PREGUNTAS */
-    .question-block {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-left: 6px solid var(--card-accent, #4338ca);
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1.4rem;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-    .question-block:hover {
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
-    }
-
-    .question-block.answered {
-      background: #fafcff;
-    }
-
-    .q-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.15rem;
-    }
-
-    .q-num {
-      background: var(--card-accent, #4338ca);
-      color: #ffffff;
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-    }
-
-    .q-title {
-      font-size: 1.18rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    /* TEST 1: FRASES + CHIPS RÁPIDOS DE DIRIGENTES */
-    .match-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-    }
-
-    .match-row {
-      padding: 1rem 1.1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      background: #ffffff;
-      transition: all 0.2s ease;
-    }
-
-    .match-row.selected {
-      border-color: #818cf8;
-      background: #f5f7ff;
-    }
-
-    .match-quote {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      font-size: 0.98rem;
-      font-weight: 500;
-      color: #1e293b;
-      margin-bottom: 0.75rem;
-    }
-
-    .opt-letter {
-      font-weight: 800;
-      color: var(--card-accent, #4338ca);
-      min-width: 22px;
-    }
-
-    .chips-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      padding-left: 1.65rem;
-    }
-
-    @media (max-width: 640px) {
-      .chips-group {
-        padding-left: 0;
-      }
-    }
-
-    .dir-chip {
-      border: 1.5px solid #cbd5e1;
-      background: #f8fafc;
-      color: #334155;
-      border-radius: 999px;
-      padding: 0.42rem 0.95rem;
-      font-size: 0.84rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .dir-chip:hover {
-      background: #eef2ff;
-      border-color: #818cf8;
-      color: #1e1b4b;
-      transform: translateY(-1px);
-    }
-
-    .dir-chip.active {
-      background: linear-gradient(135deg, #4338ca, #0284c7);
-      color: #ffffff;
-      border-color: transparent;
-      box-shadow: 0 3px 10px rgba(67, 56, 202, 0.28);
-    }
-
-    /* TEST 2: TARJETAS DE PROPUESTAS */
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-
-    .option-label {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem;
-      padding: 1rem 1.1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      background: #ffffff;
-    }
-
-    .option-label:hover {
-      background: #f8fafc;
-      border-color: #94a3b8;
-      transform: translateX(3px);
-    }
-
-    .option-label input[type="radio"] {
-      margin-top: 0.28rem;
-      accent-color: var(--primary);
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    .option-label.selected {
-      border-color: var(--primary);
-      background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 100%);
-      box-shadow: 0 3px 10px rgba(67, 56, 202, 0.12);
-    }
-
-    .opt-text {
-      font-size: 0.95rem;
-      color: #1e293b;
-    }
-
-    .opt-text strong {
-      color: #0f172a;
-      display: block;
-      margin-bottom: 0.2rem;
-      font-size: 0.98rem;
-    }
-
-    .std-select, input[type="password"], input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 0.8rem 0.9rem;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      background: #ffffff;
-      color: var(--text);
-      margin-top: 0.35rem;
-      transition: border-color 0.2s;
-    }
-
-    .std-select:focus, input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    @media (max-width: 640px) {
-      .form-grid-2 {
-        grid-template-columns: 1fr;
-      }
-    }
+    .feedback { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 12px; font-weight: 800; font-size: 1rem; text-align: center; animation: pop 0.2s ease; }
+    .feedback.ok { background: #dcfce7; color: #166534; }
+    .feedback.err { background: #fee2e2; color: #991b1b; }
+    .game-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; gap: 0.75rem; }
+    .link-btn { background: none; border: none; color: var(--muted); font-weight: 700; cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0; }
+    .link-btn:hover { color: var(--primary); }
 
     /* BOTONES */
-    .btn-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-    }
+    .btn { padding: 0.95rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 0.98rem; cursor: pointer; border: none; transition: all 0.2s ease; }
+    .btn-primary { background: linear-gradient(135deg, #4338ca 0%, #0284c7 100%); color: #fff; box-shadow: 0 6px 18px rgba(67, 56, 202, 0.28); }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .btn-block { width: 100%; }
 
-    .btn {
-      padding: 0.95rem 1.65rem;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.98rem;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #4338ca 0%, #0284c7 100%);
-      color: #ffffff;
-      flex: 1;
-      box-shadow: 0 6px 18px rgba(67, 56, 202, 0.28);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(67, 56, 202, 0.38);
-    }
-
-    .btn-secondary {
-      background: #e2e8f0;
-      color: #334155;
-    }
-
-    .btn-secondary:hover {
-      background: #cbd5e1;
-    }
-
-    .btn-success {
-      background: linear-gradient(135deg, #059669, #10b981);
-      color: #ffffff;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    /* INTERMEDIO */
+    .mid-card { text-align: center; }
+    .big-score { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #4338ca, #0284c7); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; margin: 0.4rem 0; }
 
     /* RESULTADOS */
-    .section-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
-    }
+    .result-box { background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 55%, #0284c7 100%); color: #fff; border-radius: 20px; padding: 1.75rem 1.4rem; margin-bottom: 1.4rem; box-shadow: 0 12px 30px rgba(30, 27, 75, 0.25); }
+    .result-box h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.3rem; }
+    @media (max-width: 640px) { .result-grid { grid-template-columns: 1fr; } }
+    .result-panel { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 1.1rem; }
+    .result-panel h3 { font-size: 0.85rem; color: #bae6fd; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; }
+    .bar-item { margin-bottom: 0.7rem; }
+    .bar-label { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.86rem; margin-bottom: 0.25rem; }
+    .bar-track { background: rgba(255,255,255,0.18); height: 9px; border-radius: 999px; overflow: hidden; }
+    .bar-fill { background: linear-gradient(90deg, #38bdf8, #34d399); height: 100%; border-radius: 999px; }
+    .result-actions { margin-top: 1.4rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .result-actions .btn { flex: 1 1 auto; }
 
-    .result-box {
-      background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 55%, #0284c7 100%);
-      color: #ffffff;
-      border-radius: 18px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 12px 30px rgba(30, 27, 75, 0.25);
-    }
-
-    .result-box h2 {
-      font-size: 1.65rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    @media (max-width: 640px) {
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .result-panel {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 14px;
-      padding: 1.25rem;
-    }
-
-    .result-panel h3 {
-      font-size: 0.92rem;
-      color: #bae6fd;
-      margin-bottom: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 800;
-    }
-
-    .bar-item {
-      margin-bottom: 0.75rem;
-    }
-
-    .bar-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.88rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .bar-track {
-      background: rgba(255, 255, 255, 0.18);
-      height: 9px;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      background: linear-gradient(90deg, #38bdf8, #34d399);
-      height: 100%;
-      border-radius: 999px;
-    }
-
-    .profile-card {
-      background: #ffffff;
-      color: var(--text);
-      border-radius: 18px;
-      padding: 1.85rem;
-      margin-bottom: 1.5rem;
-      border: 2px solid #818cf8;
-      box-shadow: 0 8px 24px rgba(67, 56, 202, 0.1);
-    }
-
-    .profile-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      margin-bottom: 0.6rem;
-      border: 1px solid #c7d2fe;
-    }
-
-    .profile-title {
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: #1e1b4b;
-      margin-bottom: 0.45rem;
-    }
-
-    .profile-desc {
-      font-size: 0.98rem;
-      color: #334155;
-      margin-bottom: 1.35rem;
-    }
-
-    .pros-cons-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    @media (max-width: 640px) {
-      .pros-cons-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .pc-box {
-      border-radius: 12px;
-      padding: 1.2rem;
-    }
-
-    .pc-box.defend {
-      background: #ecfdf5;
-      border: 1.5px solid #a7f3d0;
-    }
-
-    .pc-box.reject {
-      background: #fff1f2;
-      border: 1.5px solid #fecdd3;
-    }
-
-    .pc-box h4 {
-      font-size: 0.98rem;
-      font-weight: 800;
-      margin-bottom: 0.65rem;
-    }
-
-    .pc-box.defend h4 {
-      color: #065f46;
-    }
-
-    .pc-box.reject h4 {
-      color: #9f1239;
-    }
-
-    .pc-box ul {
-      padding-left: 1.2rem;
-      font-size: 0.92rem;
-      color: #1e293b;
-    }
-
-    .pc-box li {
-      margin-bottom: 0.45rem;
-    }
-
-    .insight-pills {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    @media (max-width: 640px) {
-      .insight-pills {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .insight-pill {
-      background: #f8fafc;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 1.05rem 1.2rem;
-      font-size: 0.92rem;
-      color: #1e293b;
-    }
-
-    .insight-pill strong {
-      display: block;
-      color: var(--primary);
-      margin-bottom: 0.25rem;
-      font-size: 0.95rem;
-    }
-
-    .revelation-item {
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0;
-      font-size: 0.94rem;
-    }
-
-    .revelation-item:last-child {
-      border-bottom: none;
-    }
-
-    .badge-ok {
-      display: inline-block;
-      background: #dcfce7;
-      color: #166534;
-      font-weight: 800;
-      font-size: 0.78rem;
-      padding: 0.18rem 0.6rem;
-      border-radius: 6px;
-      margin-left: 0.35rem;
-    }
-
-    .badge-err {
-      display: inline-block;
-      background: #fee2e2;
-      color: #991b1b;
-      font-weight: 800;
-      font-size: 0.78rem;
-      padding: 0.18rem 0.6rem;
-      border-radius: 6px;
-      margin-left: 0.35rem;
-    }
-
-    .alert-msg {
-      background: #fff1f2;
-      color: #be123c;
-      border: 1.5px solid #fecdd3;
-      padding: 0.85rem 1.1rem;
-      border-radius: 10px;
-      margin-top: 1rem;
-      font-size: 0.92rem;
-      font-weight: 700;
-    }
-
-    /* ADMIN DASHBOARD */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .kpi-card {
-      background: #ffffff;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-
-    .kpi-val {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .kpi-lbl {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-weight: 700;
-      margin-top: 0.25rem;
-    }
-
-    .admin-bar-track {
-      background: #e2e8f0;
-      height: 10px;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 0.25rem;
-    }
-
-    .admin-bar-fill {
-      background: linear-gradient(90deg, #4338ca, #0ea5e9);
-      height: 100%;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      background: #ffffff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    th, td {
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      background: #f1f5f9;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      padding: 2rem 1rem;
-      border-top: 1px solid var(--border);
-    }
-
-    @media print {
-      .nav-wrapper, .no-print, footer, header p, .header-pill {
-        display: none !important;
-      }
-      body {
-        background: #ffffff;
-      }
-      .container {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      .result-box {
-        background: #1e1b4b !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .section-card, .kpi-card, .table-wrap, .profile-card {
-        box-shadow: none;
-        border: 1px solid #cbd5e1;
-        break-inside: avoid;
-      }
-    }
-    .context-box { background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 0.75rem 0.95rem; font-size: 0.92rem; color: #0c4a6e; margin: 0.4rem 0 0.8rem; line-height: 1.5; }
-    .context-box ul { margin: 0.35rem 0 0 1.1rem; }
-    .q-question { font-weight: 800; font-size: 1.02rem; color: #1e1b4b; margin-bottom: 0.7rem; }
-    .profile-head { display: flex; gap: 1.2rem; align-items: center; margin-bottom: 1.1rem; }
-    @media (max-width: 560px) { .profile-head { flex-direction: column; text-align: center; } }
-    .avatar { width: 160px; flex-shrink: 0; }
+    .profile-card { background: #fff; border-radius: 20px; padding: 1.6rem 1.4rem; margin-bottom: 1.4rem; border: 2px solid #818cf8; box-shadow: 0 8px 24px rgba(67, 56, 202, 0.1); }
+    .profile-head { display: flex; gap: 1.1rem; align-items: center; margin-bottom: 1.1rem; }
+    .avatar { width: 150px; flex-shrink: 0; animation: bounce-in 0.6s cubic-bezier(.2,1.6,.4,1); }
     .avatar img { width: 100%; height: auto; display: block; border-radius: 16px; border: 4px solid #818cf8; box-shadow: 0 8px 20px rgba(15,23,42,0.25); }
-    .profile-nick { font-size: 1.7rem; font-weight: 800; line-height: 1.15; margin-top: 0.3rem; }
+    @keyframes bounce-in { from { transform: scale(0.4) rotate(-12deg); opacity: 0; } to { transform: none; opacity: 1; } }
+    @media (max-width: 520px) { .profile-head { flex-direction: column; text-align: center; } }
+    .profile-badge { display: inline-block; background: linear-gradient(135deg, #eef2ff, #e0f2fe); color: var(--primary); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.3rem 0.8rem; border-radius: 999px; margin-bottom: 0.45rem; border: 1px solid #c7d2fe; }
+    .profile-nick { font-size: 1.6rem; font-weight: 800; line-height: 1.15; }
+    .profile-title { font-size: 1rem; font-weight: 800; color: #475569; margin-top: 0.15rem; }
     .profile-quote { margin-top: 0.5rem; display: inline-block; background: #f8fafc; border: 1.5px dashed #c7d2fe; border-radius: 12px; padding: 0.45rem 0.8rem; font-weight: 800; font-style: italic; color: #1e1b4b; font-size: 0.98rem; }
     .profile-praise { margin-top: 0.6rem; background: linear-gradient(135deg, #fef9c3, #fce7f3); border: 1.5px solid #fde68a; border-radius: 12px; padding: 0.6rem 0.85rem; font-weight: 600; font-size: 0.94rem; color: #713f12; text-align: left; }
+    .profile-desc { font-size: 0.97rem; color: #334155; margin-bottom: 1.2rem; }
+    .pros-cons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.1rem; }
+    @media (max-width: 640px) { .pros-cons-grid { grid-template-columns: 1fr; } }
+    .pc-box { border-radius: 12px; padding: 1.1rem; }
+    .pc-box.defend { background: #ecfdf5; border: 1.5px solid #a7f3d0; }
+    .pc-box.reject { background: #fff1f2; border: 1.5px solid #fecdd3; }
+    .pc-box h4 { font-size: 0.96rem; font-weight: 800; margin-bottom: 0.6rem; }
+    .pc-box.defend h4 { color: #065f46; }
+    .pc-box.reject h4 { color: #9f1239; }
+    .pc-box ul { padding-left: 1.2rem; font-size: 0.91rem; }
+    .pc-box li { margin-bottom: 0.4rem; }
+    .insight-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 640px) { .insight-pills { grid-template-columns: 1fr; } }
+    .insight-pill { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.91rem; }
+    .insight-pill strong { display: block; color: var(--primary); margin-bottom: 0.25rem; }
+
+    .section-card { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 1.5rem 1.3rem; margin-bottom: 1.4rem; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); }
+    .section-card h3 { margin-bottom: 0.9rem; color: var(--primary); font-size: 1.08rem; }
+    .revelation-item { border-bottom: 1px solid var(--border); padding: 0.9rem 0; font-size: 0.93rem; }
+    .revelation-item:last-child { border-bottom: none; }
+    .badge-ok, .badge-err, .badge-space { display: inline-block; font-weight: 800; font-size: 0.76rem; padding: 0.16rem 0.55rem; border-radius: 6px; margin-left: 0.3rem; }
+    .badge-ok { background: #dcfce7; color: #166534; }
+    .badge-err { background: #fee2e2; color: #991b1b; }
+    .badge-space { background: #e0e7ff; color: #3730a3; }
+
+    /* FORMULARIO MAIL */
+    .mail-card { border: 2px solid #a7f3d0; background: linear-gradient(135deg, #ffffff, #ecfdf5); }
+    .mail-card h3 { color: #065f46 !important; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 0.9rem; }
+    @media (max-width: 640px) { .form-grid-2 { grid-template-columns: 1fr; } }
+    label.f { font-weight: 700; font-size: 0.88rem; }
+    input[type="text"], input[type="email"], select {
+      width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #fff; color: var(--text); margin-top: 0.3rem;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    .mail-ok { margin-top: 0.9rem; background: #dcfce7; border: 1.5px solid #86efac; color: #166534; padding: 0.8rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+    .alert-msg { margin-top: 0.8rem; background: #fff1f2; color: #be123c; border: 1.5px solid #fecdd3; padding: 0.75rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.9rem; }
+    .toast { margin-top: 0.6rem; font-size: 0.88rem; color: #86efac; font-weight: 700; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+
+    @media print {
+      .topbar, .no-print, footer { display: none !important; }
+      body { background: #fff; }
+      .container { max-width: 100%; margin: 0; padding: 0; }
+      .result-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section-card, .profile-card { box-shadow: none; break-inside: avoid; }
+    }
     .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; text-align: left; }
     @media (max-width: 640px) { .form-grid-3 { grid-template-columns: 1fr; } }
     .form-grid-3 label.f { font-weight: 700; font-size: 0.88rem; display: block; }
@@ -828,43 +213,28 @@
 </head>
 <body>
 
-  <header>
-    <div class="header-pill">🗳️ Experimento Ciudadano · Sin Etiquetas</div>
-    <h1>Test Político: ¿Reconocés lo que dicen sin ver quién habla?</h1>
-    <p>Un juego en dos etapas: primero adiviná qué dirigente dijo cada frase real y después elegí las propuestas que más te convencen sin etiquetas ni partidos.</p>
-  </header>
-
-  <div class="nav-wrapper">
-    <nav class="nav-steps">
-      <button type="button" class="step-badge active" id="tab-1" onclick="goToStep(1)">🎤 Test 1: ¿Quién dijo...?</button>
-      <button type="button" class="step-badge" id="tab-2" onclick="goToStep(2)">🧭 Test 2: ¿Con qué te identificás...?</button>
-      <button type="button" class="step-badge" id="tab-3" onclick="goToStep(3)">🏁 3. Cierre y Perfil</button>
-      <button type="button" class="step-badge hidden" id="tab-4" onclick="goToStep(4)">🏆 4. Tu Diagnóstico</button>
-      <button type="button" class="step-badge admin-tab" id="tab-org" onclick="openOrgSection()">🔒 Organización</button>
-    </nav>
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="global-progress"></div>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <img src="../logo.png" alt="" />
+      <div class="topbar-title">Test Político<br><span style="font-weight:600; font-size:0.82rem; opacity:0.85;">¿Quién dijo qué? · Versión rápida</span></div>
+      <div class="topbar-step hidden" id="step-label"></div>
     </div>
+    <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
 
   <main class="container">
-    <!-- PASO 1: TEST 1 -->
-    <section id="step-1">
-      <div class="section-intro">
-        <div>
-          <h2>🎤 Test 1 — ¿Quién dijo...?</h2>
-          <p>En cada tema hay 4 frases reales sin autor. Tocá el botón del referente o espacio que creés que la pronunció (<strong>Javier Milei, Mauricio Macri / Patricia Bullrich, Cristina Kirchner / Axel Kicillof o Myriam Bregman</strong>).</p>
-        </div>
-        <div class="counter-pill" id="counter-step-1">0 / 40 frases</div>
-      </div>
-      <div class="question-block" id="datos-block" style="--card-accent: #f59e0b;">
-        <div class="q-header">
-          <span class="q-num">👤</span>
-          <span class="q-title">Antes de empezar, contanos un poco de vos</span>
-        </div>
-        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 0.9rem;">Es anónimo y se usa solo para estadísticas generales.</p>
+
+    <!-- PORTADA + VOTO HABITUAL -->
+    <section id="s-start">
+      <div class="start-card">
+        <img src="../logo.png" alt="Test Político: ¿Quién dijo qué?" />
+        <h1>¿Reconocés lo que dicen sin ver quién habla?</h1>
+        <div class="time-pill">⏱️ Jugás en 3 minutos</div>
+        <p class="lead"><strong>Parte 1:</strong> 10 frases sobre los temas que más te importan, ¿quién lo dijo?<br><strong>Parte 2:</strong> 8 propuestas sin nombres ni partidos, ¿cuál te convence?</p>
+        <p class="start-q">Para arrancar, contanos un poco de vos</p>
+        <p class="start-sub">Es anónimo y se usa solo para estadísticas generales.</p>
         <div class="form-grid-3">
-          <div><label class="f">Rango de edad</label><select id="edad" class="std-select">
+          <div><label class="f">Rango de edad</label><select id="edad" class="">
               <option value="">Elegí…</option>
               <option value="Menos de 16">Menos de 16 años</option>
               <option value="16 a 17">16 a 17 años</option>
@@ -874,7 +244,7 @@
               <option value="65 o más">65 años o más</option>
               <option value="No especificado">Prefiero no decir</option>
             </select></div>
-          <div><label class="f">¿Desde dónde respondés?</label><select id="provincia" class="std-select">
+          <div><label class="f">¿Desde dónde respondés?</label><select id="provincia" class="">
               <option value="">Elegí…</option>
               <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
               <option value="Buenos Aires">Buenos Aires</option>
@@ -903,7 +273,7 @@
               <option value="Exterior">Vivo fuera de Argentina</option>
               <option value="No especificada">Prefiero no decir</option>
             </select></div>
-          <div><label class="f">¿Votás?</label><select id="vota" class="std-select">
+          <div><label class="f">¿Votás?</label><select id="vota" class="">
               <option value="">Elegí…</option>
               <option value="Sí, siempre">Sí, siempre voto</option>
               <option value="A veces">A veces</option>
@@ -912,238 +282,124 @@
               <option value="Prefiero no decir">Prefiero no decir</option>
             </select></div>
         </div>
-      </div>
-      <div id="container-var-a"></div>
-      <div id="err-1" class="alert-msg hidden">¡Casi! Te falta elegir dirigente en algunas frases antes de pasar al Test 2.</div>
-      <div class="btn-row">
-        <button type="button" class="btn btn-primary" onclick="nextFromStep1()">¡Listo! Ir al Test 2 →</button>
-      </div>
-    </section>
-
-    <!-- PASO 2: TEST 2 -->
-    <section id="step-2" class="hidden">
-      <div class="section-intro" style="border-left-color: #0ea5e9; background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%); border-color: #bae6fd;">
-        <div>
-          <h2 style="color: #0369a1;">🧭 Test 2 — ¿Con qué te identificás...?</h2>
-          <p>Acá no hay nombres ni banderas partidarias: solo ideas concretas por tema. Elegí la solución que más te cierra en cada punto.</p>
-        </div>
-        <div class="counter-pill" style="color: #0369a1; border-color: #bae6fd;" id="counter-step-2">0 / 10 temas</div>
-      </div>
-      <div id="container-var-b"></div>
-      <div id="err-2" class="alert-msg hidden">Por favor, elegí una opción en los 10 temas del Test 2 antes de continuar.</div>
-      <div class="btn-row">
-        <button type="button" class="btn btn-secondary" onclick="goToStep(1)">← Volver al Test 1</button>
-        <button type="button" class="btn btn-primary" onclick="nextFromStep2()">Continuar al Cierre →</button>
+        <p class="start-q" style="margin-top:1.3rem;">¿Con qué espacio te identificás habitualmente?</p>
+        <p class="start-sub">Es anónimo. Al final te mostramos si tus ideas coinciden con tu voto.</p>
+        <div class="choices two-col" id="start-choices"></div>
+        <div id="start-err" class="alert-msg hidden">Completá tu edad, desde dónde respondés y si votás.</div>
       </div>
     </section>
 
-    <!-- PASO 3: CIERRE -->
-    <section id="step-3" class="hidden">
-      <div class="section-intro" style="border-left-color: #f43f5e; background: linear-gradient(135deg, #ffffff 0%, #fff1f2 100%); border-color: #fecdd3;">
-        <div>
-          <h2 style="color: #9f1239;">🏁 Último paso — Contanos un poco antes de ver tu resultado</h2>
-          <p>Dos preguntas rápidas para comparar lo que creés que votás con lo que realmente elegiste a ciegas.</p>
+    <!-- TEMAS PRIORITARIOS -->
+    <section id="s-topics" class="hidden">
+      <div class="game-card">
+        <span class="phase-pill phase-a">⭐ Antes de empezar</span>
+        <div class="question-title">¿Cuáles son los 3 temas que más te importan hoy?</div>
+        <p class="start-sub" style="margin-top:-0.5rem;">La mayoría de las frases van a ser sobre esos temas.</p>
+        <div class="choices two-col" id="topic-choices"></div>
+        <div class="game-nav">
+          <span id="topic-count" style="font-weight:800; color: var(--muted);">0/3 elegidos</span>
+          <button type="button" class="btn btn-primary" id="topic-go" disabled onclick="startPartA()">Empezar →</button>
         </div>
-      </div>
-
-      <div class="question-block" style="--card-accent: #f43f5e;">
-        <div class="q-header">
-          <span class="q-num">1</span>
-          <span class="q-title">¿Qué parte del test te hizo dudar más?</span>
-        </div>
-        <div class="options-list" id="cierre-q1">
-          <label class="option-label"><input type="radio" name="cierre1" value="Test 1"><span class="opt-text">El Test 1 (adivinar qué dirigente dijo cada frase sin ver su cara).</span></label>
-          <label class="option-label"><input type="radio" name="cierre1" value="Test 2"><span class="opt-text">El Test 2 (elegir con qué propuesta me identifico sin etiquetas partidarias).</span></label>
-          <label class="option-label"><input type="radio" name="cierre1" value="Ambas"><span class="opt-text">Las dos partes me hicieron pensar bastante.</span></label>
-          <label class="option-label"><input type="radio" name="cierre1" value="Ninguna"><span class="opt-text">Ninguna, la tenía re clara en todo.</span></label>
-        </div>
-      </div>
-
-      <div class="question-block" style="--card-accent: #8b5cf6;">
-        <div class="q-header">
-          <span class="q-num">2</span>
-          <span class="q-title">Antes de ver tu diagnóstico, ¿con qué espacio sentís que te identificás habitualmente?</span>
-        </div>
-        <div class="options-list" id="cierre-q2">
-          <label class="option-label"><input type="radio" name="cierre2" value="La Libertad Avanza / Libertarios"><span class="opt-text">La Libertad Avanza / Libertarios</span></label>
-          <label class="option-label"><input type="radio" name="cierre2" value="PRO / Centroderecha"><span class="opt-text">PRO / Centroderecha</span></label>
-          <label class="option-label"><input type="radio" name="cierre2" value="UCR / Centro"><span class="opt-text">UCR / Centro</span></label>
-          <label class="option-label"><input type="radio" name="cierre2" value="Peronismo / Unión por la Patria"><span class="opt-text">Peronismo / Unión por la Patria</span></label>
-          <label class="option-label"><input type="radio" name="cierre2" value="Frente de Izquierda"><span class="opt-text">Frente de Izquierda</span></label>
-          <label class="option-label"><input type="radio" name="cierre2" value="Independiente / Ninguno"><span class="opt-text">Independiente / Ninguno en particular</span></label>
-        </div>
-      </div>
-
-      <div class="question-block" style="--card-accent: #10b981;">
-        <div class="q-header">
-          <span class="q-num">3</span>
-          <span class="q-title">¿Querés recibir tu diagnóstico completo en tu correo? (Opcional)</span>
-        </div>
-        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 1rem;">Todos los campos son 100% opcionales. Si dejás tu email, te mandamos al instante el detalle de tus aciertos y tu perfil político.</p>
-        <div class="form-grid-2" style="margin-bottom: 1rem;">
-          <div>
-            <label style="font-weight: 700; font-size: 0.9rem;">Nombre y Apellido (opcional)</label>
-            <input type="text" id="nombre" placeholder="Ej: Juan Pérez" />
-          </div>
-          <div>
-            <label style="font-weight: 700; font-size: 0.9rem;">Correo electrónico (opcional)</label>
-            <input type="email" id="email-usuario" placeholder="Ej: juan@correo.com" />
-          </div>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button type="button" class="btn btn-secondary" onclick="goToStep(2)">← Volver al Test 2</button>
-        <button type="button" class="btn btn-primary" onclick="calculateResults()">✨ ¡Revelar mi Diagnóstico Político!</button>
       </div>
     </section>
 
-    <!-- PASO 4: RESULTADOS INDIVIDUALES -->
-    <section id="step-4" class="hidden">
+    <!-- PARTE 1 -->
+    <section id="s-a" class="hidden">
+      <div class="game-card" id="a-card"></div>
+    </section>
+
+    <!-- INTERMEDIO -->
+    <section id="s-mid" class="hidden">
+      <div class="game-card mid-card">
+        <span class="phase-pill phase-a">🎤 Fin de la parte 1</span>
+        <p style="font-weight:700; color: var(--muted);">Acertaste</p>
+        <div class="big-score" id="mid-score"></div>
+        <p id="mid-msg" style="font-weight:700; margin-bottom: 1.3rem;"></p>
+        <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:14px; padding:1rem; margin-bottom:1.3rem; text-align:left;">
+          <strong style="color:#0369a1;">🧭 Parte 2: ¿Con qué te identificás?</strong><br>
+          <span style="font-size:0.94rem;">8 temas, 4 posturas cada uno. Sin nombres ni partidos: elegí la que más te convence.</span>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="startPartB()">Vamos →</button>
+      </div>
+    </section>
+
+    <!-- PARTE 2 -->
+    <section id="s-b" class="hidden">
+      <div class="game-card" id="b-card"></div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="s-results" class="hidden">
       <div class="result-box">
-        <h2 id="result-greeting">Tus Resultados del Test Político</h2>
-        <p style="color: #e0f2fe; font-size: 0.98rem;" id="summary-subtitle"></p>
-        <p id="email-sent-banner" class="hidden" style="margin-top: 0.75rem; background: rgba(16, 185, 129, 0.22); border: 1px solid #34d399; padding: 0.65rem 0.95rem; border-radius: 10px; font-size: 0.9rem; color: #a7f3d0;"></p>
-
+        <h2 id="result-greeting">Tus resultados</h2>
+        <p style="color: #e0f2fe; font-size: 0.96rem;" id="summary-subtitle"></p>
         <div class="result-grid">
           <div class="result-panel">
-            <h3>🎤 Test 1: Aciertos por Referente</h3>
+            <h3>🎤 Parte 1: aciertos por referente</h3>
             <div id="res-bars-a"></div>
           </div>
           <div class="result-panel">
-            <h3>🧭 Test 2: Afinidad por Espacio</h3>
+            <h3>🧭 Parte 2: afinidad por espacio</h3>
             <div id="res-bars-b"></div>
           </div>
         </div>
-
-        <div class="no-print" style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-          <button type="button" class="btn" style="background: #10b981; color: #ffffff;" onclick="window.print()">📄 Descargar mi Informe en PDF</button>
-          <button type="button" class="btn" style="background: #38bdf8; color: #0f172a;" onclick="copyShareText()">📲 Copiar resultado para compartir</button>
-          <button type="button" class="btn" style="background: rgba(255,255,255,0.18); color: #ffffff;" onclick="location.reload()">🔄 Volver a jugar</button>
+        <div class="result-actions no-print">
+          <button type="button" class="btn" style="background:#38bdf8; color:#0f172a;" onclick="shareResult()">📲 Compartir mi resultado</button>
+          <button type="button" class="btn" style="background:#10b981; color:#fff;" onclick="window.print()">📄 Guardar en PDF</button>
+          <button type="button" class="btn" style="background:rgba(255,255,255,0.18); color:#fff;" onclick="playAgain()">🔄 Jugar otra vez</button>
         </div>
-        <p id="copy-confirm" style="margin-top: 0.65rem; font-size: 0.88rem; color: #86efac; font-weight: 700;" class="hidden">¡Resultado copiado al portapapeles! Pegalo en WhatsApp o redes.</p>
+        <p id="copy-confirm" class="toast hidden">¡Resultado copiado! Pegalo en WhatsApp o en tus redes.</p>
       </div>
 
-      <div class="profile-card" id="personalized-feedback-card">
+      <div class="profile-card">
         <div class="profile-head">
           <div class="avatar" id="fb-avatar"></div>
           <div>
-            <span class="profile-badge">🏆 Tu Diagnóstico Político a Ciegas</span>
+            <span class="profile-badge">🏆 Tu perfil político a ciegas</span>
             <div class="profile-nick" id="fb-nick"></div>
-            <div class="profile-title" id="fb-archetype-title">Calculando perfil...</div>
+            <div class="profile-title" id="fb-archetype-title"></div>
             <div class="profile-quote" id="fb-frase"></div>
             <div class="profile-praise" id="fb-elogio"></div>
           </div>
         </div>
         <p class="profile-desc" id="fb-archetype-desc"></p>
-
         <div class="pros-cons-grid">
-          <div class="pc-box defend">
-            <h4>✅ Lo que defendés</h4>
-            <ul id="fb-defend-list"></ul>
-          </div>
-          <div class="pc-box reject">
-            <h4>❌ Lo que rechazás o no te convence</h4>
-            <ul id="fb-reject-list"></ul>
-          </div>
+          <div class="pc-box defend"><h4>✅ Lo que defendés</h4><ul id="fb-defend-list"></ul></div>
+          <div class="pc-box reject"><h4>❌ Lo que rechazás o no te convence</h4><ul id="fb-reject-list"></ul></div>
         </div>
-
         <div class="insight-pills">
-          <div class="insight-pill">
-            <strong>🧭 Chequeo de Coherencia (Voto vs. Ideas)</strong>
-            <span id="fb-coherence-text"></span>
-          </div>
-          <div class="insight-pill">
-            <strong>🎯 Tu Ojo Político (Test 1)</strong>
-            <span id="fb-radar-text"></span>
-          </div>
+          <div class="insight-pill"><strong>🧭 Chequeo de coherencia (voto vs. ideas)</strong><span id="fb-coherence-text"></span></div>
+          <div class="insight-pill"><strong>🎯 Tu ojo político (parte 1)</strong><span id="fb-radar-text"></span></div>
         </div>
       </div>
 
+      <!-- TUS TEMAS -->
+      <div class="section-card themes-card">
+        <h3>⭐ Tus temas</h3>
+        <div id="themes-body"></div>
+      </div>
+
+      <!-- DATOS OPCIONALES, DESPUÉS DEL RESULTADO -->
+      <div class="section-card mail-card no-print">
+        <h3>📩 ¿Te mandamos el informe completo por mail?</h3>
+        <p style="font-size:0.9rem; color: var(--muted); margin-bottom: 1rem;">Opcional. Te llega con el detalle de cada frase, tus elecciones y un botón para seguir jugando.</p>
+        <div class="form-grid-2">
+          <div><label class="f" for="nombre">Nombre (opcional)</label><input type="text" id="nombre" placeholder="Ej: Juan Pérez" /></div>
+          <div><label class="f" for="email-usuario">Correo electrónico</label><input type="email" id="email-usuario" placeholder="Ej: juan@correo.com" /></div>
+        </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="mail-btn" onclick="submitContact()">✉️ Enviarme el informe</button>
+        <div id="mail-err" class="alert-msg hidden">Revisá el correo: parece que falta algo (ej: nombre@correo.com).</div>
+        <div id="mail-ok" class="mail-ok hidden"></div>
+      </div>
+
       <div class="section-card">
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">🧭 Detalle de tus elecciones en Test 2 (¿Con qué te identificás...?)</h3>
+        <h3>🧭 Tus elecciones en la parte 2</h3>
         <div id="revelation-list-b"></div>
       </div>
-
       <div class="section-card">
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">🎤 Corrección del Test 1: Qué elegiste vs. Quién la dijo realmente</h3>
+        <h3>🎤 Corrección de la parte 1: qué elegiste vs. quién lo dijo</h3>
         <div id="revelation-list"></div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN #ORGANIZACION -->
-    <section id="step-org" class="hidden">
-      <div id="org-login-card" class="section-card" style="max-width: 440px; margin: 2rem auto;">
-        <h2 style="color: var(--primary); margin-bottom: 0.5rem;">🔒 Acceso Organización</h2>
-        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem;">Ingresá la clave de administrador para ver los resultados consolidados y descargar el informe en PDF.</p>
-        <label style="font-weight: 700; font-size: 0.9rem;">Clave de acceso</label>
-        <input type="password" id="org-pass" placeholder="Ingresá tu clave..." onkeyup="if(event.key==='Enter') checkOrgPass()" />
-        <div id="org-pass-err" class="alert-msg hidden">Clave incorrecta. Intentá nuevamente.</div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" onclick="exitOrgSection()">← Volver al test</button>
-          <button type="button" class="btn btn-primary" onclick="checkOrgPass()">Ingresar</button>
-        </div>
-      </div>
-
-      <div id="org-dashboard" class="hidden">
-        <div class="section-intro" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <h2>📊 Panel de Resultados Consolidados — Test Político</h2>
-            <p id="org-last-update">Cargando datos desde Google Sheets...</p>
-          </div>
-          <div class="no-print" style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-            <button type="button" class="btn btn-secondary" onclick="loadAdminData()">🔄 Actualizar</button>
-            <button type="button" class="btn btn-success" onclick="window.print()">📄 Descargar Informe PDF</button>
-            <button type="button" class="btn btn-secondary" onclick="exitOrgSection()">Cerrar</button>
-          </div>
-        </div>
-
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-val" id="kpi-total">-</div>
-            <div class="kpi-lbl">Tests Completados</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-val" id="kpi-avg-a" style="font-size: 1.35rem;">-</div>
-            <div class="kpi-lbl">Promedio Aciertos (Test 1)</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-val" id="kpi-top-b" style="font-size: 1.25rem;">-</div>
-            <div class="kpi-lbl">Espacio Líder (Test 2)</div>
-          </div>
-        </div>
-
-        <div class="result-grid" style="margin-bottom: 1.5rem;">
-          <div class="section-card" style="margin-bottom: 0;">
-            <h3 style="color: var(--primary); margin-bottom: 1rem;">Nivel de Aciertos en Test 1</h3>
-            <div id="admin-chart-a"></div>
-          </div>
-          <div class="section-card" style="margin-bottom: 0;">
-            <h3 style="color: var(--primary); margin-bottom: 1rem;">Ranking Test 2 (¿Con qué te identificás...?)</h3>
-            <div id="admin-chart-b"></div>
-          </div>
-        </div>
-
-        <div class="section-card">
-          <h3 style="color: var(--primary); margin-bottom: 1rem;">Registro Individual de Respuestas</h3>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Participante</th>
-                  <th>Voto Declarado</th>
-                  <th>Edad / Prov.</th>
-                  <th>Puntaje Aciertos (Test 1)</th>
-                  <th>Mayor Coincidencia Test 2</th>
-                </tr>
-              </thead>
-              <tbody id="admin-table-body">
-                <tr><td colspan="6" style="text-align:center; color: var(--muted);">Cargando registros...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </section>
   </main>
@@ -1154,7 +410,10 @@
 
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
-    const CLAVE_ADMIN = "2027";
+    const GAME_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/rapido/";
+    const PREVIEW_URL = "https://ladob-tech.github.io/quiendijo-elecciones-2027/preview.jpg";
+    const FRASES_POR_PARTIDA = 10;
+    const AUTO_AVANCE_MS = 1600;
 
     const dirigentesList = [
       { full: "Javier Milei", short: "Javier Milei" },
@@ -1427,11 +686,16 @@
       }
     ];
     const NINGUNA = { space: "Ninguna", title: "Ninguna me convence.", text: "", defend: "", reject: "" };
-    const DATA_B = DATA_B_ALL;
+    const DATA_B = DATA_B_ALL.filter(t => !["Escuelas", "Ciencia"].includes(t.topic)); // la versión rápida usa 8 temas
 
-
-    const shuffleArr = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-    const dataVarB = DATA_B.map(t => ({ ...t, options: [...shuffleArr(t.options), NINGUNA].map((o, n) => ({ ...o, letter: "ABCDE"[n] })) }));
+    const ESPACIOS_DECLARADOS = [
+      "La Libertad Avanza / Libertarios",
+      "PRO / Centroderecha",
+      "UCR / Centro",
+      "Peronismo / Unión por la Patria",
+      "Frente de Izquierda",
+      "Independiente / Ninguno"
+    ];
 
     // ---------- PERFILES Y AVATARES ----------
     const PERFILES = {
@@ -1487,262 +751,97 @@
       return `<img src="${AVATAR_IMG[key]}" alt="Avatar ${p.nick}" style="border-color:${p.color}">`;
     }
 
+    // ---------- TEMAS PRIORITARIOS ----------
+    const TEMAS_CORTOS = {
+      "Educación y Universidades": "Educación", "Salud y Gestión Sanitaria": "Salud",
+      "Pobreza y Asistencia Social": "Pobreza y asistencia", "Deuda Externa y FMI": "Deuda y FMI",
+      "Economía y Rol del Estado": "Economía y rol del Estado", "Género e Igualdad": "Género",
+      "Derechos y Seguridad": "Seguridad", "Obra Pública y Gestión": "Obra pública",
+      "Inflación y Precios": "Inflación", "Corrupción y Transparencia": "Corrupción"
+    };
+    // Tema de la parte 1 -> tema equivalente de la parte 2
+    const TEMA_A_PARTE2 = {
+      "Educación y Universidades": "Universidades", "Salud y Gestión Sanitaria": "Salud",
+      "Pobreza y Asistencia Social": "Planes sociales", "Derechos y Seguridad": "Seguridad",
+      "Inflación y Precios": "Inflación"
+    };
+    // Espacio declarado -> referente de la parte 1
+    const REFERENTE_DE = {
+      "La Libertad Avanza / Libertarios": "Javier Milei",
+      "PRO / Centroderecha": "Mauricio Macri / Patricia Bullrich",
+      "Peronismo / Unión por la Patria": "Cristina Kirchner / Axel Kicillof",
+      "Frente de Izquierda": "Myriam Bregman"
+    };
+    const N_PRIORIDADES = 3, FRASES_POR_PRIORIDAD = 2;
+    let priorities = [];   // índices de dataVarA
 
-    // Estado de respuestas del Test 1: answersVarA[qIdx][optIdx] = full name
-    const answersVarA = Array.from({ length: dataVarA.length }, () => Array(4).fill(""));
+    // ---------- ESTADO DEL JUEGO ----------
+    let declared = "";
+    let roundA = [];      // [{topic, emoji, text, author}]
+    let answersA = [];    // nombre elegido por frase
+    let idxA = 0;
+    let dataB = [];       // temas de la parte 2 (con opciones mezcladas)
+    let answersB = [];    // opción elegida por tema
+    let idxB = 0;
+    let lockA = false;
+    let results = null;   // se arma al terminar
+    let dataSent = false;
+    let contactSent = false;
+    const sessionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
-    function updateProgressUI() {
-      const answeredA = answersVarA.flat().filter(v => v !== "").length;
-      const answeredB = document.querySelectorAll("#container-var-b input[type='radio']:checked").length;
+    const TOTAL_STEPS = () => FRASES_POR_PARTIDA + dataB.length;
+    const cleanTopic = t => t.replace(/^\d+\.\s*/, "");
+    const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-      document.getElementById("counter-step-1").innerText = `${answeredA} / 40 frases`;
-      document.getElementById("counter-step-2").innerText = `${answeredB} / 10 temas`;
-
-      const totalPct = Math.round(((answeredA + answeredB * 4) / 80) * 100);
-      document.getElementById("global-progress").style.width = `${totalPct}%`;
-    }
-
-    function renderVarA() {
-      const container = document.getElementById("container-var-a");
-
-      dataVarA.forEach((item, idx) => {
-        const accent = themeColors[idx % themeColors.length];
-        const block = document.createElement("div");
-        block.className = "question-block";
-        block.id = `varA-block-${idx}`;
-        block.style.setProperty("--card-accent", accent);
-
-        let rowsHtml = "";
-        item.options.forEach((opt, optIdx) => {
-          const chipsHtml = dirigentesList.map(d => `
-            <button type="button" class="dir-chip" data-dir="${d.full}" onclick="selectDirigenteChip(${idx}, ${optIdx}, '${d.full}', this)">
-              ${d.short}
-            </button>
-          `).join("");
-
-          rowsHtml += `
-            <div class="match-row" id="varA-row-${idx}-${optIdx}">
-              <div class="match-quote">
-                <span class="opt-letter">${opt.letter})</span>
-                <span>${opt.text}</span>
-              </div>
-              <div class="chips-group" id="chips-${idx}-${optIdx}">
-                ${chipsHtml}
-              </div>
-            </div>
-          `;
-        });
-
-        block.innerHTML = `
-          <div class="q-header">
-            <span class="q-num">${item.emoji}</span>
-            <span class="q-title">${item.topic}</span>
-          </div>
-          <div class="match-list">${rowsHtml}</div>
-        `;
-        container.appendChild(block);
-      });
-    }
-
-    function selectDirigenteChip(qIdx, optIdx, fullDirigente, btnEl) {
-      answersVarA[qIdx][optIdx] = fullDirigente;
-
-      const row = document.getElementById(`varA-row-${qIdx}-${optIdx}`);
-      row.classList.add("selected");
-
-      const group = document.getElementById(`chips-${qIdx}-${optIdx}`);
-      group.querySelectorAll(".dir-chip").forEach(b => b.classList.remove("active"));
-      btnEl.classList.add("active");
-
-      const block = document.getElementById(`varA-block-${qIdx}`);
-      if (answersVarA[qIdx].every(v => v !== "")) {
-        block.classList.add("answered");
-      }
-
-      updateProgressUI();
-    }
-
-    function renderVarB() {
-      const container = document.getElementById("container-var-b");
-      dataVarB.forEach((item, idx) => {
-        const accent = themeColors[(idx + 2) % themeColors.length];
-        const block = document.createElement("div");
-        block.className = "question-block";
-        block.id = `varB-block-${idx}`;
-        block.style.setProperty("--card-accent", accent);
-
-        let optsHtml = "";
-        item.options.forEach((opt, optIdx) => {
-          optsHtml += `
-            <label class="option-label" onclick="selectOptionB(${idx}, this)">
-              <input type="radio" name="varB-q-${idx}" value="${optIdx}">
-              <span class="opt-letter">${opt.letter})</span>
-              <span class="opt-text">
-                <strong>${opt.title}</strong>
-                ${opt.text ? `<span>${opt.text}</span>` : ""}
-              </span>
-            </label>
-          `;
-        });
-
-        block.innerHTML = `
-          <div class="q-header">
-            <span class="q-num">${item.emoji}</span>
-            <span class="q-title">${item.topic}</span>
-          </div>
-          <div class="context-box">📖 ${item.contexto}</div>
-          <div class="q-question">${item.pregunta}</div>
-          <div class="options-list">${optsHtml}</div>
-        `;
-        container.appendChild(block);
-      });
-    }
-
-    function selectOptionB(qIdx, labelEl) {
-      const block = document.getElementById(`varB-block-${qIdx}`);
-      block.classList.add("answered");
-      block.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
-      labelEl.classList.add("selected");
-      setTimeout(updateProgressUI, 10);
-    }
-
-    document.querySelectorAll("#step-3 .option-label").forEach(label => {
-      label.addEventListener("click", function() {
-        const parent = this.parentElement;
-        parent.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
-        this.classList.add("selected");
-      });
-    });
-
-    function goToStep(step) {
-      document.getElementById("step-org").classList.add("hidden");
-      document.getElementById("tab-org").classList.remove("active");
-      for (let i = 1; i <= 4; i++) {
-        document.getElementById(`step-${i}`).classList.add("hidden");
-        document.getElementById(`tab-${i}`).classList.remove("active");
-      }
-      document.getElementById(`step-${step}`).classList.remove("hidden");
-      document.getElementById(`tab-${step}`).classList.add("active");
+    function show(id) {
+      ["s-start", "s-topics", "s-a", "s-mid", "s-b", "s-results"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function openOrgSection() {
-      for (let i = 1; i <= 4; i++) {
-        document.getElementById(`step-${i}`).classList.add("hidden");
-        document.getElementById(`tab-${i}`).classList.remove("active");
-      }
-      document.getElementById("step-org").classList.remove("hidden");
-      document.getElementById("tab-org").classList.add("active");
-      history.replaceState(null, "", "#organizacion");
+    function setProgress(done, label) {
+      document.getElementById("progress-fill").style.width = `${Math.round((done / TOTAL_STEPS()) * 100)}%`;
+      const el = document.getElementById("step-label");
+      if (label) { el.textContent = label; el.classList.remove("hidden"); } else { el.classList.add("hidden"); }
     }
 
-    function exitOrgSection() {
-      history.replaceState(null, "", window.location.pathname);
-      goToStep(1);
+    // Arma la partida: 2 frases por cada tema prioritario + 1 frase de otros temas, con referentes repartidos parejo
+    function buildRound() {
+      // Reparte referentes de forma pareja: siempre elige el que menos apareció
+      const count = {}; dirigentesList.forEach(d => count[d.full] = 0);
+      const pick = (item, exclude) => {
+        const opts = shuffle(item.options.filter(o => !exclude.includes(o.author)));
+        opts.sort((a, b) => count[a.author] - count[b.author]);
+        count[opts[0].author]++;
+        return opts[0];
+      };
+      const make = (i, opt, prio) => ({
+        topic: cleanTopic(dataVarA[i].topic), emoji: dataVarA[i].emoji, text: opt.text, author: opt.author, prio
+      });
+      const items = [];
+      priorities.forEach(i => {
+        const used = [];
+        for (let k = 0; k < FRASES_POR_PRIORIDAD; k++) { const o = pick(dataVarA[i], used); used.push(o.author); items.push(make(i, o, true)); }
+      });
+      const rest = shuffle(dataVarA.map((_, i) => i).filter(i => !priorities.includes(i)))
+        .slice(0, FRASES_POR_PARTIDA - items.length);
+      rest.forEach(i => items.push(make(i, pick(dataVarA[i], []), false)));
+      roundA = shuffle(items);
+      answersA = Array(roundA.length).fill("");
+      idxA = 0;
+
+      const prioB = priorities.map(i => TEMA_A_PARTE2[cleanTopic(dataVarA[i].topic)]).filter(Boolean);
+      dataB = DATA_B.map(t => ({ ...t, prio: prioB.includes(t.topic), options: [...shuffle(t.options), NINGUNA] }))
+        .sort((a, b) => b.prio - a.prio);
+      answersB = Array(dataB.length).fill(null);
+      idxB = 0;
     }
 
-    function checkOrgPass() {
-      const val = document.getElementById("org-pass").value.trim();
-      if (val === CLAVE_ADMIN) {
-        document.getElementById("org-pass-err").classList.add("hidden");
-        document.getElementById("org-login-card").classList.add("hidden");
-        document.getElementById("org-dashboard").classList.remove("hidden");
-        loadAdminData();
-      } else {
-        document.getElementById("org-pass-err").classList.remove("hidden");
-      }
-    }
-
-    function loadAdminData() {
-      document.getElementById("org-last-update").innerText = "Consultando base de datos...";
-      fetch(GOOGLE_SCRIPT_URL)
-        .then(res => res.json())
-        .then(rows => {
-          if (!rows || rows.length <= 1) {
-            document.getElementById("org-last-update").innerText = "Aún no hay respuestas registradas en la planilla.";
-            document.getElementById("kpi-total").innerText = "0";
-            document.getElementById("admin-table-body").innerHTML = '<tr><td colspan="6" style="text-align:center;">Sin datos todavía.</td></tr>';
-            return;
-          }
-
-          const records = rows.slice(1);
-          document.getElementById("kpi-total").innerText = records.length;
-          document.getElementById("org-last-update").innerText = `Actualizado: ${new Date().toLocaleTimeString("es-AR")} · Total: ${records.length} tests`;
-
-          const freqB = {};
-          let sumPct = 0;
-          let countScores = 0;
-          const scoreBuckets = { "Alto (70% - 100%)": 0, "Medio (40% - 69%)": 0, "Bajo (0% - 39%)": 0 };
-
-          records.forEach(r => {
-            const rawA = r[5] || "";
-            const matchFrac = rawA.match(/(\d+)\/(\d+)/);
-            if (matchFrac) {
-              const num = parseInt(matchFrac[1]);
-              const den = parseInt(matchFrac[2]);
-              const pct = den > 0 ? Math.round((num * 100) / den) : 0;
-              sumPct += pct;
-              countScores++;
-              if (pct >= 70) scoreBuckets["Alto (70% - 100%)"]++;
-              else if (pct >= 40) scoreBuckets["Medio (40% - 69%)"]++;
-              else scoreBuckets["Bajo (0% - 39%)"]++;
-            }
-
-            const topB = (r[6] || "").split(" (")[0];
-            if (topB) freqB[topB] = (freqB[topB] || 0) + 1;
-          });
-
-          const avgPct = countScores > 0 ? Math.round(sumPct / countScores) : "-";
-          document.getElementById("kpi-avg-a").innerText = countScores > 0 ? `${avgPct}% aciertos` : "-";
-
-          const sortB = Object.entries(freqB).sort((a, b) => b[1] - a[1]);
-          document.getElementById("kpi-top-b").innerText = sortB[0] ? `${sortB[0][0]} (${Math.round(sortB[0][1]*100/records.length)}%)` : "-";
-
-          document.getElementById("admin-chart-a").innerHTML = Object.entries(scoreBuckets).map(([label, cnt]) => {
-            const pct = records.length > 0 ? Math.round((cnt * 100) / records.length) : 0;
-            return `
-              <div style="margin-bottom:0.75rem;">
-                <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
-                  <span><strong>${label}</strong></span>
-                  <span>${cnt} personas (${pct}%)</span>
-                </div>
-                <div class="admin-bar-track"><div class="admin-bar-fill" style="width:${pct}%"></div></div>
-              </div>
-            `;
-          }).join("");
-
-          document.getElementById("admin-chart-b").innerHTML = sortB.map(([name, cnt]) => {
-            const pct = Math.round((cnt * 100) / records.length);
-            return `
-              <div style="margin-bottom:0.75rem;">
-                <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
-                  <span><strong>${name}</strong></span>
-                  <span>${cnt} votos (${pct}%)</span>
-                </div>
-                <div class="admin-bar-track"><div class="admin-bar-fill" style="width:${pct}%"></div></div>
-              </div>
-            `;
-          }).join("");
-
-          document.getElementById("admin-table-body").innerHTML = records.slice().reverse().map(r => {
-            const nombreVal = r[9] || "Anónimo";
-            const emailVal = r[10] ? `<br><small style="color:var(--muted);">${r[10]}</small>` : "";
-            return `
-              <tr>
-                <td>${r[0] || "-"}</td>
-                <td><strong>${nombreVal}</strong>${emailVal}</td>
-                <td>${r[1] || "-"}</td>
-                <td>${r[3] || "-"} / ${r[4] || "-"}</td>
-                <td><strong>${r[5] || "-"}</strong></td>
-                <td><strong>${r[6] || "-"}</strong></td>
-              </tr>
-            `;
-          }).join("");
-        })
-        .catch(err => {
-          document.getElementById("org-last-update").innerText = "Error al leer los datos. Verificá Apps Script.";
-          console.error(err);
-        });
+    // ---------- PORTADA ----------
+    function renderStart() {
+      document.getElementById("start-choices").innerHTML = ESPACIOS_DECLARADOS.map((e, i) =>
+        `<button type="button" class="choice center" onclick="pickDeclared(${i})">${esc(e)}</button>`
+      ).join("");
     }
 
     function datosCompletos() {
@@ -1757,365 +856,444 @@
     }
     ["edad", "provincia", "vota"].forEach(id => document.getElementById(id).addEventListener("change", e => e.target.classList.toggle("missing", !e.target.value)));
 
-    function nextFromStep1() {
+    function pickDeclared(i) {
       if (!datosCompletos()) {
-        const errEl = document.getElementById("err-1");
-        errEl.innerText = "¡Casi! Completá arriba tu edad, desde dónde respondés y si votás.";
-        errEl.classList.remove("hidden");
-        document.getElementById("datos-block").scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("start-err").classList.remove("hidden");
+        document.getElementById("edad").scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
-      let missingCount = 0;
-      let firstMissingEl = null;
+      document.getElementById("start-err").classList.add("hidden");
+      declared = ESPACIOS_DECLARADOS[i];
+      show("s-topics");
+      renderTopics();
+    }
 
-      answersVarA.forEach((qArr, qIdx) => {
-        qArr.forEach((val, optIdx) => {
-          if (val === "") {
-            missingCount++;
-            if (!firstMissingEl) {
-              firstMissingEl = document.getElementById(`varA-row-${qIdx}-${optIdx}`);
-            }
-          }
-        });
+    function renderTopics() {
+      document.getElementById("topic-choices").innerHTML = dataVarA.map((t, i) =>
+        `<button type="button" class="choice center ${priorities.includes(i) ? "selected" : ""}" onclick="toggleTopic(${i})">${t.emoji} ${esc(TEMAS_CORTOS[cleanTopic(t.topic)] || cleanTopic(t.topic))}</button>`
+      ).join("");
+      document.getElementById("topic-count").textContent = `${priorities.length}/${N_PRIORIDADES} elegidos`;
+      document.getElementById("topic-go").disabled = priorities.length !== N_PRIORIDADES;
+    }
+
+    function toggleTopic(i) {
+      if (priorities.includes(i)) priorities = priorities.filter(x => x !== i);
+      else if (priorities.length < N_PRIORIDADES) priorities.push(i);
+      renderTopics();
+    }
+
+    function startPartA() {
+      if (priorities.length !== N_PRIORIDADES) return;
+      buildRound();
+      show("s-a");
+      renderA();
+    }
+
+    // ---------- PARTE 1 ----------
+    function renderA() {
+      lockA = false;
+      const q = roundA[idxA];
+      setProgress(idxA, `Frase ${idxA + 1}/${roundA.length}`);
+      const card = document.getElementById("a-card");
+      card.style.animation = "none"; card.offsetHeight; card.style.animation = "";
+      card.innerHTML = `
+        <span class="phase-pill phase-a">🎤 Parte 1 · ¿Quién lo dijo?</span>
+        <div class="topic">${q.emoji} ${esc(q.topic)}${q.prio ? '<span class="star-badge">⭐ Tu tema</span>' : ""}</div>
+        <div class="quote">${esc(q.text)}</div>
+        <div class="choices two-col" id="a-choices">
+          ${dirigentesList.map((d, i) => `<button type="button" class="choice center" data-full="${esc(d.full)}" onclick="answerA(${i})">${esc(d.full)}</button>`).join("")}
+        </div>
+        <div id="a-feedback"></div>
+        <div class="game-nav">
+          <span></span>
+          <button type="button" class="btn btn-primary hidden" id="a-next" onclick="nextA()">Siguiente →</button>
+        </div>`;
+    }
+
+    let autoTimer = null;
+    function answerA(i) {
+      if (lockA) return;
+      lockA = true;
+      const q = roundA[idxA];
+      const picked = dirigentesList[i].full;
+      answersA[idxA] = picked;
+      const ok = picked === q.author;
+      document.querySelectorAll("#a-choices .choice").forEach(b => {
+        b.disabled = true;
+        const full = b.getAttribute("data-full");
+        if (full === q.author) b.classList.add("correct");
+        else if (full === picked) b.classList.add("wrong");
+        else b.classList.add("faded");
       });
-
-      if (missingCount > 0) {
-        const errEl = document.getElementById("err-1");
-        errEl.innerText = `¡Casi! Te falta elegir dirigente en ${missingCount} de las 40 frases antes de pasar al Test 2.`;
-        errEl.classList.remove("hidden");
-        if (firstMissingEl) {
-          firstMissingEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-        return;
-      }
-
-      document.getElementById("err-1").classList.add("hidden");
-      goToStep(2);
+      document.getElementById("a-feedback").innerHTML = ok
+        ? `<div class="feedback ok">✓ ¡Acertaste! Lo dijo ${esc(q.author)}</div>`
+        : `<div class="feedback err">✗ Nop. Lo dijo ${esc(q.author)}</div>`;
+      document.getElementById("a-next").classList.remove("hidden");
+      setProgress(idxA + 1, `Frase ${idxA + 1}/${roundA.length}`);
+      autoTimer = setTimeout(nextA, AUTO_AVANCE_MS);
     }
 
-    function nextFromStep2() {
-      const answered = document.querySelectorAll("#container-var-b input[type='radio']:checked").length;
-      if (answered < 10) {
-        document.getElementById("err-2").classList.remove("hidden");
-        return;
-      }
-      document.getElementById("err-2").classList.add("hidden");
-      goToStep(3);
+    function nextA() {
+      clearTimeout(autoTimer);
+      if (!lockA) return;
+      idxA++;
+      if (idxA < roundA.length) { renderA(); return; }
+      const hits = roundA.filter((q, i) => answersA[i] === q.author).length;
+      document.getElementById("mid-score").textContent = `${hits}/${roundA.length}`;
+      document.getElementById("mid-msg").textContent =
+        hits >= 7 ? "¡Radar político afiladísimo! 🔥" :
+        hits >= 4 ? "Buen oído, pero varias te sorprendieron 👀" :
+        "¡Fuera de contexto, todos suenan parecido! 😅";
+      setProgress(roundA.length, "Parte 1 ✓");
+      show("s-mid");
     }
 
-    let shareSummaryText = "";
+    // ---------- PARTE 2 ----------
+    function startPartB() { show("s-b"); renderB(); }
 
-    function calculateResults() {
+    function renderB() {
+      const t = dataB[idxB];
+      setProgress(roundA.length + idxB, `Tema ${idxB + 1}/${dataB.length}`);
+      const card = document.getElementById("b-card");
+      card.style.animation = "none"; card.offsetHeight; card.style.animation = "";
+      card.innerHTML = `
+        <span class="phase-pill phase-b">🧭 Parte 2 · ¿Con qué te identificás?</span>
+        <div class="topic-b">${t.emoji} ${esc(t.topic)}${t.prio ? '<span class="star-badge">⭐ Tu tema</span>' : ""}</div>
+        <div class="context-box">📖 ${t.contexto}</div>
+        <div class="question-title">${esc(t.pregunta)}</div>
+        <div class="choices" id="b-choices">
+          ${t.options.map((o, i) => `
+            <div role="button" tabindex="0" class="choice ${answersB[idxB] === i ? "picked" : ""} ${o.space === "Ninguna" ? "none-opt" : ""}" onclick="answerB(${i})" onkeydown="if(event.key==='Enter')answerB(${i})">
+              <strong>${esc(o.title)}</strong>${o.text ? ` <span class="opt-text">${esc(o.text)}</span>` : ""}
+            </div>`).join("")}
+        </div>
+        <div class="game-nav">
+          ${idxB > 0 ? `<button type="button" class="link-btn" onclick="prevB()">← Anterior</button>` : "<span></span>"}
+          <span style="font-size:0.82rem; color:var(--muted);">Tocá una opción para seguir</span>
+        </div>`;
+    }
+
+    let lockB = false;
+    function answerB(i) {
+      if (lockB) return;
+      lockB = true;
+      answersB[idxB] = i;
+      document.querySelectorAll("#b-choices .choice").forEach((c, j) => c.classList.toggle("picked", j === i));
+      setTimeout(() => {
+        lockB = false;
+        idxB++;
+        if (idxB < dataB.length) renderB();
+        else finish();
+      }, 380);
+    }
+
+    function prevB() { if (idxB > 0) { idxB--; renderB(); } }
+
+    // ---------- RESULTADOS ----------
+    function finish() {
+      setProgress(TOTAL_STEPS(), "¡Listo! 🏁");
+
+      // Parte 1
       let totalCorrect = 0;
-      const correctByAuthor = {};
-      dirigentesList.forEach(d => correctByAuthor[d.full] = 0);
-
-      const revelations = [];
-      const detalleARecords = [];
-
-      dataVarA.forEach((item, idx) => {
-        const topicItems = [];
-        const topicLog = [];
-        item.options.forEach((opt, optIdx) => {
-          const guessed = answersVarA[idx][optIdx];
-          const isOk = guessed === opt.author;
-          if (isOk) {
-            totalCorrect++;
-            correctByAuthor[opt.author]++;
-          }
-          topicItems.push({
-            letter: opt.letter,
-            text: opt.text,
-            guessed: guessed,
-            realAuthor: opt.author,
-            isOk: isOk
-          });
-          topicLog.push(`${opt.letter}: dijo ${guessed} (era ${opt.author})`);
-        });
-        revelations.push({ topic: item.topic, items: topicItems });
-        detalleARecords.push(`${item.topic} [${topicLog.join("; ")}]`);
+      const byAuthor = {};
+      dirigentesList.forEach(d => byAuthor[d.full] = { hits: 0, total: 0 });
+      const revA = roundA.map((q, i) => {
+        const ok = answersA[i] === q.author;
+        byAuthor[q.author].total++;
+        if (ok) { totalCorrect++; byAuthor[q.author].hits++; }
+        return { ...q, guessed: answersA[i], ok };
       });
+      const nA = roundA.length;
+      const pctA = Math.round(totalCorrect * 100 / nA);
+      const scoreSummaryA = `${totalCorrect}/${nA} aciertos (${pctA}%)`;
 
+      // Parte 2
+      const nB = dataB.length;
       const countsB = {};
-      const revelationsB = [];
-      dataVarB.forEach((item, idx) => {
-        const checked = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
-        const optIdx = checked ? parseInt(checked.value) : 0;
-        const chosen = item.options[optIdx];
-        countsB[chosen.space] = (countsB[chosen.space] || 0) + 1;
-        revelationsB.push({
-          topic: item.topic,
-          title: chosen.title,
-          space: chosen.space
-        });
+      const chosenB = dataB.map((t, i) => {
+        const o = t.options[answersB[i]];
+        countsB[o.space] = (countsB[o.space] || 0) + 1;
+        return { topic: t.topic, title: o.text ? `${o.title} ${o.text}` : o.title, space: o.space, defend: o.defend, reject: o.reject };
       });
-
-      const sortedAuthorHits = Object.entries(correctByAuthor).sort((a, b) => b[1] - a[1]);
       const sortedB = Object.entries(countsB).sort((a, b) => b[1] - a[1]);
+      const topName = sortedB[0][0];
+      const topCount = sortedB[0][1];
+      const topSpace = `${topName} (${Math.round(topCount * 100 / nB)}%)`;
 
-      const barsA = document.getElementById("res-bars-a");
-      barsA.innerHTML = sortedAuthorHits.map(([author, hits]) => `
-        <div class="bar-item">
-          <div class="bar-label"><span>${author}</span><strong>${hits}/10 aciertos</strong></div>
-          <div class="bar-track"><div class="bar-fill" style="width: ${hits * 10}%"></div></div>
-        </div>
-      `).join("");
+      // Perfil
+      let key;
+      const tiedTop = sortedB.length > 1 && sortedB[1][1] === topCount;
+      if (topName === "Ninguna" && topCount >= 3 && !tiedTop) key = "esceptico";
+      else if (topCount <= 2 || tiedTop) key = "hibrido";
+      else if (topName === LIB) key = "liberal";
+      else if (topName === CEN) key = "reformista";
+      else if (topName === PER) key = "desarrollista";
+      else if (topName === IZQ) key = "igualitario";
+      else key = "hibrido";
+      const perfil = PERFILES[key];
 
-      const barsB = document.getElementById("res-bars-b");
-      barsB.innerHTML = sortedB.map(([space, count]) => `
-        <div class="bar-item">
-          <div class="bar-label"><span>${space}</span><strong>${count * 10}% (${count}/10)</strong></div>
-          <div class="bar-track"><div class="bar-fill" style="width: ${count * 10}%"></div></div>
-        </div>
-      `).join("");
-
-      const revListB = document.getElementById("revelation-list-b");
-      revListB.innerHTML = revelationsB.map(r => `
-        <div class="revelation-item">
-          <strong>${r.topic}</strong><br>
-          <span>${r.title}</span> <span class="badge-ok" style="background:#e0e7ff; color:#3730a3;">${r.space}</span>
-        </div>
-      `).join("");
-
-      const revList = document.getElementById("revelation-list");
-      revList.innerHTML = revelations.map(r => `
-        <div class="revelation-item">
-          <div style="font-weight: 800; color: var(--primary); margin-bottom: 0.45rem;">${r.topic}</div>
-          ${r.items.map(it => `
-            <div style="margin-bottom: 0.5rem; padding-left: 0.65rem; border-left: 3px solid ${it.isOk ? '#10b981' : '#f43f5e'};">
-              <div><strong>${it.letter})</strong> ${it.text}</div>
-              <div style="font-size: 0.85rem; margin-top: 0.15rem;">
-                Elegiste: <strong>${it.guessed}</strong>
-                ${it.isOk
-                  ? '<span class="badge-ok">✓ Acertaste</span>'
-                  : `<span class="badge-err">✗ Era ${it.realAuthor}</span>`
-                }
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      `).join("");
-
-      const nombreUsuario = document.getElementById("nombre").value.trim();
-      const emailUsuario = document.getElementById("email-usuario").value.trim();
-
-      document.getElementById("result-greeting").innerText = nombreUsuario
-        ? `Resultados de ${nombreUsuario} — Test Político`
-        : "Tus Resultados del Test Político";
-
-      const pctTotalA = Math.round((totalCorrect * 100) / 40);
-      const scoreSummaryA = `${totalCorrect}/40 aciertos (${pctTotalA}%)`;
-      const topSpace = sortedB[0] ? `${sortedB[0][0]} (${sortedB[0][1] * 10}%)` : "";
-      const declaredEl = document.querySelector('input[name="cierre2"]:checked');
-      const declared = declaredEl ? declaredEl.value : "No declarado";
-
-      document.getElementById("summary-subtitle").innerText =
-        `Voto habitual declarado: ${declared}. Acertaste ${scoreSummaryA} de las frases y en propuestas coincidiste principalmente con ${topSpace}.`;
-
-      if (emailUsuario) {
-        const banner = document.getElementById("email-sent-banner");
-        banner.innerText = `✉️ Te estamos mandando el informe completo a ${emailUsuario}. Si en unos minutos no lo ves, revisá Spam o Promociones.`;
-        banner.classList.remove("hidden");
-      }
-
-      // --- DEVOLUCIÓN PERSONALIZADA ---
-      const chosenOptionsB = dataVarB.map((item, idx) => {
-        const checked = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
-        const optIdx = checked ? parseInt(checked.value) : 0;
-        return { topic: item.topic, ...item.options[optIdx] };
+      const defend = [], reject = [], noneTopics = [];
+      chosenB.forEach(c => {
+        if (c.space === "Ninguna") { noneTopics.push(c.topic); return; }
+        if (c.defend) defend.push(c.defend);
+        if (c.reject) reject.push(c.reject);
       });
+      if (noneTopics.length) reject.push(`Las propuestas tradicionales de todos los espacios en: ${noneTopics.join(", ")}.`);
+      if (!defend.length) defend.push("Una mirada independiente y crítica frente a las ofertas electorales actuales.");
+      if (!reject.length) reject.push("Los extremos ideológicos rígidos, priorizando soluciones equilibradas.");
+      const finalDefend = defend.slice(0, 5), finalReject = reject.slice(0, 5);
 
-      const topSpaceName = sortedB[0] ? sortedB[0][0] : "Ninguna";
-      const topSpaceCount = sortedB[0] ? sortedB[0][1] : 0;
-      const tiedTop = sortedB.length > 1 && sortedB[1][1] === topSpaceCount;
-      let perfilKey;
-      if (topSpaceName === "Ninguna" && topSpaceCount >= 4 && !tiedTop) perfilKey = "esceptico";
-      else if (topSpaceCount <= 3 || tiedTop) perfilKey = "hibrido";
-      else if (topSpaceName === LIB) perfilKey = "liberal";
-      else if (topSpaceName === CEN) perfilKey = "reformista";
-      else if (topSpaceName === PER) perfilKey = "desarrollista";
-      else if (topSpaceName === IZQ) perfilKey = "igualitario";
-      else perfilKey = "hibrido";
-      const perfil = PERFILES[perfilKey];
-      const archTitle = perfil.title;
-      const archDesc = perfil.desc;
-
-      const defendBullets = [];
-      const rejectBullets = [];
-      const noneTopics = [];
-      chosenOptionsB.forEach(ch => {
-        if (ch.space === "Ninguna") { noneTopics.push(ch.topic); return; }
-        if (ch.defend) defendBullets.push(ch.defend);
-        if (ch.reject) rejectBullets.push(ch.reject);
-      });
-
-      if (noneTopics.length > 0) {
-        rejectBullets.push(`Las propuestas tradicionales de todos los espacios en: ${noneTopics.join(", ")}.`);
-      }
-      if (defendBullets.length === 0) {
-        defendBullets.push("Una mirada independiente y crítica frente a las ofertas electorales actuales.");
-      }
-      if (rejectBullets.length === 0) {
-        rejectBullets.push("Los extremos ideológicos rígidos, priorizando soluciones equilibradas.");
-      }
-
-      const finalDefend = defendBullets.slice(0, 5);
-      const finalReject = rejectBullets.slice(0, 5);
-
-      let coherenceMsg = "";
-      const decLower = declared.toLowerCase();
-      const topLower = topSpaceName.toLowerCase();
+      // Coherencia
+      const dec = declared.toLowerCase(), top = topName.toLowerCase();
       const isMatch =
-        (decLower.includes("libertad") && topSpaceName === LIB) ||
-        ((decLower.includes("pro /") || decLower.includes("ucr")) && topSpaceName === CEN) ||
-        (decLower.includes("peronismo") && topSpaceName === PER) ||
-        (decLower.includes("izquierda") && topSpaceName === IZQ);
+        (dec.includes("libertad") && topName === LIB) ||
+        ((dec.includes("pro /") || dec.includes("ucr")) && topName === CEN) ||
+        (dec.includes("peronismo") && topName === PER) ||
+        (dec.includes("izquierda") && topName === IZQ);
+      let coherence;
+      if (topName === "Ninguna" && declared.includes("Independiente")) coherence = `Te definiste como independiente y lo confirmaste: en la mayoría de los temas ninguna propuesta te convenció.`;
+      else if (declared.includes("Independiente")) coherence = `Te definiste como independiente, y a ciegas tu mayor afinidad fue con propuestas de ${topSpace}.`;
+      else if (topName === "Ninguna") coherence = `Te identificás con ${declared}, pero en la mayoría de los temas ninguna propuesta te convenció.`;
+      else if (isMatch) coherence = `Tu voto (${declared}) coincide con tus ideas: sin etiquetas, elegiste sobre todo propuestas de tu propio espacio (${topSpace}).`;
+      else coherence = `¡Dato revelador! Te identificás con ${declared}, pero sin ver nombres coincidiste más con ideas de ${topSpace}.`;
 
-      if (topSpaceName === "Ninguna" && !declared.includes("Independiente") && declared !== "No declarado") {
-        coherenceMsg = `Te identificás con ${declared}, pero en la mayoría de los temas ninguna propuesta te convenció.`;
-      } else if (topSpaceName === "Ninguna") {
-        coherenceMsg = "Te definiste como independiente y lo confirmaste: en la mayoría de los temas ninguna propuesta te convenció.";
-      } else if (declared === "No declarado" || declared.includes("Independiente")) {
-        coherenceMsg = `Te definiste como independiente/sin espacio fijo, y en la votación a ciegas tu mayor afinidad fue con propuestas de ${topSpace}.`;
-      } else if (isMatch) {
-        coherenceMsg = `Tu voto declarado (${declared}) coincide con tus ideas: al elegir propuestas sin etiquetas, respaldaste mayoritariamente las iniciativas de tu propio espacio (${topSpace}).`;
-      } else {
-        coherenceMsg = `¡Dato revelador! Aunque habitualmente te identificás con ${declared}, al evaluar propuestas sin nombres propios coincidiste más con ideas de ${topSpace}.`;
-      }
+      const radar =
+        totalCorrect >= 7 ? `Con ${scoreSummaryA}, tenés un radar político afiladísimo: reconocés el discurso de cada referente sin ver quién habla.` :
+        totalCorrect >= 4 ? `Con ${scoreSummaryA}, tenés buen oído político, aunque varias frases te sonaron más parecidas de lo que imaginabas.` :
+        `Con ${scoreSummaryA}, ¡caíste en el efecto del test ciego! Fuera de contexto, muchas frases suenan distinto a la imagen de cada dirigente.`;
 
-      let radarMsg = "";
-      if (totalCorrect >= 28) {
-        radarMsg = `Con ${scoreSummaryA}, tenés un radar político afiladísimo: reconocés el discurso y estilo de cada referente incluso sin ver quién habla.`;
-      } else if (totalCorrect >= 16) {
-        radarMsg = `Con ${scoreSummaryA}, tenés buen oído político, aunque varias frases de distintos referentes te resultaron más parecidas de lo que imaginabas.`;
-      } else {
-        radarMsg = `Con ${scoreSummaryA}, ¡caíste en el efecto del test ciego! Muchas frases reales fuera de contexto suenan distinto a la imagen habitual de cada dirigente.`;
-      }
+      // Pintar
+      document.getElementById("summary-subtitle").textContent =
+        `Voto habitual: ${declared}. Acertaste ${scoreSummaryA} y en propuestas coincidiste más con ${topSpace}.`;
 
-      document.getElementById("fb-avatar").innerHTML = avatarSVG(perfilKey);
+      document.getElementById("res-bars-a").innerHTML = Object.entries(byAuthor)
+        .filter(([, v]) => v.total > 0)
+        .sort((a, b) => (b[1].hits / b[1].total) - (a[1].hits / a[1].total))
+        .map(([a, v]) => `
+          <div class="bar-item">
+            <div class="bar-label"><span>${esc(a)}</span><strong>${v.hits}/${v.total}</strong></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round(v.hits * 100 / v.total)}%"></div></div>
+          </div>`).join("");
+
+      document.getElementById("res-bars-b").innerHTML = sortedB.map(([s, c]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${esc(s)}</span><strong>${Math.round(c * 100 / nB)}% (${c}/${nB})</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c * 100 / nB)}%"></div></div>
+        </div>`).join("");
+
+      document.getElementById("fb-avatar").innerHTML = avatarSVG(key);
       document.getElementById("fb-nick").textContent = perfil.nick;
       document.getElementById("fb-nick").style.color = perfil.color;
+      document.getElementById("fb-archetype-title").textContent = perfil.title;
       document.getElementById("fb-frase").textContent = `💬 «${perfil.frase}»`;
       document.getElementById("fb-elogio").textContent = `✨ ${perfil.elogio}`;
-      document.getElementById("fb-archetype-title").innerText = archTitle;
-      document.getElementById("fb-archetype-desc").innerText = archDesc;
-      document.getElementById("fb-defend-list").innerHTML = finalDefend.map(b => `<li>${b}</li>`).join("");
-      document.getElementById("fb-reject-list").innerHTML = finalReject.map(b => `<li>${b}</li>`).join("");
-      document.getElementById("fb-coherence-text").innerText = coherenceMsg;
-      document.getElementById("fb-radar-text").innerText = radarMsg;
+      document.getElementById("fb-archetype-desc").textContent = perfil.desc;
+      document.getElementById("fb-defend-list").innerHTML = finalDefend.map(b => `<li>${esc(b)}</li>`).join("");
+      document.getElementById("fb-reject-list").innerHTML = finalReject.map(b => `<li>${esc(b)}</li>`).join("");
+      document.getElementById("fb-coherence-text").textContent = coherence;
+      document.getElementById("fb-radar-text").textContent = radar;
 
-      shareSummaryText = `Hice el Test Político a ciegas:
-• Mi perfil: ${perfil.nick} (${archTitle})
-💬 «${perfil.frase}»
-• Aciertos (¿Quién dijo qué?): ${scoreSummaryA}
-• Propuestas: mayor afinidad con ${topSpace}
-¿Reconocés lo que dicen sin ver quién habla?`;
+      document.getElementById("revelation-list-b").innerHTML = chosenB.map(c => `
+        <div class="revelation-item"><strong>${esc(c.topic)}</strong><br>${esc(c.title)} <span class="badge-space">${esc(c.space)}</span></div>`).join("");
 
-      const emailHtmlReport = `
-        <div style="font-family: Arial, sans-serif; color: #0f172a; max-width: 680px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-          <img src="https://ladob-tech.github.io/quiendijo-elecciones-2027/preview.jpg" width="680" height="357" alt="Test Político: ¿Quién dijo qué?" style="display:block; width:100%; max-width:680px; height:auto; border:0;">
-          <div style="background: #3730a3; color: #ffffff; padding: 20px;">
-            <h2 style="margin: 0;">Informe de Resultados — Test Político</h2>
-            <p style="margin: 6px 0 0; color: #e0f2fe;">${nombreUsuario ? "Participante: " + nombreUsuario : "Participante anónimo"} · Voto declarado: ${declared}</p>
-          </div>
-          <div style="padding: 20px;">
-            <div style="background: #f8fafc; border: 1px solid #818cf8; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-              <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: #4338ca;">Tu Diagnóstico Político a Ciegas</div>
-              <div style="font-size: 24px; font-weight: bold; color: ${perfil.color}; margin: 6px 0 2px;">${perfil.nick}</div>
-              <h3 style="margin: 0 0 6px; color: #475569; font-size: 14px;">${archTitle}</h3>
-              <p style="margin: 0 0 8px; font-size: 15px; font-weight: bold; font-style: italic; color: #1e1b4b;">💬 «${perfil.frase}»</p>
-              <p style="margin: 0 0 12px; font-size: 13px; color: #713f12; background: #fef9c3; border: 1px solid #fde68a; border-radius: 8px; padding: 10px;">✨ ${perfil.elogio}</p>
-              <p style="margin: 0 0 12px; font-size: 14px;">${archDesc}</p>
-              <p style="margin: 0 0 4px; font-weight: bold; color: #065f46;">✅ Lo que defendés:</p>
-              <ul style="margin: 0 0 10px; font-size: 13px;">
-                ${finalDefend.map(b => `<li>${b}</li>`).join("")}
-              </ul>
-              <p style="margin: 0 0 4px; font-weight: bold; color: #9f1239;">❌ Lo que rechazás o no te convence:</p>
-              <ul style="margin: 0 0 10px; font-size: 13px;">
-                ${finalReject.map(b => `<li>${b}</li>`).join("")}
-              </ul>
-              <p style="margin: 0 0 6px; font-size: 13px;"><strong>🧭 Coherencia (Voto vs. Ideas):</strong> ${coherenceMsg}</p>
-              <p style="margin: 0; font-size: 13px;"><strong>🎯 Tu Ojo Político:</strong> ${radarMsg}</p>
-            </div>
+      document.getElementById("revelation-list").innerHTML = revA.map(r => `
+        <div class="revelation-item" style="border-left: 3px solid ${r.ok ? "#10b981" : "#f43f5e"}; padding-left: 0.7rem;">
+          <div style="font-weight:800; color: var(--primary); font-size:0.85rem;">${r.emoji} ${esc(r.topic)}</div>
+          <div>«${esc(r.text.replace(/^«|»$/g, ""))}»</div>
+          <div style="font-size:0.85rem; margin-top:0.2rem;">Elegiste: <strong>${esc(r.guessed)}</strong>
+            ${r.ok ? '<span class="badge-ok">✓ Acertaste</span>' : `<span class="badge-err">✗ Era ${esc(r.author)}</span>`}</div>
+        </div>`).join("");
 
-            <h3 style="color: #4338ca; border-bottom: 2px solid #eef2ff; padding-bottom: 6px;">1. Resumen General</h3>
-            <p><strong>Test 1 (¿Quién dijo...?):</strong> ${scoreSummaryA}</p>
-            <ul>
-              ${sortedAuthorHits.map(([a, h]) => `<li><strong>${a}:</strong> ${h}/10 aciertos</li>`).join("")}
-            </ul>
-            <p><strong>Test 2 (¿Con qué te identificás...?):</strong> Mayor coincidencia con ${topSpace}</p>
-            <ul>
-              ${sortedB.map(([s, c]) => `<li><strong>${s}:</strong> ${c * 10}% (${c}/10)</li>`).join("")}
-            </ul>
+      // Tus temas
+      const prioNames = priorities.map(i => cleanTopic(dataVarA[i].topic));
+      const prioShort = prioNames.map(n => TEMAS_CORTOS[n] || n);
+      const prioQs = revA.filter(q => q.prio);
+      const prioHits = prioQs.filter(q => q.ok).length;
+      const myRef = REFERENTE_DE[declared];
+      const ownQs = myRef ? prioQs.filter(q => q.author === myRef) : [];
+      const ownHits = ownQs.filter(q => q.ok).length;
+      const short = n => n === "Javier Milei" ? "Milei" : n === "Myriam Bregman" ? "Bregman" : n.replace("Mauricio ", "").replace("Patricia ", "").replace("Cristina Kirchner", "Cristina").replace("Axel ", "");
+      const confusions = prioQs.filter(q => !q.ok).map(q => `En ${TEMAS_CORTOS[q.topic] || q.topic}, una frase de ${short(q.author)} te sonó a ${short(q.guessed)}.`);
+      const prioB = chosenB.filter(c => dataB.find(t => t.topic === c.topic && t.prio));
+      const nP = prioQs.length;
+      const themesMsg =
+        prioHits >= nP - 1 ? "Conocés bien lo que se dice sobre lo que más te importa. La pregunta ahora es otra: ¿las propuestas que elegiste en esos temas son las del espacio que votás?" :
+        prioHits >= Math.ceil(nP / 2) ? "Reconocés algunas posturas, pero otras te sorprendieron. ¿Sabés qué propone cada espacio sobre los temas que más te importan?" :
+        "En los temas que más te importan, la mayoría de las frases te sonaron a otra persona. Vale la pena preguntarse: ¿sabemos qué propone cada uno sobre lo que más nos importa?";
+      const ownLine = ownQs.length
+        ? `<p style="margin-top:0.8rem; font-size:0.95rem;">De las frases de <strong>tu propio espacio</strong> en estos temas, reconociste <strong>${ownHits} de ${ownQs.length}</strong>.</p>` : "";
+      document.getElementById("themes-body").innerHTML = `
+        <p style="font-size:0.97rem;">Elegiste <strong>${esc(prioShort.join(", ").replace(/, ([^,]*)$/, " y $1"))}</strong> como lo más importante. En esos temas reconociste <strong>${prioHits} de ${nP}</strong> frases.</p>
+        <div style="margin-top:0.7rem;">${priorities.map(i => {
+          const n = cleanTopic(dataVarA[i].topic); const qs = prioQs.filter(q => q.topic === n);
+          return `<div class="theme-row"><span>${dataVarA[i].emoji} ${esc(TEMAS_CORTOS[n] || n)}</span><strong>${qs.filter(q => q.ok).length}/${qs.length}</strong></div>`;
+        }).join("")}</div>
+        ${ownLine}
+        ${confusions.length ? `<ul>${confusions.slice(0, 4).map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+        ${prioB.length ? `<p style="margin-top:0.8rem; font-size:0.95rem;"><strong>En la parte 2, sobre tus temas elegiste:</strong></p><ul>${prioB.map(c => `<li>${esc(c.topic)}: <strong>${esc(c.space)}</strong></li>`).join("")}</ul>` : ""}
+        <div class="reflect">🤔 ${esc(themesMsg)}</div>`;
+      const themes = { prioShort, prioHits, nP, ownQs: ownQs.length, ownHits, confusions, prioB, themesMsg };
 
-            <h3 style="color: #4338ca; border-bottom: 2px solid #eef2ff; padding-bottom: 6px; margin-top: 20px;">2. Tus elecciones en Test 2</h3>
-            <ol>
-              ${revelationsB.map(r => `<li style="margin-bottom: 6px;"><strong>${r.topic}:</strong> ${r.title} <em>(${r.space})</em></li>`).join("")}
-            </ol>
+      results = { themes, scoreSummaryA, topSpace, perfil, finalDefend, finalReject, coherence, radar, revA, chosenB, byAuthor, sortedB, nB };
+      show("s-results");
+    }
 
-            <h3 style="color: #4338ca; border-bottom: 2px solid #eef2ff; padding-bottom: 6px; margin-top: 20px;">3. Corrección del Test 1 (Frases)</h3>
-            ${revelations.map(r => `
-              <p style="margin: 12px 0 4px; font-weight: bold; color: #4338ca;">${r.topic}</p>
-              <ul style="margin-top: 0;">
-                ${r.items.map(it => `
-                  <li style="margin-bottom: 4px;">
-                    <strong>${it.letter})</strong> ${it.text}<br>
-                    <span style="font-size: 13px; color: ${it.isOk ? "#166534" : "#991b1b"};">
-                      Elegiste: <strong>${it.guessed}</strong> — ${it.isOk ? "✓ Acertaste" : "✗ Era " + it.realAuthor}
-                    </span>
-                  </li>
-                `).join("")}
-              </ul>
-            `).join("")}
-          </div>
-        </div>
-      `;
+    // ---------- MAIL CON DETALLE + SEGUIR JUGANDO ----------
+    function buildEmailHtml(nombre) {
+      const r = results;
+      const li = arr => arr.map(b => `<li style="margin-bottom:4px;">${esc(b)}</li>`).join("");
+      return `
+<div style="font-family: Arial, Helvetica, sans-serif; color:#0f172a; max-width:640px; margin:0 auto; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+  <img src="${PREVIEW_URL}" width="640" height="336" alt="Test Político: ¿Quién dijo qué?" style="display:block; width:100%; max-width:640px; height:auto; border:0;">
+  <div style="background:#3730a3; color:#ffffff; padding:22px; text-align:center;">
+    <h2 style="margin:0; font-size:22px;">Tu informe del Test Político</h2>
+    <p style="margin:6px 0 0; color:#e0f2fe; font-size:14px;">${nombre ? "Hola, " + esc(nombre) + " · " : ""}Voto habitual: ${esc(declared)}</p>
+  </div>
+  <div style="padding:22px;">
+    <div style="background:#f8fafc; border:2px solid ${r.perfil.color}; border-radius:12px; padding:16px; margin-bottom:20px; text-align:center;">
+      <div style="font-size:11px; font-weight:bold; text-transform:uppercase; color:#4338ca; letter-spacing:1px;">Tu perfil político a ciegas</div>
+      <div style="font-size:26px; font-weight:bold; color:${r.perfil.color}; margin:6px 0 2px;">${esc(r.perfil.nick)}</div>
+      <div style="font-size:14px; font-weight:bold; color:#475569;">${esc(r.perfil.title)}</div>
+      <div style="font-size:16px; font-weight:bold; font-style:italic; color:#1e1b4b; margin-top:8px;">💬 «${esc(r.perfil.frase)}»</div>
+      <div style="font-size:14px; color:#713f12; background:#fef9c3; border:1px solid #fde68a; border-radius:8px; padding:10px; margin-top:10px; text-align:left;">✨ ${esc(r.perfil.elogio)}</div>
+      <p style="margin:10px 0 0; font-size:14px; text-align:left;">${esc(r.perfil.desc)}</p>
+    </div>
 
-      const diffEl = document.querySelector('input[name="cierre1"]:checked');
-      const payload = {
+    <p style="margin:0 0 4px; font-weight:bold; color:#065f46;">✅ Lo que defendés</p>
+    <ul style="margin:0 0 12px; font-size:14px;">${li(r.finalDefend)}</ul>
+    <p style="margin:0 0 4px; font-weight:bold; color:#9f1239;">❌ Lo que rechazás o no te convence</p>
+    <ul style="margin:0 0 12px; font-size:14px;">${li(r.finalReject)}</ul>
+    <p style="font-size:14px;"><strong>🧭 Coherencia (voto vs. ideas):</strong> ${esc(r.coherence)}</p>
+    <p style="font-size:14px;"><strong>🎯 Tu ojo político:</strong> ${esc(r.radar)}</p>
+
+    <div style="background:#fffbeb; border:1px solid #fcd34d; border-radius:12px; padding:16px; margin-top:18px;">
+      <p style="margin:0 0 6px; font-weight:bold; color:#92400e;">⭐ Tus temas: ${esc(r.themes.prioShort.join(", "))}</p>
+      <p style="margin:0 0 6px; font-size:14px;">En esos temas reconociste <strong>${r.themes.prioHits} de ${r.themes.nP}</strong> frases.${r.themes.ownQs ? ` De las de tu propio espacio, ${r.themes.ownHits} de ${r.themes.ownQs}.` : ""}</p>
+      ${r.themes.confusions.length ? `<ul style="margin:6px 0; font-size:14px;">${r.themes.confusions.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+      ${r.themes.prioB.length ? `<p style="margin:6px 0 0; font-size:14px;"><strong>En la parte 2, sobre tus temas elegiste:</strong> ${r.themes.prioB.map(c => `${esc(c.topic)} (${esc(c.space)})`).join(", ")}</p>` : ""}
+      <p style="margin:10px 0 0; font-size:14px; font-weight:bold; color:#78350f;">🤔 ${esc(r.themes.themesMsg)}</p>
+    </div>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">1. Resumen</h3>
+    <p style="font-size:14px;"><strong>Parte 1 (¿Quién lo dijo?):</strong> ${esc(r.scoreSummaryA)}</p>
+    <ul style="font-size:14px;">${Object.entries(r.byAuthor).filter(([, v]) => v.total).map(([a, v]) => `<li><strong>${esc(a)}:</strong> ${v.hits}/${v.total}</li>`).join("")}</ul>
+    <p style="font-size:14px;"><strong>Parte 2 (¿Con qué te identificás?):</strong> más coincidencia con ${esc(r.topSpace)}</p>
+    <ul style="font-size:14px;">${r.sortedB.map(([s, c]) => `<li><strong>${esc(s)}:</strong> ${Math.round(c * 100 / r.nB)}% (${c}/${r.nB})</li>`).join("")}</ul>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">2. Tus elecciones en la parte 2</h3>
+    <ol style="font-size:14px;">${r.chosenB.map(c => `<li style="margin-bottom:6px;"><strong>${esc(c.topic)}:</strong> ${esc(c.title)} <em>(${esc(c.space)})</em></li>`).join("")}</ol>
+
+    <h3 style="color:#4338ca; border-bottom:2px solid #eef2ff; padding-bottom:6px; margin-top:22px;">3. Corrección de la parte 1</h3>
+    <ul style="font-size:14px; padding-left:18px;">${r.revA.map(q => `
+      <li style="margin-bottom:10px;"><strong>${esc(q.topic)}:</strong> ${esc(q.text)}<br>
+        <span style="color:${q.ok ? "#166534" : "#991b1b"};">Elegiste: <strong>${esc(q.guessed)}</strong> — ${q.ok ? "✓ Acertaste" : "✗ Era " + esc(q.author)}</span></li>`).join("")}</ul>
+
+    <div style="text-align:center; margin:28px 0 8px;">
+      <a href="${GAME_URL}" style="display:inline-block; background:#4338ca; color:#ffffff; text-decoration:none; font-weight:bold; font-size:16px; padding:14px 28px; border-radius:10px;">🔄 Seguir jugando</a>
+      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">Cada partida trae frases distintas. ¡Compartilo y compará resultados!</p>
+    </div>
+  </div>
+</div>`;
+    }
+
+    function buildPayload(withContact) {
+      const r = results;
+      const nombre = withContact ? document.getElementById("nombre").value.trim() : "";
+      const email = withContact ? document.getElementById("email-usuario").value.trim() : "";
+      return {
         fecha: new Date().toLocaleString("es-AR"),
         votoHabitual: declared,
-        dificultad: diffEl ? diffEl.value : "No especificado",
+        dificultad: "Versión rápida",   // esta columna identifica de qué versión viene la respuesta
         edad: document.getElementById("edad").value,
         provincia: document.getElementById("provincia").value,
         vota: document.getElementById("vota").value,
-        topReferenteA: scoreSummaryA,
-        topEspacioB: topSpace,
-        detalleA: detalleARecords.join(" | "),
-        detalleB: dataVarB.map((item, idx) => {
-          const c = document.querySelector(`input[name="varB-q-${idx}"]:checked`);
-          const o = item.options[c ? parseInt(c.value) : 0];
-          return `${item.topic}: ${o.space}`;
-        }).join(" | "),
-        nombre: nombreUsuario || "Anónimo",
-        email: emailUsuario,
-        emailHtml: emailHtmlReport
+        topReferenteA: r.scoreSummaryA,
+        topEspacioB: r.topSpace,
+        detalleA: r.revA.map(q => `${q.prio ? "⭐" : ""}${q.topic} [dijo ${q.guessed} (era ${q.author})]`).join(" | "),
+        prioridades: r.themes.prioShort.join(", "),
+        detalleB: r.chosenB.map(c => `${c.topic}: ${c.space}`).join(" | "),
+        nombre: nombre || "Anónimo",
+        email: email,
+        emailHtml: email ? buildEmailHtml(nombre) : "",
+        perfil: r.perfil.title,
+        version: "rapida",
+        sesion: sessionId
       };
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).catch(err => console.error("Error enviando datos:", err));
-
-      document.getElementById("tab-4").classList.remove("hidden");
-      goToStep(4);
     }
 
-    function copyShareText() {
-      navigator.clipboard.writeText(shareSummaryText).then(() => {
-        document.getElementById("copy-confirm").classList.remove("hidden");
+    function postData(payload, onUnload) {
+      const body = JSON.stringify(payload);
+      if (onUnload && navigator.sendBeacon) {
+        navigator.sendBeacon(GOOGLE_SCRIPT_URL, new Blob([body], { type: "text/plain;charset=utf-8" }));
+        return Promise.resolve();
+      }
+      return fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST", mode: "no-cors", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, body
       });
     }
 
-    renderVarA();
-    renderVarB();
-    updateProgressUI();
-
-    if (window.location.hash === "#organizacion") {
-      openOrgSection();
+    // Guarda la respuesta anónima si la persona se va sin dejar el mail
+    function sendAnonymousIfPending(onUnload) {
+      if (!results || dataSent) return;
+      dataSent = true;
+      postData(buildPayload(false), onUnload).catch(() => {});
     }
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") sendAnonymousIfPending(true); });
+    window.addEventListener("pagehide", () => sendAnonymousIfPending(true));
+
+    function submitContact() {
+      if (contactSent) return;
+      const email = document.getElementById("email-usuario").value.trim();
+      const err = document.getElementById("mail-err");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.classList.remove("hidden"); return; }
+      err.classList.add("hidden");
+      const btn = document.getElementById("mail-btn");
+      btn.disabled = true; btn.textContent = "Enviando...";
+      contactSent = true; dataSent = true;
+      postData(buildPayload(true), false)
+        .then(() => {
+          btn.textContent = "✓ Pedido enviado";
+          const ok = document.getElementById("mail-ok");
+          ok.textContent = `✉️ Listo: te estamos mandando el informe a ${email}. Si en unos minutos no lo ves, revisá Spam o Promociones.`;
+          ok.classList.remove("hidden");
+        })
+        .catch(() => {
+          contactSent = false; dataSent = false;
+          btn.disabled = false; btn.textContent = "✉️ Enviarme el informe";
+          err.textContent = "No pudimos enviarlo. Revisá tu conexión y probá de nuevo.";
+          err.classList.remove("hidden");
+        });
+    }
+
+    // ---------- COMPARTIR / JUGAR OTRA VEZ ----------
+    function shareText() {
+      const r = results;
+      return `Hice el Test Político a ciegas 🗳️
+${r.perfil.nick} (${r.perfil.title})
+💬 «${r.perfil.frase}»
+🎤 ¿Quién lo dijo?: ${r.scoreSummaryA}
+🧭 Propuestas: más afinidad con ${r.topSpace}
+⭐ Mis temas: ${r.themes.prioShort.join(", ")} (reconocí ${r.themes.prioHits} de ${r.themes.nP})
+¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos 👉 ${GAME_URL}`;
+    }
+
+    function shareResult() {
+      const text = shareText();
+      if (navigator.share) {
+        navigator.share({ title: "Test Político: ¿Quién dijo qué?", text }).catch(() => {});
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => document.getElementById("copy-confirm").classList.remove("hidden"));
+    }
+
+    function playAgain() {
+      sendAnonymousIfPending(false);
+      location.reload();
+    }
+
+    // ---------- INICIO ----------
+    renderStart();
   </script>
 </body>
 </html>
