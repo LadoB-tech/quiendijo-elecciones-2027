@@ -26,7 +26,6 @@
   #tp-stats .x{background:rgba(255,255,255,.1);border:0;color:#fff;border-radius:999px;padding:.5rem .9rem;font-weight:700;cursor:pointer}
   #tp-stats .card{background:#151a3d;border:1px solid rgba(122,245,232,.18);border-radius:16px;padding:1.1rem;margin-bottom:1rem}
   #tp-stats .muted{color:#9aa3d6;font-size:.88rem}
-  #tp-stats .kpis{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
   #tp-stats .kpi{background:#10143a;border-radius:12px;padding:.8rem;text-align:center}
   #tp-stats .kpi b{display:block;font-size:1.7rem;color:#f7b928;font-family:Montserrat,Inter,sans-serif}
   #tp-stats .lock{filter:blur(5px);user-select:none}
@@ -77,10 +76,7 @@
         <p class="muted">Datos de todas las personas que hicieron el test. Siempre totales, nunca respuestas de una persona.</p>
         <div class="card">
           <h3>🎁 Gratis</h3>
-          <div class="kpis">
-            <div class="kpi"><b>${d.total ?? "-"}</b><span class="muted">personas jugaron</span></div>
-            <div class="kpi"><b>${d.promedioAciertos != null ? d.promedioAciertos + "%" : "-"}</b><span class="muted">de aciertos promedio en el Test 1</span></div>
-          </div>
+          ${d.promedioAciertos != null ? `<div class="kpi"><b>${d.promedioAciertos}%</b><span class="muted">de aciertos promedio en el Test 1: ¿estás arriba o abajo?</span></div>` : ""}
           ${d.temasTop && d.temasTop.length ? `<p style="margin:.9rem 0 .3rem;font-weight:700">⭐ Los temas que más le importan a la gente:</p><ol style="margin:0;padding-left:1.2rem">${d.temasTop.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : ""}
           ${d.temasTop && d.temasTop[0] ? `<p style="margin:.9rem 0 0">🔒 En <strong>${esc(d.temasTop[0])}</strong>, la postura más elegida fue <span class="lock">████████████</span>… <span class="muted">(en el informe)</span></p>` : ""}
         </div>
@@ -88,7 +84,7 @@
         <div class="card">
           <h3>🔓 Desbloqueá el informe</h3>
           <label class="muted">Tu email (ahí te llega el código de acceso)</label>
-          <input type="email" id="tp-email" placeholder="tu@correo.com" autocomplete="email">
+          <input type="text" inputmode="email" id="tp-email" placeholder="tu@correo.com" autocomplete="email" oninput="document.getElementById('tp-err').textContent=''">
           <div id="tp-err" class="err"></div>
         </div>
         ${planes.map(([k, p]) => `
@@ -115,12 +111,14 @@
 
   window.pagarInforme = function (plan) {
     const email = emailOk(); if (!email) return;
-    const b = document.getElementById("tp-pay-" + plan); b.disabled = true; b.textContent = "Abriendo Mercado Pago…";
+    const b = document.getElementById("tp-pay-" + plan), err = document.getElementById("tp-err");
+    const reset = msg => { b.disabled = false; b.textContent = "Pagar con Mercado Pago"; err.textContent = msg; };
+    b.disabled = true; b.textContent = "Abriendo Mercado Pago…";
+    err.innerHTML = '<span class="ok">Abriendo Mercado Pago, esperá unos segundos…</span>';
     api({ accion: "pagar", plan, email, volver: location.origin + location.pathname }).then(r => {
       if (r.url) { location.href = r.url; return; }
-      b.disabled = false; b.textContent = "Pagar con Mercado Pago";
-      document.getElementById("tp-err").textContent = "No pudimos abrir Mercado Pago. Probá de nuevo en un rato.";
-    }).catch(() => { b.disabled = false; b.textContent = "Pagar con Mercado Pago"; });
+      reset("No pudimos abrir Mercado Pago (" + (r.error || "error") + "). Probá de nuevo en un rato.");
+    }).catch(e => reset("No pudimos conectarnos. Revisá tu conexión y probá de nuevo."));
   };
 
   window.recuperarCodigo = function () {
