@@ -323,6 +323,8 @@
   .stats-hero .sh-btn { border:0; border-radius:12px; background:#0b0d24; color:#f7b928; font-weight:900; font-size:1.05rem; padding:.95rem 1.4rem; cursor:pointer; width:100%; max-width:420px; }
     .share-alien { margin: .4rem 0 1rem; font-size: 1.05rem; }
     .share-alien span { display:block; font-size:.78rem; font-weight:700; opacity:.75; text-transform:none; }
+      /* iPhone: algunos navegadores no dibujan imágenes con sombra/animación — se desactivan ahí */
+    @supports (-webkit-touch-callout: none) { .avatar { animation: none !important; } .avatar img, .cast img, .mini-cast img { filter: none !important; } }
   </style>
 </head>
 <body>
@@ -1603,6 +1605,6 @@ ${r.perfil.nick} (${r.perfil.title})
       .map((k, i) => `<img src="${AVATAR_IMG[k]}" alt="" style="height:${[100, 118, 100][i]}px">`).join("");
     renderStart();
   </script>
-<script src="../estadisticas.js?v=3"></script>
+<script src="../estadisticas.js?v=4"></script>
 </body>
 </html>
