@@ -824,7 +824,12 @@
     .form-grid-3 label.f { font-weight: 700; font-size: 0.88rem; display: block; }
     .form-grid-3 select { width: 100%; padding: 0.75rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #fff; color: #0f172a; margin-top: 0.3rem; }
     .form-grid-3 select.missing { border-color: #f43f5e; background: #fff1f2; }
-  </style>
+    .stats-hero { position:relative; overflow:hidden; text-align:center; border-radius:18px; padding:1.4rem 1.2rem; margin:1rem 0; background:linear-gradient(135deg,#f7b928 0%,#ffd76a 55%,#7af5e8 140%); color:#1a1300; box-shadow:0 10px 30px rgba(247,185,40,.25); }
+  .stats-hero .sh-kicker { font-weight:800; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; opacity:.8; }
+  .stats-hero .sh-title { font-family:Montserrat,Inter,sans-serif; font-weight:900; font-size:1.5rem; text-transform:uppercase; margin:.3rem 0 .4rem; line-height:1.15; }
+  .stats-hero .sh-text { font-size:.95rem; margin:0 auto 1rem; max-width:460px; color:#2a1f00 !important; }
+  .stats-hero .sh-btn { border:0; border-radius:12px; background:#0b0d24; color:#f7b928; font-weight:900; font-size:1.05rem; padding:.95rem 1.4rem; cursor:pointer; width:100%; max-width:420px; }
+</style>
 </head>
 <body>
 
@@ -1021,9 +1026,15 @@
           <button type="button" class="btn" style="background: #10b981; color: #ffffff;" onclick="window.print()">📄 Descargar mi Informe en PDF</button>
           <button type="button" class="btn" style="background: #38bdf8; color: #0f172a;" onclick="copyShareText()">📲 Copiar resultado para compartir</button>
           <button type="button" class="btn" style="background: rgba(255,255,255,0.18); color: #ffffff;" onclick="location.reload()">🔄 Volver a jugar</button>
-          <button type="button" class="btn" style="background: #f7b928; color: #1a1300;" onclick="abrirEstadisticas()">📊 Cómo respondió la gente</button>
         </div>
         <p id="copy-confirm" style="margin-top: 0.65rem; font-size: 0.88rem; color: #86efac; font-weight: 700;" class="hidden">¡Resultado copiado al portapapeles! Pegalo en WhatsApp o redes.</p>
+      </div>
+
+      <div class="stats-hero no-print">
+        <div class="sh-kicker">📊 Cómo respondió la gente</div>
+        <div class="sh-title">¿Y el resto qué eligió?</div>
+        <p class="sh-text">Mirá qué postura gana en cada tema, qué elige tu rango de edad y quiénes votan a un partido pero piensan como otro.</p>
+        <button type="button" class="sh-btn" onclick="abrirEstadisticas()">Ver cómo respondió la gente →</button>
       </div>
 
       <div class="profile-card" id="personalized-feedback-card">
