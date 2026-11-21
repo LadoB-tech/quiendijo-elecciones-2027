@@ -840,6 +840,7 @@
       <button type="button" class="step-badge" id="tab-2" onclick="goToStep(2)">🧭 Test 2: ¿Con qué te identificás...?</button>
       <button type="button" class="step-badge" id="tab-3" onclick="goToStep(3)">🏁 3. Cierre y Perfil</button>
       <button type="button" class="step-badge hidden" id="tab-4" onclick="goToStep(4)">🏆 4. Tu Diagnóstico</button>
+      <button type="button" class="step-badge" onclick="abrirEstadisticas()">📊 Cómo respondió la gente</button>
       <button type="button" class="step-badge admin-tab" id="tab-org" onclick="openOrgSection()">🔒 Organización</button>
     </nav>
     <div class="progress-bar-container">
@@ -1020,6 +1021,7 @@
           <button type="button" class="btn" style="background: #10b981; color: #ffffff;" onclick="window.print()">📄 Descargar mi Informe en PDF</button>
           <button type="button" class="btn" style="background: #38bdf8; color: #0f172a;" onclick="copyShareText()">📲 Copiar resultado para compartir</button>
           <button type="button" class="btn" style="background: rgba(255,255,255,0.18); color: #ffffff;" onclick="location.reload()">🔄 Volver a jugar</button>
+          <button type="button" class="btn" style="background: #f7b928; color: #1a1300;" onclick="abrirEstadisticas()">📊 Cómo respondió la gente</button>
         </div>
         <p id="copy-confirm" style="margin-top: 0.65rem; font-size: 0.88rem; color: #86efac; font-weight: 700;" class="hidden">¡Resultado copiado al portapapeles! Pegalo en WhatsApp o redes.</p>
       </div>
@@ -2128,5 +2130,6 @@
       openOrgSection();
     }
   </script>
+<script src="estadisticas.js"></script>
 </body>
 </html>
