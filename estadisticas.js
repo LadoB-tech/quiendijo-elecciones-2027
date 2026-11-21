@@ -302,13 +302,14 @@
   // =====================================================
   //  TARJETAS PARA COMPARTIR (gratis y PRO)
   // =====================================================
+  const conTope = (p, ms, def) => Promise.race([p, new Promise(r => setTimeout(() => r(def), ms))]);
   const cargarImg = src => new Promise(res => { if (!src) return res(null); const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
   const envolver = (x, t, w) => { const ws = String(t).split(" "), out = []; let l = ""; ws.forEach(p => { const n = l ? l + " " + p : p; if (x.measureText(n).width > w && l) { out.push(l); l = p; } else l = n; }); if (l) out.push(l); return out; };
   const rr = (x, a, b, w, h, r) => { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); };
   const F = (peso, px) => `${peso} ${px}px Montserrat, Inter, sans-serif`;
  
   async function dibujarTarjeta(m, pro) {
-    try { if (document.fonts) { await document.fonts.load(F(900, 40)); await document.fonts.ready; } } catch (e) {}
+    try { if (document.fonts) await conTope(document.fonts.load(F(900, 40)).then(() => document.fonts.ready), 1500); } catch (e) {}
     const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H;
     const x = c.getContext("2d"), col = /^#[0-9a-f]{6}$/i.test(m.color || "") ? m.color : "#7af5e8";
     const g = x.createLinearGradient(0, 0, 0, H);
@@ -324,7 +325,7 @@
     x.fillStyle = "#f7b928"; x.font = F(800, 32); x.fillText(pro ? "⭐ TEST POLÍTICO · EDICIÓN PRO ⭐" : "TEST POLÍTICO", W / 2, 130);
     try { x.letterSpacing = "0px"; } catch (e) {}
     x.fillStyle = "#fff"; x.font = F(900, 66); x.fillText("¿QUÉ ALIEN POLÍTICO SOS?", W / 2, 220);
-    const img = await cargarImg(typeof AVATAR_IMG !== "undefined" ? AVATAR_IMG[m.perfilKey] : "");
+    const img = await conTope(cargarImg(typeof AVATAR_IMG !== "undefined" ? AVATAR_IMG[m.perfilKey] : ""), 3000, null);
     if (img) { const k = Math.min(alto / img.height, 940 / img.width), w = img.width * k, h = img.height * k; x.shadowColor = "rgba(0,0,0,.55)"; x.shadowBlur = 40; x.drawImage(img, (W - w) / 2, piso - h, w, h); x.shadowBlur = 0; }
     x.fillStyle = "rgba(122,245,232,.55)"; x.fillRect(140, piso, W - 280, 4);
     let y = piso + 90;
@@ -360,26 +361,33 @@
   }
  
   // Convierte la tarjeta en un archivo de imagen listo para compartir
-  const aArchivo = c => new Promise(r => c.toBlob(r, "image/png")).then(blob => ({ blob, file: new File([blob], "mi-alien.png", { type: "image/png" }) }));
-  const puedeCompartir = f => !!(navigator.canShare && navigator.share && navigator.canShare({ files: [f] }));
+  const aArchivo = c => {
+    const url = c.toDataURL("image/png");
+    const bin = atob(url.split(",")[1]), arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const blob = new Blob([arr], { type: "image/png" });
+    let file = null; try { file = new File([blob], "mi-alien.png", { type: "image/png" }); } catch (e) {}
+    return { url, blob, file };
+  };
+  const puedeCompartir = f => { try { return !!(f && navigator.canShare && navigator.share && navigator.canShare({ files: [f] })); } catch (e) { return false; } };
   const textoCompartir = m => `Soy ${m.nick} 👽 ¿Y vos qué alien político sos? Jugalo acá: ${linkInvitacion()}`;
  
   // Plan B: muestra la imagen en grande para guardarla o compartirla con un toque nuevo
   function verTarjeta(t, texto) {
     let el = document.getElementById("tp-card-modal"); if (el) el.remove();
-    const url = URL.createObjectURL(t.blob);
+    const url = t.url;
     el = document.createElement("div"); el.id = "tp-card-modal";
     el.style.cssText = "position:fixed;inset:0;z-index:10000;background:#05061a;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:1rem;font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center";
     const bt = "display:block;width:100%;max-width:380px;border:0;border-radius:12px;padding:.85rem;font-weight:800;font-size:1rem;cursor:pointer;margin:.35rem auto";
     el.innerHTML = `<img src="${url}" alt="Tu tarjeta" style="max-width:min(380px,92vw);max-height:68vh;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.6);margin:.5rem 0 .6rem">
-      <p style="margin:.2rem 0 .6rem;font-size:.92rem;color:#c9cff0">📱 En el celu: <strong>mantené apretada la imagen</strong> para guardarla o compartirla.</p>
+      <p style="margin:.2rem 0 .6rem;font-size:.95rem;color:#fff">📱 <strong>Mantené apretada la imagen</strong> y elegí <strong>Guardar</strong> o <strong>Compartir</strong>.</p>
       ${puedeCompartir(t.file) ? `<button id="tp-cm-share" style="${bt};background:#f7b928;color:#1a1300">📲 Compartir</button>` : ""}
       <a href="${url}" download="mi-alien.png" style="${bt};background:#7af5e8;color:#06121a;text-decoration:none;box-sizing:border-box">⬇️ Descargar imagen</a>
       <button id="tp-cm-close" style="${bt};background:rgba(255,255,255,.14);color:#fff">Cerrar</button>`;
     document.body.appendChild(el);
     const sh = document.getElementById("tp-cm-share");
     if (sh) sh.onclick = () => navigator.share({ files: [t.file], text: texto }).catch(() => {});
-    document.getElementById("tp-cm-close").onclick = () => { el.remove(); URL.revokeObjectURL(url); };
+    document.getElementById("tp-cm-close").onclick = () => el.remove();
   }
  
   // Tarjeta GRATIS: se arma apenas aparece el resultado, así al tocar el botón ya está lista
@@ -387,24 +395,19 @@
   window.prepararTarjeta = function () {
     const m = mis(); tarjetaLista = null;
     if (!m || !m.perfilKey) { tarjetaPromesa = null; return null; }
-    tarjetaPromesa = dibujarTarjeta(m, false).then(aArchivo).then(t => (tarjetaLista = t));
+    tarjetaPromesa = dibujarTarjeta(m, false).then(aArchivo).then(t => (tarjetaLista = t)).catch(e => { console.error(e); tarjetaPromesa = null; return null; });
     return tarjetaPromesa;
   };
   window.compartirAlien = async function () {
     const m = mis(); if (!m || !m.perfilKey) return;
     const texto = textoCompartir(m);
-    if (tarjetaLista) {
-      // Ya está lista: se comparte al instante, sin esperas (así el celu no lo bloquea)
-      if (puedeCompartir(tarjetaLista.file)) {
-        try { await navigator.share({ files: [tarjetaLista.file], text: texto }); return; }
-        catch (e) { if (e && e.name === "AbortError") return; }
-      }
-      verTarjeta(tarjetaLista, texto); return;
-    }
+    if (tarjetaLista) { verTarjeta(tarjetaLista, texto); return; }
     const btns = document.querySelectorAll(".share-alien"), orig = [...btns].map(b => b.innerHTML);
     btns.forEach(b => { b.disabled = true; b.innerHTML = "⏳ Armando tu tarjeta…"; });
-    try { const t = await (tarjetaPromesa || prepararTarjeta()); if (t) verTarjeta(t, texto); }
-    catch (e) { console.error(e); }
+    try {
+      const t = await conTope(tarjetaPromesa || prepararTarjeta(), 10000, null);
+      if (t) verTarjeta(t, texto);
+    } catch (e) { console.error(e); }
     finally { btns.forEach((b, i) => { b.disabled = false; b.innerHTML = orig[i]; }); }
   };
  
