@@ -169,4 +169,101 @@
     const ord = g.filter(x => x.ranking.length > 1 && x.ranking[0][0] !== "Ninguna").sort((a, b) => gap(a.ranking) - gap(b.ranking));
     if (!ord.length) ord.push(g[0]);
     const dis = ord[0], cla = ord[ord.length - 1];
-    let t = `En ${B(dis.tema)} está la discusión más pareja: ${B(dis.ranking[0][0])} (${dis.ranking[0][1]}%) y ${B(dis.ranking[1] ? dis.ranking[1][0] : "")} (${dis.ranking[1] ? dis.ranking[1][1] : 0}%), ${nivel(gap(dis.ranking))
+    let t = `En ${B(dis.tema)} está la discusión más pareja: ${B(dis.ranking[0][0])} (${dis.ranking[0][1]}%) y ${B(dis.ranking[1] ? dis.ranking[1][0] : "")} (${dis.ranking[1] ? dis.ranking[1][1] : 0}%), ${nivel(gap(dis.ranking))}.`;
+    if (cla !== dis) t += ` En ${B(cla.tema)}, en cambio, ${B(cla.ranking[0][0])} gana con ${nivel(gap(cla.ranking))} (${cla.ranking[0][1]}%).`;
+    const nin = g.filter(x => x.ranking[0][0] === "Ninguna").map(x => x.tema);
+    if (nin.length) t += ` En ${nin.map(B).join(", ")} lo más elegido fue que ninguna propuesta convence: una señal de descontento con las ofertas actuales.`;
+    return lee(t);
+  }
+  function textoEdades(d) {
+    const g = d.porEdad;
+    if (g.length < 2) return g.length ? lee(`En el rango ${B(g[0].edad)}, la postura más elegida es ${B(g[0].ranking[0][0])} (${g[0].ranking[0][1]}%).`) : "";
+    const tops = [...new Set(g.map(x => x.ranking[0][0]))];
+    if (tops.length === 1) return lee(`En todos los rangos de edad la afinidad más alta es con ${B(tops[0])}: la edad no cambia la tendencia general.`);
+    return lee(`La edad sí marca diferencias: ${g.map(x => `en el rango de ${esc(x.edad)} gana ${B(x.ranking[0][0])} (${x.ranking[0][1]}%)`).join("; ")}.`);
+  }
+  function textoConfusiones(d) {
+    const c = d.confusiones || [];
+    if (!c.length) return "";
+    const [era, dijo] = c[0][0].split(" → ");
+    return lee(`La confusión más repetida es atribuirle a ${B(dijo)} frases que en realidad dijo ${B(era)} (${c[0][1]} veces). Cuando no se ve quién habla, los discursos se parecen más de lo que se cree.`);
+  }
+  function textoAciertos(d) {
+    const a = d.aciertosPorReferente || [];
+    if (a.length < 2) return "";
+    const dif = a[0], fac = a[a.length - 1];
+    return lee(`El referente más fácil de reconocer es ${B(fac[0])} (${fac[1]}% de aciertos) y el más difícil, ${B(dif[0])} (${dif[1]}%).`);
+  }
+  function textoEspacios(d) {
+    const e = d.espacios || [];
+    if (!e.length) return "";
+    const g2 = e[1] ? e[0][1] - e[1][1] : 100;
+    return lee(`A ciegas, la mayor coincidencia es con ${B(e[0][0])} (${e[0][1]}%)${e[1] ? (g2 < 5 ? `, prácticamente empatado con ${B(e[1][0])} (${e[1][1]}%)` : `, por delante de ${B(e[1][0])} (${e[1][1]}%)`) : ""}.`);
+  }
+  function desfasajes(d) {
+    return (d.votoVsIdeas || []).map(g => {
+      const propio = PROPIO[g.voto]; if (!propio) return null;
+      const mio = (g.ranking.find(r => r[0] === propio) || [propio, 0])[1];
+      return { voto: g.voto, propio, mio, top: g.ranking[0] };
+    }).filter(Boolean);
+  }
+  function textoVoto(d) {
+    const x = desfasajes(d);
+    if (!x.length) return "";
+    const fuera = x.filter(y => y.top[0] !== y.propio).sort((a, b) => a.mio - b.mio);
+    if (!fuera.length) return lee(`En todos los grupos, la coincidencia más alta fue con propuestas de su propio espacio: el voto y las ideas van de la mano.`);
+    const f = fuera[0];
+    return lee(`El mayor desfasaje está entre quienes votan ${B(f.voto)}: a ciegas, el ${f.top[1]}% coincidió más con ${B(f.top[0])} y solo el ${f.mio}% con su propio espacio.`);
+  }
+  function conclusiones(d) {
+    const out = [];
+    if (d.temas[0]) out.push(`La prioridad número uno de la gente es ${B(d.temas[0][0])}.`);
+    const g = d.ganadorPorTema.filter(x => x.ranking.length > 1 && x.ranking[0][0] !== "Ninguna").sort((a, b) => gap(a.ranking) - gap(b.ranking));
+    if (g[0]) out.push(`El tema más disputado es ${B(g[0].tema)}: ${nivel(gap(g[0].ranking))} entre ${B(g[0].ranking[0][0])} y ${B(g[0].ranking[1][0])}.`);
+    if (d.plan === "completo") {
+      const c = (d.confusiones || [])[0];
+      if (c) { const [era, dijo] = c[0].split(" → "); out.push(`Las frases de ${B(era)} son las que más se confunden con las de ${B(dijo)}.`); }
+      const f = desfasajes(d).filter(y => y.top[0] !== y.propio).sort((a, b) => a.mio - b.mio)[0];
+      if (f) out.push(`Quienes votan ${B(f.voto)} son los que más coinciden con ideas de otro espacio (${B(f.top[0])}).`);
+    } else if (d.porEdad.length > 1) {
+      const tops = [...new Set(d.porEdad.map(x => x.ranking[0][0]))];
+      out.push(tops.length > 1 ? `Las preferencias cambian según la edad.` : `Las preferencias son parecidas en todas las edades.`);
+    }
+    return out.length ? `<div class="card concl"><h3>📌 Conclusiones principales</h3><ul>${out.map(t => `<li>${t}</li>`).join("")}</ul></div>` : "";
+  }
+  const metodo = d => `<div class="card metodo"><h3>📐 Cómo leer este informe</h3><p>Este informe resume las respuestas de <strong>${d.total} personas</strong> que hicieron el test de forma voluntaria y anónima. No es una encuesta representativa de toda la población: muestra cómo piensan quienes jugaron. Los porcentajes se calculan sobre quienes respondieron cada pregunta y se redondean, por eso pueden no sumar exactamente 100. No se muestra ningún grupo con menos de 5 personas, para proteger la privacidad. Cuando dos opciones están a menos de 5 puntos, lo leemos como un empate.</p></div>`;
+
+  window.verInforme = function (codigo) {
+    codigo = String(codigo || "").trim().toUpperCase();
+    if (!codigo) return;
+    abrir(`<h2>Tu informe</h2><p class="muted">Cargando…</p>`);
+    api({ accion: "informe", codigo }).then(d => {
+      if (d.error) { body(`<h2>Código no válido</h2><p class="muted">Revisá que esté bien escrito.</p><button class="btn" onclick="abrirEstadisticas()">Volver</button>`); return; }
+      guardar(codigo);
+      const n = d.total, grupos = (arr, titulo) => arr.map(g => `<div class="grupo"><p style="margin:0 0 .2rem;font-weight:700">${esc(g[titulo])} <span class="muted">(${g.n} personas)</span></p>${g.ranking.slice(0, 3).map(([k, p]) => bar(k === "Ninguna" ? "Ninguna me convence" : k, p)).join("")}</div>`).join("") || `<p class="muted">Todavía no hay suficientes respuestas.</p>`;
+      let h = `
+        <h2>Informe ${d.plan === "completo" ? "Completo" : "Resumen"}</h2>
+        <p class="muted">Basado en ${n} personas · se actualiza solo a medida que más gente juega.</p>
+        ${metodo(d)}
+        <div class="card"><h3>⭐ Los temas que más le importan a la gente</h3>${textoTemas(d)}${d.temas.map(([t, c]) => bar(t, Math.round(100 * c / (n || 1)))).join("")}</div>
+        <div class="card"><h3>🧭 Qué postura gana en cada tema</h3>${textoPosturas(d)}${grupos(d.ganadorPorTema, "tema")}</div>
+        <div class="card"><h3>🎂 Qué elige cada rango de edad</h3>${textoEdades(d)}${grupos(d.porEdad, "edad")}</div>`;
+      if (d.plan === "completo") {
+        h += `
+        <div class="card"><h3>🤯 Las confusiones más comunes</h3><p class="muted">Frases de un referente que la gente le atribuyó a otro.</p>${textoConfusiones(d)}${(d.confusiones || []).map(([k, c]) => { const [era, dijo] = k.split(" → "); return `<p style="margin:.4rem 0">Frases de <strong>${esc(era)}</strong> que sonaron a <strong>${esc(dijo)}</strong>: ${c} veces</p>`; }).join("")}</div>
+        <div class="card"><h3>🎯 ¿A quién se reconoce más?</h3><p class="muted">Porcentaje de aciertos según quién dijo la frase.</p>${textoAciertos(d)}${(d.aciertosPorReferente || []).map(([k, p, t]) => bar(k, p, t + " frases")).join("")}</div>
+        <div class="card"><h3>🗳️ Qué espacio suma más adhesiones</h3><p class="muted">Con qué espacio coincidió más cada persona en el Test 2, sin ver nombres.</p>${textoEspacios(d)}${(d.espacios || []).map(([k, p]) => bar(k, p)).join("")}</div>
+        <div class="card"><h3>🔄 Votan a uno, piensan como otro</h3><p class="muted">Según su voto habitual, con qué espacio coincidieron más a ciegas.</p>${textoVoto(d)}${grupos(d.votoVsIdeas || [], "voto")}</div>`;
+      }
+      h += conclusiones(d);
+      h += `<p class="muted">Tu código: <strong>${esc(codigo)}</strong> · guardalo para volver a entrar.</p>`;
+      body(h);
+    }).catch(() => body(`<h2>No pudimos cargar el informe</h2><button class="btn" onclick="abrirEstadisticas()">Volver</button>`));
+  };
+
+  function inicio() {
+    if (params.get("pago") === "1") volviDePagar();
+    else if (params.get("codigo")) verInforme(params.get("codigo"));
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", inicio); else inicio();
+})();
