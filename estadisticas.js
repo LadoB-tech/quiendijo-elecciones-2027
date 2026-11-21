@@ -359,32 +359,64 @@
     return c;
   }
  
-  async function compartirCanvas(c, texto) {
-    const blob = await new Promise(r => c.toBlob(r, "image/png"));
-    const file = new File([blob], "mi-alien.png", { type: "image/png" });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], text: texto }); return; } catch (e) { if (e && e.name === "AbortError") return; }
-    }
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "mi-alien.png";
-    document.body.appendChild(a); a.click(); a.remove();
-  }
+  // Convierte la tarjeta en un archivo de imagen listo para compartir
+  const aArchivo = c => new Promise(r => c.toBlob(r, "image/png")).then(blob => ({ blob, file: new File([blob], "mi-alien.png", { type: "image/png" }) }));
+  const puedeCompartir = f => !!(navigator.canShare && navigator.share && navigator.canShare({ files: [f] }));
   const textoCompartir = m => `Soy ${m.nick} 👽 ¿Y vos qué alien político sos? Jugalo acá: ${linkInvitacion()}`;
  
-  // Tarjeta GRATIS (al final del Test 2)
+  // Plan B: muestra la imagen en grande para guardarla o compartirla con un toque nuevo
+  function verTarjeta(t, texto) {
+    let el = document.getElementById("tp-card-modal"); if (el) el.remove();
+    const url = URL.createObjectURL(t.blob);
+    el = document.createElement("div"); el.id = "tp-card-modal";
+    el.style.cssText = "position:fixed;inset:0;z-index:10000;background:#05061a;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:1rem;font-family:Inter,system-ui,sans-serif;color:#fff;text-align:center";
+    const bt = "display:block;width:100%;max-width:380px;border:0;border-radius:12px;padding:.85rem;font-weight:800;font-size:1rem;cursor:pointer;margin:.35rem auto";
+    el.innerHTML = `<img src="${url}" alt="Tu tarjeta" style="max-width:min(380px,92vw);max-height:68vh;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.6);margin:.5rem 0 .6rem">
+      <p style="margin:.2rem 0 .6rem;font-size:.92rem;color:#c9cff0">📱 En el celu: <strong>mantené apretada la imagen</strong> para guardarla o compartirla.</p>
+      ${puedeCompartir(t.file) ? `<button id="tp-cm-share" style="${bt};background:#f7b928;color:#1a1300">📲 Compartir</button>` : ""}
+      <a href="${url}" download="mi-alien.png" style="${bt};background:#7af5e8;color:#06121a;text-decoration:none;box-sizing:border-box">⬇️ Descargar imagen</a>
+      <button id="tp-cm-close" style="${bt};background:rgba(255,255,255,.14);color:#fff">Cerrar</button>`;
+    document.body.appendChild(el);
+    const sh = document.getElementById("tp-cm-share");
+    if (sh) sh.onclick = () => navigator.share({ files: [t.file], text: texto }).catch(() => {});
+    document.getElementById("tp-cm-close").onclick = () => { el.remove(); URL.revokeObjectURL(url); };
+  }
+ 
+  // Tarjeta GRATIS: se arma apenas aparece el resultado, así al tocar el botón ya está lista
+  let tarjetaLista = null, tarjetaPromesa = null;
+  window.prepararTarjeta = function () {
+    const m = mis(); tarjetaLista = null;
+    if (!m || !m.perfilKey) { tarjetaPromesa = null; return null; }
+    tarjetaPromesa = dibujarTarjeta(m, false).then(aArchivo).then(t => (tarjetaLista = t));
+    return tarjetaPromesa;
+  };
   window.compartirAlien = async function () {
     const m = mis(); if (!m || !m.perfilKey) return;
-    const btns = document.querySelectorAll(".share-alien"); btns.forEach(b => b.disabled = true);
-    try { await compartirCanvas(await dibujarTarjeta(m, false), textoCompartir(m)); } finally { btns.forEach(b => b.disabled = false); }
+    const texto = textoCompartir(m);
+    if (tarjetaLista) {
+      // Ya está lista: se comparte al instante, sin esperas (así el celu no lo bloquea)
+      if (puedeCompartir(tarjetaLista.file)) {
+        try { await navigator.share({ files: [tarjetaLista.file], text: texto }); return; }
+        catch (e) { if (e && e.name === "AbortError") return; }
+      }
+      verTarjeta(tarjetaLista, texto); return;
+    }
+    const btns = document.querySelectorAll(".share-alien"), orig = [...btns].map(b => b.innerHTML);
+    btns.forEach(b => { b.disabled = true; b.innerHTML = "⏳ Armando tu tarjeta…"; });
+    try { const t = await (tarjetaPromesa || prepararTarjeta()); if (t) verTarjeta(t, texto); }
+    catch (e) { console.error(e); }
+    finally { btns.forEach((b, i) => { b.disabled = false; b.innerHTML = orig[i]; }); }
   };
  
   // Tarjeta PRO (dentro del informe pago)
   let datosPro = [];
   window.tarjetaPro = async function () {
     const m = mis(); if (!m || !m.perfilKey) return;
-    const b = document.getElementById("tp-pro-btn"); b.disabled = true; b.textContent = "Armando tu tarjeta…";
+    const b = document.getElementById("tp-pro-btn"); b.disabled = true; b.textContent = "⏳ Armando tu tarjeta…";
     const nombre = (document.getElementById("tp-pro-nombre").value || "").trim().slice(0, 18);
-    try { await compartirCanvas(await dibujarTarjeta({ ...m, nombre, stats: datosPro }, true), textoCompartir(m)); }
-    finally { b.disabled = false; b.textContent = "⭐ Descargar mi tarjeta PRO"; }
+    try { verTarjeta(await aArchivo(await dibujarTarjeta({ ...m, nombre, stats: datosPro }, true)), textoCompartir(m)); }
+    catch (e) { console.error(e); }
+    finally { b.disabled = false; b.textContent = "⭐ Ver mi tarjeta PRO"; }
   };
  
   // =====================================================
@@ -458,7 +490,7 @@
         <p style="margin:0 0 .5rem;font-weight:800">⭐ Tu tarjeta PRO</p>
         <p class="muted" style="margin:0 0 .5rem">Tu alien con tus datos, en diseño dorado, lista para historias o WhatsApp.</p>
         <input type="text" id="tp-pro-nombre" maxlength="18" placeholder="Tu nombre en la tarjeta (opcional)">
-        <button class="btn" id="tp-pro-btn" onclick="tarjetaPro()">⭐ Descargar mi tarjeta PRO</button></div>` : "";
+        <button class="btn" id="tp-pro-btn" onclick="tarjetaPro()">⭐ Ver mi tarjeta PRO</button></div>` : "";
     return `<div class="card yo"><h3>🪞 Vos vs. el resto</h3>${trio.length ? `<div class="trio">${trio.join("")}</div>` : ""}${lect}${filas.join("")}${proHtml}</div>`;
   }
  
