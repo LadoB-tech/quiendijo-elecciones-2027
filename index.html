@@ -339,6 +339,8 @@
 
       .share-alien { margin: .4rem 0 1rem; font-size: 1.05rem; }
     .share-alien span { display:block; font-size:.78rem; font-weight:700; opacity:.75; text-transform:none; }
+      /* iPhone: algunos navegadores no dibujan imágenes con sombra/animación — se desactivan ahí */
+    @supports (-webkit-touch-callout: none) { .avatar { animation: none !important; } .avatar img, .cast img, .mini-cast img { filter: none !important; } }
   </style>
 </head>
 <body>
@@ -1728,6 +1730,6 @@ ${r.perfil.nick} (${r.perfil.title})
     if (window.location.hash === "#organizacion") openOrgSection();
     window.addEventListener("hashchange", () => { if (window.location.hash === "#organizacion") openOrgSection(); });
   </script>
-<script src="estadisticas.js?v=3"></script>
+<script src="estadisticas.js?v=4"></script>
 </body>
 </html>
