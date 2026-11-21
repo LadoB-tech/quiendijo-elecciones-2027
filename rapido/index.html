@@ -488,7 +488,7 @@
           </div>
         </div>
         <div class="result-actions no-print">
-          <button type="button" class="btn" style="background:#38bdf8; color:#0f172a;" onclick="shareResult()">📲 Compartir mi resultado</button>
+          <button type="button" class="btn" style="background:#38bdf8; color:#0f172a;" onclick="compartirAlien()">📲 Compartir mi resultado</button>
           <button type="button" class="btn" style="background:#10b981; color:#fff;" onclick="window.print()">📄 Guardar en PDF</button>
           <button type="button" class="btn" style="background:rgba(255,255,255,0.18); color:#fff;" onclick="playAgain()">🔄 Jugar otra vez</button>
         </div>
@@ -1394,6 +1394,7 @@
 
       results = { stage: 2, themes, scoreSummaryA, topSpace, perfil, finalDefend, finalReject, coherence, radar, revA, chosenB, byAuthor, sortedB, nB };
       guardarMiResultado(2, key);
+      if (window.prepararTarjeta) prepararTarjeta();
       moveMailCard("mail-slot-results", "📩 ¿Te mandamos el informe completo por mail?");
       show("s-results");
     }
@@ -1602,6 +1603,6 @@ ${r.perfil.nick} (${r.perfil.title})
       .map((k, i) => `<img src="${AVATAR_IMG[k]}" alt="" style="height:${[100, 118, 100][i]}px">`).join("");
     renderStart();
   </script>
-<script src="../estadisticas.js"></script>
+<script src="../estadisticas.js?v=3"></script>
 </body>
 </html>
