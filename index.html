@@ -1154,7 +1154,7 @@
 
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
-    const CLAVE_ADMIN = "2027";
+    let adminKey = "";   // la clave se valida en el servidor (Apps Script), no acá
 
     const dirigentesList = [
       { full: "Javier Milei", short: "Javier Milei" },
@@ -1650,21 +1650,25 @@
 
     function checkOrgPass() {
       const val = document.getElementById("org-pass").value.trim();
-      if (val === CLAVE_ADMIN) {
-        document.getElementById("org-pass-err").classList.add("hidden");
-        document.getElementById("org-login-card").classList.add("hidden");
-        document.getElementById("org-dashboard").classList.remove("hidden");
-        loadAdminData();
-      } else {
-        document.getElementById("org-pass-err").classList.remove("hidden");
-      }
+      if (!val) { document.getElementById("org-pass-err").classList.remove("hidden"); return; }
+      adminKey = val;
+      document.getElementById("org-pass-err").classList.add("hidden");
+      document.getElementById("org-login-card").classList.add("hidden");
+      document.getElementById("org-dashboard").classList.remove("hidden");
+      loadAdminData();
     }
 
     function loadAdminData() {
       document.getElementById("org-last-update").innerText = "Consultando base de datos...";
-      fetch(GOOGLE_SCRIPT_URL)
+      fetch(GOOGLE_SCRIPT_URL + "?clave=" + encodeURIComponent(adminKey))
         .then(res => res.json())
         .then(rows => {
+          if (rows && rows.error) {
+            document.getElementById("org-dashboard").classList.add("hidden");
+            document.getElementById("org-login-card").classList.remove("hidden");
+            document.getElementById("org-pass-err").classList.remove("hidden");
+            return;
+          }
           if (!rows || rows.length <= 1) {
             document.getElementById("org-last-update").innerText = "Aún no hay respuestas registradas en la planilla.";
             document.getElementById("kpi-total").innerText = "0";
