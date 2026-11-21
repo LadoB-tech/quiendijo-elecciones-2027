@@ -9,15 +9,15 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Político: ¿Quién dijo qué? · Versión completa</title>
-  <meta name="description" content="43 frases reales y 10 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Descubrí qué alien político sos." />
+  <title>Test Político: ¿Quién dijo qué? · Versión rápida</title>
+  <meta name="description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
 
   <!-- Vista previa al compartir (WhatsApp, Facebook, X, Telegram) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Test Político" />
   <meta property="og:title" content="Test Político: ¿Quién dijo qué?" />
-  <meta property="og:description" content="43 frases reales y 10 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Descubrí qué alien político sos." />
-  <meta property="og:url" content="https://testpolitico.pages.dev/" />
+  <meta property="og:description" content="10 frases y 8 propuestas. ¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos." />
+  <meta property="og:url" content="https://testpolitico.pages.dev/rapido/" />
   <meta property="og:image" content="https://testpolitico.pages.dev/preview.jpg" />
   <meta property="og:image:secure_url" content="https://testpolitico.pages.dev/preview.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -26,10 +26,10 @@
   <meta property="og:image:alt" content="Logo de Test Político: ¿Quién dijo qué?" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Test Político: ¿Quién dijo qué?" />
-  <meta name="twitter:description" content="43 frases reales y 10 propuestas. Descubrí qué alien político sos." />
+  <meta name="twitter:description" content="10 frases y 8 propuestas. Jugá en 3 minutos." />
   <meta name="twitter:image" content="https://testpolitico.pages.dev/preview.jpg" />
-  <link rel="icon" type="image/png" href="logo.png" />
-  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="apple-touch-icon" href="../logo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -321,23 +321,7 @@
   .stats-hero .sh-title { font-family:Montserrat,Inter,sans-serif; font-weight:900; font-size:1.5rem; text-transform:uppercase; margin:.3rem 0 .4rem; line-height:1.15; }
   .stats-hero .sh-text { font-size:.95rem; margin:0 auto 1rem; max-width:460px; color:#2a1f00 !important; }
   .stats-hero .sh-btn { border:0; border-radius:12px; background:#0b0d24; color:#f7b928; font-weight:900; font-size:1.05rem; padding:.95rem 1.4rem; cursor:pointer; width:100%; max-width:420px; }
-    /* ===== PANEL ORGANIZACIÓN ===== */
-    .org-input { width:100%; padding:.8rem 1rem; border-radius:10px; background:#12163a; color:#fff; border:1px solid rgba(255,255,255,.18); font-size:1rem; margin-top:.4rem; }
-    .org-actions { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
-    .org-sec { background: rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.18); }
-    .kpi-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:1rem; margin-bottom:1.4rem; }
-    .kpi-card { background:#151a3d; border:1px solid rgba(122,245,232,.18); border-radius:16px; padding:1.1rem; text-align:center; }
-    .kpi-val { font-family: Montserrat, sans-serif; font-weight:900; font-size:1.5rem; color:#f7b928; }
-    .kpi-lbl { font-size:.8rem; color:var(--muted); font-weight:700; margin-top:.3rem; }
-    .admin-bar-track { height:10px; background:rgba(255,255,255,.1); border-radius:999px; overflow:hidden; margin-top:.35rem; }
-    .admin-bar-fill { height:100%; background:#7af5e8; border-radius:999px; }
-    .table-wrap { overflow-x:auto; }
-    .org-table { width:100%; border-collapse:collapse; font-size:.82rem; }
-    .org-table th, .org-table td { padding:.55rem .5rem; border-bottom:1px solid rgba(255,255,255,.1); text-align:left; vertical-align:top; }
-    .org-table th { color:#7af5e8; font-weight:800; white-space:nowrap; }
-    @media print { body { background:#fff !important; color:#000 !important; } .section-card, .kpi-card { background:#fff !important; color:#000 !important; border-color:#ccc !important; } .org-table th { color:#000; } .kpi-val { color:#000; } }
-
-      .share-alien { margin: .4rem 0 1rem; font-size: 1.05rem; }
+    .share-alien { margin: .4rem 0 1rem; font-size: 1.05rem; }
     .share-alien span { display:block; font-size:.78rem; font-weight:700; opacity:.75; text-transform:none; }
   </style>
 </head>
@@ -345,8 +329,8 @@
 
   <div class="topbar">
     <div class="topbar-inner">
-      <img src="logo.png" alt="" />
-      <div class="topbar-title">Test Político<br><span style="font-weight:600; font-size:0.82rem; opacity:0.85;">¿Quién dijo qué? · Versión completa</span></div>
+      <img src="../logo.png" alt="" />
+      <div class="topbar-title">Test Político<br><span style="font-weight:600; font-size:0.82rem; opacity:0.85;">¿Quién dijo qué? · Versión rápida</span></div>
       <div class="topbar-step hidden" id="step-label"></div>
     </div>
     <div class="progress"><div class="progress-fill" id="progress-fill"></div><svg class="ufo" id="ufo" aria-hidden="true" width="34" height="22" viewBox="0 0 34 22"><ellipse cx="17" cy="14" rx="15" ry="5" fill="#7af5e8"/><path d="M9 12 a8 7 0 0 1 16 0" fill="#cfd6ff" stroke="#7af5e8" stroke-width="1.5"/><circle cx="10" cy="15" r="1.5" fill="#0b0d24"/><circle cx="17" cy="16" r="1.5" fill="#0b0d24"/><circle cx="24" cy="15" r="1.5" fill="#0b0d24"/></svg></div>
@@ -357,12 +341,12 @@
     <!-- PORTADA + VOTO HABITUAL -->
     <section id="s-start">
       <div class="start-card">
-        <div class="kicker-row"><img src="logo.png" alt="" /><span>TEST POLÍTICO A CIEGAS</span></div>
+        <div class="kicker-row"><img src="../logo.png" alt="" /><span>TEST POLÍTICO A CIEGAS</span></div>
         <h1>¿Quién dijo qué?</h1>
         <p class="h1-sub">y después descubrí qué alien político sos</p>
         <p class="lead"><strong>Test 1:</strong> adiviná quién dijo cada frase. <strong>Test 2:</strong> elegí propuestas <strong>sin nombres ni partidos</strong> y descubrí tu alien.</p>
         <div class="cast" id="cast" aria-hidden="true"></div>
-        <div class="chips"><span>43 frases · 8 minutos</span><span>Anónimo</span><span>7 aliens posibles</span></div>
+        <div class="chips"><span>3 minutos</span><span>Anónimo</span><span>7 aliens posibles</span></div>
         <button type="button" class="stats-link" onclick="abrirEstadisticas()">📊 Cómo respondió la gente</button>
         <p class="start-q">Para arrancar, contanos un poco de vos</p>
         <p class="start-sub">Es anónimo y se usa solo para estadísticas generales.</p>
@@ -427,7 +411,7 @@
       <div class="game-card">
         <div class="host"><img src="" class="host-img" alt="Alien presentador" /><div class="bubble">¡Hola, terrícola! Antes de despegar…</div></div>
         <div class="question-title">¿Cuáles son los 3 temas que más te importan hoy?</div>
-        <p class="start-sub" style="margin-top:-0.5rem;">Al final te mostramos cómo te fue en esos temas.</p>
+        <p class="start-sub" style="margin-top:-0.5rem;">La mayoría de las frases van a ser sobre esos temas.</p>
         <div class="choices two-col" id="topic-choices"></div>
         <div class="game-nav">
           <span id="topic-count" style="font-weight:800; color: var(--muted);">0/3 elegidos</span>
@@ -454,7 +438,7 @@
       <div class="section-card alien-cta no-print" id="alien-cta">
         <div class="mini-cast" id="mini-cast" aria-hidden="true"></div>
         <h3 class="cta-title">👽 Ahora descubrí qué alien sos</h3>
-        <p class="cta-text">10 temas · 3 minutos · sin nombres ni partidos</p>
+        <p class="cta-text">8 temas · 2 minutos · sin nombres ni partidos</p>
         <button type="button" class="btn btn-primary btn-block cta-btn" onclick="startPartB()">Descubrir mi alien →</button>
       </div>
 
@@ -486,46 +470,6 @@
     <!-- PARTE 2 -->
     <section id="s-b" class="hidden">
       <div class="game-card" id="b-card"></div>
-    </section>
-
-    <!-- ORGANIZACIÓN (panel privado) -->
-    <section id="s-org" class="hidden">
-      <div id="org-login-card" class="section-card" style="max-width: 440px; margin: 2rem auto;">
-        <h3>🔒 Acceso Organización</h3>
-        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem;">Ingresá la clave de administrador para ver los resultados consolidados y descargar el informe en PDF.</p>
-        <label class="f">Clave de acceso</label>
-        <input type="password" id="org-pass" class="org-input" placeholder="Ingresá tu clave..." onkeyup="if(event.key==='Enter') checkOrgPass()" />
-        <div id="org-pass-err" class="alert-msg hidden">Clave incorrecta. Intentá nuevamente.</div>
-        <div class="org-actions">
-          <button type="button" class="btn org-sec" onclick="exitOrgSection()">← Volver al test</button>
-          <button type="button" class="btn btn-primary" onclick="checkOrgPass()">Ingresar</button>
-        </div>
-      </div>
-      <div id="org-dashboard" class="hidden">
-        <div class="section-card">
-          <h3>📊 Panel de Resultados Consolidados</h3>
-          <p id="org-last-update" style="color: var(--muted); font-size: .9rem;">Cargando datos desde Google Sheets...</p>
-          <div class="org-actions no-print">
-            <button type="button" class="btn org-sec" onclick="loadAdminData()">🔄 Actualizar</button>
-            <button type="button" class="btn btn-primary" onclick="window.print()">📄 Descargar Informe PDF</button>
-            <button type="button" class="btn org-sec" onclick="exitOrgSection()">Cerrar</button>
-          </div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-card"><div class="kpi-val" id="kpi-total">-</div><div class="kpi-lbl">Tests registrados</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="kpi-avg-a">-</div><div class="kpi-lbl">Promedio aciertos (Test 1)</div></div>
-          <div class="kpi-card"><div class="kpi-val" id="kpi-top-b">-</div><div class="kpi-lbl">Espacio líder (Test 2)</div></div>
-        </div>
-        <div class="section-card"><h3>Nivel de aciertos en Test 1</h3><div id="admin-chart-a"></div></div>
-        <div class="section-card"><h3>Ranking Test 2</h3><div id="admin-chart-b"></div></div>
-        <div class="section-card">
-          <h3>Registro individual de respuestas</h3>
-          <div class="table-wrap"><table class="org-table">
-            <thead><tr><th>Fecha</th><th>Participante</th><th>Voto declarado</th><th>Edad / Prov.</th><th>Versión</th><th>Aciertos (Test 1)</th><th>Mayor coincidencia (Test 2)</th></tr></thead>
-            <tbody id="admin-table-body"><tr><td colspan="7" style="text-align:center; color: var(--muted);">Cargando registros...</td></tr></tbody>
-          </table></div>
-        </div>
-      </div>
     </section>
 
     <!-- RESULTADOS -->
@@ -615,14 +559,13 @@
 
   <footer>
     Test Político — Experimento ciudadano independiente, sin afiliación partidaria.
-    <br><button type="button" class="link-btn" style="font-size:.78rem;" onclick="openOrgSection()">🔒 Organización</button>
   </footer>
 
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzlhXYIPdG2DEcF-vCTL8oai4YYG1CV8P3R3UA_dauGYg9fZ12Qmn-Y83dmtQdqC3g/exec";
-    const GAME_URL = "https://testpolitico.pages.dev/";
+    const GAME_URL = "https://testpolitico.pages.dev/rapido/";
     const PREVIEW_URL = "https://testpolitico.pages.dev/preview.jpg";
-    let FRASES_POR_PARTIDA = 43; // versión completa: todas las frases (se recalcula abajo)
+    const FRASES_POR_PARTIDA = 10;
     const AUTO_AVANCE_MS = 2800;
 
     const dirigentesList = [
@@ -899,7 +842,7 @@
       }
     ];
     const NINGUNA = { space: "Ninguna", title: "Ninguna me convence.", text: "", defend: "", reject: "" };
-    const DATA_B = DATA_B_ALL; // la versión completa usa los 10 temas
+    const DATA_B = DATA_B_ALL.filter(t => !["Escuelas", "Ciencia"].includes(t.topic)); // la versión rápida usa 8 temas
 
     const ESPACIOS_DECLARADOS = [
       "La Libertad Avanza / Libertarios",
@@ -1018,7 +961,7 @@
     const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
     function show(id) {
-      ["s-start", "s-topics", "s-a", "s-mid", "s-b", "s-results", "s-org"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
+      ["s-start", "s-topics", "s-a", "s-mid", "s-b", "s-results"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1043,10 +986,14 @@
       const make = (i, opt, prio) => ({
         topic: cleanTopic(dataVarA[i].topic), emoji: dataVarA[i].emoji, text: opt.text, author: opt.author, src: opt.src || "", prio
       });
-      // Versión completa: todas las frases de todos los temas
       const items = [];
-      dataVarA.forEach((t, i) => t.options.forEach(o => items.push(make(i, o, priorities.includes(i)))));
-      FRASES_POR_PARTIDA = items.length;
+      priorities.forEach(i => {
+        const used = [];
+        for (let k = 0; k < FRASES_POR_PRIORIDAD; k++) { const o = pick(dataVarA[i], used); used.push(o.author); items.push(make(i, o, true)); }
+      });
+      const rest = shuffle(dataVarA.map((_, i) => i).filter(i => !priorities.includes(i)))
+        .slice(0, FRASES_POR_PARTIDA - items.length);
+      rest.forEach(i => items.push(make(i, pick(dataVarA[i], []), false)));
       roundA = shuffle(items);
       answersA = Array(roundA.length).fill("");
       idxA = 0;
@@ -1230,8 +1177,8 @@
       const pctA = Math.round(totalCorrect * 100 / nA);
       const scoreSummaryA = `${totalCorrect}/${nA} aciertos (${pctA}%)`;
       const radar =
-        pctA >= 70 ? `Con ${scoreSummaryA}, tenés un radar político afiladísimo: reconocés el discurso de cada referente sin ver quién habla.` :
-        pctA >= 40 ? `Con ${scoreSummaryA}, tenés buen oído político, aunque varias frases te sonaron más parecidas de lo que imaginabas.` :
+        totalCorrect >= 7 ? `Con ${scoreSummaryA}, tenés un radar político afiladísimo: reconocés el discurso de cada referente sin ver quién habla.` :
+        totalCorrect >= 4 ? `Con ${scoreSummaryA}, tenés buen oído político, aunque varias frases te sonaron más parecidas de lo que imaginabas.` :
         `Con ${scoreSummaryA}, ¡caíste en el efecto del test ciego! Fuera de contexto, muchas frases suenan distinto a la imagen de cada dirigente.`;
 
       const prioNames = priorities.map(i => cleanTopic(dataVarA[i].topic));
@@ -1308,7 +1255,7 @@
       try {
         const A = resultsA, p = key ? PERFILES[key] : null;
         localStorage.setItem("tp_mis", JSON.stringify({
-          stage, version: "completa", fecha: Date.now(), sesion: sessionId,
+          stage, version: "rapida", fecha: Date.now(), sesion: sessionId,
           edad: document.getElementById("edad").value, provincia: document.getElementById("provincia").value, voto: declared,
           pctA: A.pctA, nA: A.nA, aciertos: A.totalCorrect,
           perfilKey: key || "", perfilTitle: p ? p.title : "", nick: p ? p.nick : "", frase: p ? p.frase : "", color: p ? p.color : "",
@@ -1324,8 +1271,8 @@
       const hits = resultsA.totalCorrect;
       document.getElementById("mid-score").textContent = `${hits}/${resultsA.nA}`;
       document.getElementById("mid-msg").textContent =
-        resultsA.pctA >= 70 ? "¡Radar político afiladísimo! 🔥" :
-        resultsA.pctA >= 40 ? "Buen oído, pero varias te sorprendieron 👀" :
+        hits >= 7 ? "¡Radar político afiladísimo! 🔥" :
+        hits >= 4 ? "Buen oído, pero varias te sorprendieron 👀" :
         "¡Fuera de contexto, todos suenan parecido! 😅";
       document.getElementById("mid-bars").innerHTML = barsAHTML(resultsA.byAuthor);
       document.getElementById("mid-themes").innerHTML = themesHTML(resultsA.themes, false);
@@ -1504,7 +1451,7 @@
 
     <div style="text-align:center; margin:28px 0 8px;">
       <a href="${GAME_URL}" style="display:inline-block; background:#4338ca; color:#ffffff; text-decoration:none; font-weight:bold; font-size:16px; padding:14px 28px; border-radius:10px;">🔄 Seguir jugando</a>
-      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">¡Compartilo y compará resultados!</p>
+      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">Cada partida trae frases distintas. ¡Compartilo y compará resultados!</p>
     </div>
   </div>
 </div>`;
@@ -1535,7 +1482,7 @@
         <span style="color:${q.ok ? "#166534" : "#991b1b"};">Elegiste: <strong>${esc(q.guessed)}</strong> — ${q.ok ? "✓ Acertaste" : "✗ Era " + esc(q.author)}</span></li>`).join("")}</ul>
     <div style="text-align:center; margin:28px 0 8px;">
       <a href="${GAME_URL}" style="display:inline-block; background:#4338ca; color:#ffffff; text-decoration:none; font-weight:bold; font-size:16px; padding:14px 28px; border-radius:10px;">👽 Jugar y descubrir qué alien sos</a>
-      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">¡Compartilo y compará resultados!</p>
+      <p style="font-size:13px; color:#64748b; margin:10px 0 0;">Cada partida trae frases distintas. ¡Compartilo y compará resultados!</p>
     </div>
   </div>
 </div>`;
@@ -1549,7 +1496,7 @@
       return {
         fecha: new Date().toLocaleString("es-AR"),
         votoHabitual: declared,
-        dificultad: full ? "Versión completa" : "Versión completa · solo Test 1",   // identifica versión y hasta dónde llegó
+        dificultad: full ? "Versión rápida" : "Versión rápida · solo Test 1",   // identifica versión y hasta dónde llegó
         edad: document.getElementById("edad").value,
         provincia: document.getElementById("provincia").value,
         vota: document.getElementById("vota").value,
@@ -1563,7 +1510,7 @@
         emailHtml: withContact && email ? buildEmailHtml(nombre) : "",
         perfil: full ? r.perfil.title : "",
         etapa: full ? "Test 1 y 2" : "Solo Test 1",
-        version: "completa",
+        version: "rapida",
         sesion: sessionId,
         ref: window.tpRefDe ? tpRefDe() : "",
         miRef: window.tpMiRef ? tpMiRef() : ""
@@ -1623,14 +1570,14 @@
       if (r.stage === 1) return `Hice el Test Político a ciegas 🗳️
 🎤 ¿Quién dijo qué?: ${r.scoreSummaryA}
 ⭐ Mis temas: ${r.themes.prioShort.join(", ")} (reconocí ${r.themes.prioHits} de ${r.themes.nP})
-¿Reconocés lo que dicen sin ver quién habla? Jugalo 👉 ${GAME_URL}`;
+¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos 👉 ${GAME_URL}`;
       return `Hice el Test Político a ciegas 🗳️
 ${r.perfil.nick} (${r.perfil.title})
 💬 «${r.perfil.frase}»
 🎤 ¿Quién dijo qué?: ${r.scoreSummaryA}
 🧭 Propuestas: más afinidad con ${r.topSpace}
 ⭐ Mis temas: ${r.themes.prioShort.join(", ")} (reconocí ${r.themes.prioHits} de ${r.themes.nP})
-¿Reconocés lo que dicen sin ver quién habla? Jugalo 👉 ${GAME_URL}`;
+¿Reconocés lo que dicen sin ver quién habla? Jugá en 3 minutos 👉 ${GAME_URL}`;
     }
 
     function shareResult() {
@@ -1654,79 +1601,7 @@ ${r.perfil.nick} (${r.perfil.title})
     document.getElementById("mini-cast").innerHTML = ["igualitario", "desarrollista", "liberal"]
       .map((k, i) => `<img src="${AVATAR_IMG[k]}" alt="" style="height:${[100, 118, 100][i]}px">`).join("");
     renderStart();
-    // ---------- PANEL ORGANIZACIÓN ----------
-    let adminKey = "";
-    function openOrgSection() { show("s-org"); history.replaceState(null, "", "#organizacion"); }
-    function exitOrgSection() { history.replaceState(null, "", window.location.pathname); show("s-start"); }
-    function checkOrgPass() {
-      const val = document.getElementById("org-pass").value.trim();
-      if (!val) { document.getElementById("org-pass-err").classList.remove("hidden"); return; }
-      adminKey = val;
-      document.getElementById("org-pass-err").classList.add("hidden");
-      document.getElementById("org-login-card").classList.add("hidden");
-      document.getElementById("org-dashboard").classList.remove("hidden");
-      loadAdminData();
-    }
-    function adminBars(entries, total, unit) {
-      return entries.map(([label, cnt]) => {
-        const pct = total > 0 ? Math.round(cnt * 100 / total) : 0;
-        return `<div style="margin-bottom:.75rem;"><div style="display:flex; justify-content:space-between; font-size:.88rem; gap:.5rem;"><span><strong>${esc(label)}</strong></span><span>${cnt} ${unit} (${pct}%)</span></div><div class="admin-bar-track"><div class="admin-bar-fill" style="width:${pct}%"></div></div></div>`;
-      }).join("");
-    }
-    function loadAdminData() {
-      const upd = document.getElementById("org-last-update");
-      upd.innerText = "Consultando base de datos...";
-      fetch(GOOGLE_SCRIPT_URL + "?clave=" + encodeURIComponent(adminKey))
-        .then(res => res.json())
-        .then(rows => {
-          if (rows && rows.error) {
-            document.getElementById("org-dashboard").classList.add("hidden");
-            document.getElementById("org-login-card").classList.remove("hidden");
-            document.getElementById("org-pass-err").classList.remove("hidden");
-            return;
-          }
-          if (!rows || rows.length <= 1) {
-            upd.innerText = "Aún no hay respuestas registradas en la planilla.";
-            document.getElementById("kpi-total").innerText = "0";
-            document.getElementById("admin-table-body").innerHTML = '<tr><td colspan="7" style="text-align:center;">Sin datos todavía.</td></tr>';
-            return;
-          }
-          const records = rows.slice(1);
-          document.getElementById("kpi-total").innerText = records.length;
-          upd.innerText = `Actualizado: ${new Date().toLocaleTimeString("es-AR")} · Total: ${records.length} tests`;
-          const freqB = {}; let sumPct = 0, countScores = 0, conB = 0;
-          const buckets = { "Alto (70% - 100%)": 0, "Medio (40% - 69%)": 0, "Bajo (0% - 39%)": 0 };
-          records.forEach(r => {
-            const m = String(r[5] || "").match(/(\d+)\/(\d+)/);
-            if (m) {
-              const pct = +m[2] > 0 ? Math.round(+m[1] * 100 / +m[2]) : 0;
-              sumPct += pct; countScores++;
-              if (pct >= 70) buckets["Alto (70% - 100%)"]++; else if (pct >= 40) buckets["Medio (40% - 69%)"]++; else buckets["Bajo (0% - 39%)"]++;
-            }
-            const topB = String(r[6] || "").split(" (")[0];
-            if (topB) { freqB[topB] = (freqB[topB] || 0) + 1; conB++; }
-          });
-          document.getElementById("kpi-avg-a").innerText = countScores ? `${Math.round(sumPct / countScores)}%` : "-";
-          const sortB = Object.entries(freqB).sort((a, b) => b[1] - a[1]);
-          document.getElementById("kpi-top-b").innerText = sortB[0] ? `${sortB[0][0]} (${Math.round(sortB[0][1] * 100 / conB)}%)` : "-";
-          document.getElementById("admin-chart-a").innerHTML = adminBars(Object.entries(buckets), countScores, "personas");
-          document.getElementById("admin-chart-b").innerHTML = sortB.length ? adminBars(sortB, conB, "personas") : '<p style="color:var(--muted);">Todavía nadie terminó el Test 2.</p>';
-          document.getElementById("admin-table-body").innerHTML = records.slice().reverse().map(r => `
-              <tr>
-                <td>${esc(r[0] || "-")}</td>
-                <td><strong>${esc(r[9] || "Anónimo")}</strong>${r[10] ? `<br><small style="color:var(--muted);">${esc(r[10])}</small>` : ""}</td>
-                <td>${esc(r[1] || "-")}</td>
-                <td>${esc(r[3] || "-")} / ${esc(r[4] || "-")}</td>
-                <td>${esc(r[2] || "-")}</td>
-                <td><strong>${esc(r[5] || "-")}</strong></td>
-                <td><strong>${esc(r[6] || "-")}</strong></td>
-              </tr>`).join("");
-        })
-        .catch(err => { upd.innerText = "Error al leer los datos. Verificá Apps Script."; console.error(err); });
-    }
-    if (window.location.hash === "#organizacion") openOrgSection();
-    window.addEventListener("hashchange", () => { if (window.location.hash === "#organizacion") openOrgSection(); });
   </script>
-<script src="estadisticas.js"></script>
+<script src="../estadisticas.js"></script>
 </body>
 </html>
