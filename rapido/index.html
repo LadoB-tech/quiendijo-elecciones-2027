@@ -303,6 +303,11 @@
   .mid-actions .link-btn { color:#9aa3d6; font-size:.9rem; padding:.4rem; }
   .bubble .src { display:block; font-size:.74rem; font-weight:600; opacity:.8; margin-top:.2rem; }
   .src-line { font-size:.76rem; color:#9aa3d6; margin-top:.15rem; }
+  .alien-cta .cta-title { font-size:1.45rem; }
+  .alien-cta .cta-btn { font-size:1.1rem; padding:1rem; }
+  .sticky-cta { position:fixed; left:0; right:0; bottom:0; z-index:50; padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom)); background:linear-gradient(180deg,rgba(11,13,36,0),rgba(11,13,36,.92) 35%); }
+  .sticky-cta .btn { max-width:560px; margin:0 auto; display:block; box-shadow:0 6px 24px rgba(0,0,0,.5); }
+  #s-mid:not(.hidden) { padding-bottom:5rem; }
 </style>
 </head>
 <body>
@@ -411,24 +416,24 @@
         <p class="t1-kicker">Test 1 · ¿Quién dijo qué?</p>
         <p style="font-weight:700; color: var(--muted);">Acertaste</p>
         <div class="big-score" id="mid-score"></div>
-        <p id="mid-msg" style="font-weight:700; margin-bottom: 1.1rem;"></p>
-        <div class="result-panel" style="text-align:left;">
-          <h3>🎤 Aciertos por referente</h3>
-          <div id="mid-bars"></div>
-        </div>
+        <p id="mid-msg" style="font-weight:700; margin-bottom: .2rem;"></p>
+      </div>
+
+      <div class="section-card alien-cta no-print" id="alien-cta">
+        <div class="mini-cast" id="mini-cast" aria-hidden="true"></div>
+        <h3 class="cta-title">👽 Ahora descubrí qué alien sos</h3>
+        <p class="cta-text">8 temas · 2 minutos · sin nombres ni partidos</p>
+        <button type="button" class="btn btn-primary btn-block cta-btn" onclick="startPartB()">Descubrir mi alien →</button>
+      </div>
+
+      <div class="section-card">
+        <h3>🎤 Aciertos por referente</h3>
+        <div id="mid-bars"></div>
       </div>
 
       <div class="section-card themes-card">
         <h3>⭐ Tus temas</h3>
         <div id="mid-themes"></div>
-      </div>
-
-      <div class="section-card alien-cta no-print">
-        <div class="mini-cast" id="mini-cast" aria-hidden="true"></div>
-        <p class="t1-kicker">Test 2 · 2 minutos más</p>
-        <h3 class="cta-title">¿Qué alien político sos?</h3>
-        <p class="cta-text">8 temas, 4 propuestas cada uno, sin nombres ni partidos. Al final descubrís tu alien y si tus ideas coinciden con tu voto.</p>
-        <button type="button" class="btn btn-primary btn-block" onclick="startPartB()">👽 Descubrí qué alien sos →</button>
       </div>
 
       <div class="mid-actions no-print">
@@ -437,6 +442,7 @@
         <p id="copy-confirm-1" class="toast hidden">¡Resultado copiado! Pegalo en WhatsApp o en tus redes.</p>
       </div>
       <div id="mail-slot-mid"></div>
+      <div class="sticky-cta hidden no-print" id="sticky-cta"><button type="button" class="btn btn-primary btn-block" onclick="startPartB()">👽 Descubrir mi alien →</button></div>
 
       <div class="section-card">
         <h3>🎤 Corrección: qué elegiste vs. quién lo dijo</h3>
@@ -1083,7 +1089,11 @@
     }
 
     // ---------- PARTE 2 ----------
-    function startPartB() { show("s-b"); renderB(); }
+    function startPartB() {
+      document.getElementById("sticky-cta").classList.add("hidden");
+      if (ctaObserver) ctaObserver.disconnect();
+      show("s-b"); renderB(); window.scrollTo(0, 0);
+    }
 
     function renderB() {
       const t = dataB[idxB];
@@ -1228,9 +1238,21 @@
       document.getElementById("mid-revelation").innerHTML = revelationAHTML(resultsA.revA);
       setProgress(roundA.length, "Test 1 ✓");
       show("s-mid");
+      watchCta();
       // El Test 1 ya cuenta como terminado: se guarda en la planilla
       sentStage = 1;
       postData(buildPayload(false), false).catch(() => { sentStage = 0; });
+    }
+
+    let ctaObserver = null;
+    function watchCta() {
+      const bar = document.getElementById("sticky-cta"), cta = document.getElementById("alien-cta");
+      if (!("IntersectionObserver" in window)) { bar.classList.remove("hidden"); return; }
+      ctaObserver = new IntersectionObserver(([e]) => {
+        const onMid = !document.getElementById("s-mid").classList.contains("hidden");
+        bar.classList.toggle("hidden", !onMid || e.isIntersecting);
+      }, { threshold: 0.2 });
+      ctaObserver.observe(cta);
     }
 
     function endHere() {
