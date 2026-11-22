@@ -210,7 +210,7 @@
       .result-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .section-card, .profile-card { box-shadow: none; break-inside: avoid; }
     }
-    .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; text-align: left; }
+    .form-grid-3 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; text-align: left; }
     @media (max-width: 640px) { .form-grid-3 { grid-template-columns: 1fr; } }
     .form-grid-3 label.f { font-weight: 700; font-size: 0.88rem; display: block; }
     .form-grid-3 select { width: 100%; padding: 0.75rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #fff; color: #0f172a; margin-top: 0.3rem; }
@@ -379,6 +379,12 @@
               <option value="65 o más">65 años o más</option>
               <option value="No especificado">Prefiero no decir</option>
             </select></div>
+          <div><label class="f">Género</label><select id="genero" class="">
+              <option value="">Elegí…</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Prefiero no decir">Prefiero no decir</option>
+            </select></div>
           <div><label class="f">¿Desde dónde respondés?</label><select id="provincia" class="">
               <option value="">Elegí…</option>
               <option value="CABA">Ciudad Autónoma de Buenos Aires (CABA)</option>
@@ -523,7 +529,7 @@
         <div class="section-card">
           <h3>Registro individual de respuestas</h3>
           <div class="table-wrap"><table class="org-table">
-            <thead><tr><th>Fecha</th><th>Participante</th><th>Voto declarado</th><th>Edad / Prov.</th><th>Versión</th><th>Aciertos (Test 1)</th><th>Mayor coincidencia (Test 2)</th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Participante</th><th>Voto declarado</th><th>Edad / Género / Prov.</th><th>Versión</th><th>Aciertos (Test 1)</th><th>Mayor coincidencia (Test 2)</th></tr></thead>
             <tbody id="admin-table-body"><tr><td colspan="7" style="text-align:center; color: var(--muted);">Cargando registros...</td></tr></tbody>
           </table></div>
         </div>
@@ -1069,7 +1075,7 @@
 
     function datosCompletos() {
       let ok = true;
-      ["edad", "provincia", "vota"].forEach(id => {
+      ["edad", "genero", "provincia", "vota"].forEach(id => {
         const el = document.getElementById(id);
         const miss = !el.value;
         el.classList.toggle("missing", miss);
@@ -1311,11 +1317,12 @@
         const A = resultsA, p = key ? PERFILES[key] : null;
         localStorage.setItem("tp_mis", JSON.stringify({
           stage, version: "completa", fecha: Date.now(), sesion: sessionId,
-          edad: document.getElementById("edad").value, provincia: document.getElementById("provincia").value, voto: declared,
+          edad: document.getElementById("edad").value, genero: document.getElementById("genero").value, provincia: document.getElementById("provincia").value, voto: declared,
           pctA: A.pctA, nA: A.nA, aciertos: A.totalCorrect,
           perfilKey: key || "", perfilTitle: p ? p.title : "", nick: p ? p.nick : "", frase: p ? p.frase : "", color: p ? p.color : "",
           topSpace: stage === 2 ? results.topSpace : "",
-          chosenB: stage === 2 ? results.chosenB.map(c => ({ topic: c.topic, space: c.space })) : []
+          chosenB: stage === 2 ? results.chosenB.map(c => ({ topic: c.topic, space: c.space })) : [],
+          tiempo: window.tpTiempo ? tpTiempo() : ""
         }));
       } catch (e) {}
     }
@@ -1554,6 +1561,7 @@
         votoHabitual: declared,
         dificultad: full ? "Versión completa" : "Versión completa · solo Test 1",   // identifica versión y hasta dónde llegó
         edad: document.getElementById("edad").value,
+        genero: document.getElementById("genero").value,
         provincia: document.getElementById("provincia").value,
         vota: document.getElementById("vota").value,
         topReferenteA: r.scoreSummaryA,
@@ -1719,7 +1727,7 @@ ${r.perfil.nick} (${r.perfil.title})
                 <td>${esc(r[0] || "-")}</td>
                 <td><strong>${esc(r[9] || "Anónimo")}</strong>${r[10] ? `<br><small style="color:var(--muted);">${esc(r[10])}</small>` : ""}</td>
                 <td>${esc(r[1] || "-")}</td>
-                <td>${esc(r[3] || "-")} / ${esc(r[4] || "-")}</td>
+                <td>${esc(r[3] || "-")} / ${esc(r[19] || "-")} / ${esc(r[4] || "-")}</td>
                 <td>${esc(r[2] || "-")}</td>
                 <td><strong>${esc(r[5] || "-")}</strong></td>
                 <td><strong>${esc(r[6] || "-")}</strong></td>
@@ -1730,6 +1738,7 @@ ${r.perfil.nick} (${r.perfil.title})
     if (window.location.hash === "#organizacion") openOrgSection();
     window.addEventListener("hashchange", () => { if (window.location.hash === "#organizacion") openOrgSection(); });
   </script>
-<script src="estadisticas.js?v=4"></script>
+<script src="estadisticas.js?v=7"></script>
+<script src="efectos.js?v=3"></script>
 </body>
 </html>
