@@ -228,7 +228,7 @@
   if (cast && !quieto) { cast.querySelectorAll("img").forEach((im, i) => { im.style.animationDelay = `${0.1 + i * 0.12}s, ${i * 0.45}s`; }); cast.classList.add("tp-flota"); }
   // Que entren todos en pantallas angostas (achica proporcionalmente si no caben)
   function ajustarFila(fila) {
-    if (!fila) return;
+    if (!fila || !fila.clientWidth) return; // si está oculta, se ajusta cuando aparezca
     const imgs = [...fila.querySelectorAll("img")]; if (!imgs.length) return;
     imgs.forEach(im => { if (!im.dataset.h) im.dataset.h = parseFloat(im.style.height) || im.offsetHeight; });
     if (imgs.some(im => !im.naturalWidth)) { imgs.forEach(im => im.addEventListener("load", () => ajustarFila(fila), { once: true })); return; }
@@ -244,6 +244,7 @@
   // Al pasar a elegir temas: el plato volador deja al presentador
   let yaAterrizo = false;
   envolver("show", null, id => {
+    setTimeout(ajustarTodo, 30);
     if (id === "s-topics" && !yaAterrizo) {
       yaAterrizo = true;
       const sec = $("s-topics"), host = sec && sec.querySelector(".host-img");
@@ -277,6 +278,7 @@
  
   // Fin del Test 1: pausa el reloj y muestra el tiempo
   envolver("finishA", relojPausa, () => {
+    setTimeout(ajustarTodo, 30);
     const sc = $("mid-score"); if (!sc) return;
     let t = $("tp-time-mid"); if (!t) { t = document.createElement("div"); t.id = "tp-time-mid"; t.className = "tp-time"; sc.insertAdjacentElement("afterend", t); }
     t.textContent = "⏱️ Lo hiciste en " + fmt(tiempo());
