@@ -335,6 +335,7 @@
     let nick = m.nick || ""; while (x.measureText(nick).width > 980 && parseInt(x.font) > 60) x.font = F(900, parseInt(x.font) - 6);
     x.fillText(nick, W / 2, y); x.shadowBlur = 0;
     y += 62; x.font = F(700, 36); x.fillStyle = "#c9cff0"; x.fillText(m.perfilTitle || "", W / 2, y);
+    if (!pro && m.tiempo) { y += 56; x.font = F(800, 36); x.fillStyle = "#f7b928"; x.fillText(`⏱️ Lo hice en ${m.tiempo}`, W / 2, y); }
     if (pro && m.stats && m.stats.length) {
       y += 40;
       m.stats.slice(0, 3).forEach(st => {
@@ -488,6 +489,7 @@
     if (rareza != null) datosPro.push({ big: `${rareza}%`, text: `sacó este mismo alien${rareza <= 12 ? " · ¡de los más raros!" : ""}` });
     if (pctMejor != null && pctMejor >= 50) datosPro.push({ big: `${pctMejor}%`, text: "de la gente acertó menos frases que yo" });
     if (minoria) datosPro.push({ big: `${minoria.pct}%`, text: `pensó como yo en ${minoria.tema}` });
+    if (datosPro.length < 3 && m.tiempo) datosPro.push({ big: m.tiempo, text: "tardé en descubrir mi alien ⏱️" });
     if (!datosPro.length && m.pctA != null) datosPro.push({ big: `${m.pctA}%`, text: "de frases acertadas a ciegas" });
     const proHtml = m.perfilKey ? `<div style="margin-top:1rem;border-top:1px solid rgba(255,255,255,.1);padding-top:1rem">
         <p style="margin:0 0 .5rem;font-weight:800">⭐ Tu tarjeta PRO</p>
