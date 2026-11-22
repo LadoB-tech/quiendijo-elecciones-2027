@@ -341,6 +341,17 @@
     .share-alien span { display:block; font-size:.78rem; font-weight:700; opacity:.75; text-transform:none; }
       /* iPhone: algunos navegadores no dibujan imágenes con sombra/animación — se desactivan ahí */
     @supports (-webkit-touch-callout: none) { .avatar { animation: none !important; } .avatar img, .cast img, .mini-cast img { filter: none !important; } }
+  
+    /* Botón compartir del Test 1 y cartel de estadísticas destacado */
+    .cta-share { margin-top:.6rem; background:#38bdf8; color:#0f172a; font-weight:800; }
+    .sticky-stats-btn { background:#f7b928; color:#1a1300; font-weight:900; }
+    @media (min-width: 900px) {
+      body.tp-res .container { max-width: 1060px; }
+      body.tp-res #s-results:not(.hidden) { display:grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap:1rem; align-items:start; }
+      body.tp-res #s-results > * { grid-column: 1 / -1; }
+      body.tp-res #s-results > .profile-card { grid-column: 1; grid-row: 1; }
+      body.tp-res #s-results > #stats-hero-res { grid-column: 2; grid-row: 1; margin:0; position:sticky; top:90px; }
+    }
   </style>
 </head>
 <body>
@@ -464,6 +475,7 @@
         <h3 class="cta-title">👽 Ahora descubrí qué alien sos</h3>
         <p class="cta-text">10 temas · 3 minutos · sin nombres ni partidos</p>
         <button type="button" class="btn btn-primary btn-block cta-btn" onclick="startPartB()">Descubrir mi alien →</button>
+        <button type="button" class="btn btn-block cta-share" onclick="shareResult()">📲 Compartí tu resultado del Test 1</button>
       </div>
 
       <div class="section-card">
@@ -477,7 +489,6 @@
       </div>
 
       <div class="mid-actions no-print">
-        <button type="button" class="btn" style="background:#38bdf8; color:#0f172a;" onclick="shareResult()">📲 Compartir mi resultado del Test 1</button>
         <button type="button" class="btn stats-btn" onclick="abrirEstadisticas()">📊 Cómo respondió la gente</button>
         <button type="button" class="link-btn" id="end-here-btn" onclick="endHere()">Terminar acá</button>
         <p id="copy-confirm-1" class="toast hidden">¡Resultado copiado! Pegalo en WhatsApp o en tus redes.</p>
@@ -582,13 +593,14 @@
         </div>
       </div>
 
-      <div class="stats-hero no-print" style="order:-1">
+      <div class="stats-hero no-print" id="stats-hero-res" style="order:-1">
         <div class="sh-kicker">📊 Cómo respondió la gente</div>
         <div class="sh-title">¿Y el resto qué eligió?</div>
         <p class="sh-text">Descubrí en qué temas pensás como la mayoría y en cuáles sos minoría, qué tan raro es tu alien y qué eligió el resto.</p>
         <button type="button" class="sh-btn" onclick="abrirEstadisticas()">Ver cómo respondió la gente →</button>
         <p class="sh-text" style="margin:.8rem auto 0; font-size:.85rem;">🎁 O desbloquealo <strong>gratis</strong> invitando a 3 amigos</p>
       </div>
+      <div class="sticky-cta hidden no-print" id="sticky-stats"><button type="button" class="btn btn-block sticky-stats-btn" onclick="abrirEstadisticas()">📊 ¿Y el resto qué eligió? →</button></div>
 
       <!-- TUS TEMAS -->
       <div class="section-card themes-card">
@@ -1349,6 +1361,21 @@
     }
 
     let ctaObserver = null;
+    let statsObserver = null;
+    function watchStats() {
+      const bar = document.getElementById("sticky-stats"), card = document.getElementById("stats-hero-res");
+      if (!bar || !card) return;
+      if (!("IntersectionObserver" in window)) return;
+      if (statsObserver) statsObserver.disconnect();
+      let visto = false;
+      statsObserver = new IntersectionObserver(([e]) => {
+        const enRes = !document.getElementById("s-results").classList.contains("hidden");
+        if (e.isIntersecting) visto = true;
+        bar.classList.toggle("hidden", !enRes || e.isIntersecting || !visto);
+      }, { threshold: 0.1 });
+      statsObserver.observe(card);
+    }
+
     function watchCta() {
       const bar = document.getElementById("sticky-cta"), cta = document.getElementById("alien-cta");
       if (!("IntersectionObserver" in window)) { bar.classList.remove("hidden"); return; }
@@ -1456,6 +1483,7 @@
 
       results = { stage: 2, themes, scoreSummaryA, topSpace, perfil, finalDefend, finalReject, coherence, radar, revA, chosenB, byAuthor, sortedB, nB };
       guardarMiResultado(2, key);
+      document.body.classList.add("tp-res"); watchStats();
       if (window.prepararTarjeta) prepararTarjeta();
       moveMailCard("mail-slot-results", "📩 ¿Te mandamos el informe completo por mail?");
       show("s-results");
