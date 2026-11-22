@@ -332,7 +332,7 @@
     x.fillStyle = "#7af5e8"; x.font = F(800, 36);
     x.fillText(m.nombre ? `${m.nombre.toUpperCase()} ATERRIZÓ COMO…` : "ATERRIZASTE COMO…", W / 2, y);
     y += 110; x.font = F(900, 104); x.fillStyle = "#fff"; x.shadowColor = col; x.shadowBlur = 30;
-    let nick = m.nick || ""; while (x.measureText(nick).width > 980 && parseInt(x.font) > 60) x.font = F(900, parseInt(x.font) - 6);
+    let nick = m.nick || "", tam = 104; while (x.measureText(nick).width > 980 && tam > 56) { tam -= 6; x.font = F(900, tam); }
     x.fillText(nick, W / 2, y); x.shadowBlur = 0;
     y += 62; x.font = F(700, 36); x.fillStyle = "#c9cff0"; x.fillText(m.perfilTitle || "", W / 2, y);
     if (!pro && m.tiempo) { y += 56; x.font = F(800, 36); x.fillStyle = "#f7b928"; x.fillText(`⏱️ Lo hice en ${m.tiempo}`, W / 2, y); }
