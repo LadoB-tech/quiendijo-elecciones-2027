@@ -210,7 +210,7 @@
       .result-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .section-card, .profile-card { box-shadow: none; break-inside: avoid; }
     }
-    .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; text-align: left; }
+    .form-grid-3 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; text-align: left; }
     @media (max-width: 640px) { .form-grid-3 { grid-template-columns: 1fr; } }
     .form-grid-3 label.f { font-weight: 700; font-size: 0.88rem; display: block; }
     .form-grid-3 select { width: 100%; padding: 0.75rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; background: #fff; color: #0f172a; margin-top: 0.3rem; }
@@ -362,6 +362,12 @@
               <option value="45 a 64">45 a 64 años</option>
               <option value="65 o más">65 años o más</option>
               <option value="No especificado">Prefiero no decir</option>
+            </select></div>
+          <div><label class="f">Género</label><select id="genero" class="">
+              <option value="">Elegí…</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Prefiero no decir">Prefiero no decir</option>
             </select></div>
           <div><label class="f">¿Desde dónde respondés?</label><select id="provincia" class="">
               <option value="">Elegí…</option>
@@ -1016,7 +1022,7 @@
 
     function datosCompletos() {
       let ok = true;
-      ["edad", "provincia", "vota"].forEach(id => {
+      ["edad", "genero", "provincia", "vota"].forEach(id => {
         const el = document.getElementById(id);
         const miss = !el.value;
         el.classList.toggle("missing", miss);
@@ -1258,11 +1264,12 @@
         const A = resultsA, p = key ? PERFILES[key] : null;
         localStorage.setItem("tp_mis", JSON.stringify({
           stage, version: "rapida", fecha: Date.now(), sesion: sessionId,
-          edad: document.getElementById("edad").value, provincia: document.getElementById("provincia").value, voto: declared,
+          edad: document.getElementById("edad").value, genero: document.getElementById("genero").value, provincia: document.getElementById("provincia").value, voto: declared,
           pctA: A.pctA, nA: A.nA, aciertos: A.totalCorrect,
           perfilKey: key || "", perfilTitle: p ? p.title : "", nick: p ? p.nick : "", frase: p ? p.frase : "", color: p ? p.color : "",
           topSpace: stage === 2 ? results.topSpace : "",
-          chosenB: stage === 2 ? results.chosenB.map(c => ({ topic: c.topic, space: c.space })) : []
+          chosenB: stage === 2 ? results.chosenB.map(c => ({ topic: c.topic, space: c.space })) : [],
+          tiempo: window.tpTiempo ? tpTiempo() : ""
         }));
       } catch (e) {}
     }
@@ -1501,6 +1508,7 @@
         votoHabitual: declared,
         dificultad: full ? "Versión rápida" : "Versión rápida · solo Test 1",   // identifica versión y hasta dónde llegó
         edad: document.getElementById("edad").value,
+        genero: document.getElementById("genero").value,
         provincia: document.getElementById("provincia").value,
         vota: document.getElementById("vota").value,
         topReferenteA: r.scoreSummaryA,
@@ -1605,6 +1613,7 @@ ${r.perfil.nick} (${r.perfil.title})
       .map((k, i) => `<img src="${AVATAR_IMG[k]}" alt="" style="height:${[100, 118, 100][i]}px">`).join("");
     renderStart();
   </script>
-<script src="../estadisticas.js?v=4"></script>
+<script src="../estadisticas.js?v=7"></script>
+<script src="../efectos.js?v=3"></script>
 </body>
 </html>
